@@ -1,0 +1,15 @@
+{
+  "session_id": "2025-03-17",
+  "start_time": 1742202132.0951395,
+  "requests": [],
+  "summary": {
+    "total_requests": 0,
+    "total_prompt_tokens": 0,
+    "total_completion_tokens": 0,
+    "total_tokens": 0,
+    "total_cost": 0,
+    "total_thinking_time": 0,
+    "provider_stats": {},
+    "session_duration": 4257.933135986328
+  }
+}

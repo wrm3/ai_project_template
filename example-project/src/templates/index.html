@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - TaskFlow{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>My Tasks</h1>
+            <a href="{{ url_for('create_task') }}" class="btn btn-primary">+ New Task</a>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div class="btn-group" role="group">
+                    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">All</a>
+                    <a href="{{ url_for('index', status='pending') }}" class="btn btn-outline-secondary">Pending</a>
+                    <a href="{{ url_for('index', status='in_progress') }}" class="btn btn-outline-secondary">In Progress</a>
+                    <a href="{{ url_for('index', status='completed') }}" class="btn btn-outline-secondary">Completed</a>
+                </div>
+                
+                <div class="btn-group ms-2" role="group">
+                    <a href="{{ url_for('index', priority='critical') }}" class="btn btn-outline-danger">Critical</a>
+                    <a href="{{ url_for('index', priority='high') }}" class="btn btn-outline-warning">High</a>
+                    <a href="{{ url_for('index', priority='medium') }}" class="btn btn-outline-info">Medium</a>
+                    <a href="{{ url_for('index', priority='low') }}" class="btn btn-outline-success">Low</a>
+                </div>
+            </div>
+        </div>
+
+        {% if tasks %}
+            <div class="row">
+                {% for task in tasks %}
+                <div class="col-md-6 col-lg-4 mb-3">
+                    <div class="card task-card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h5 class="card-title">{{ task.title }}</h5>
+                                <span class="badge priority-{{ task.priority }}">
+                                    {{ task.priority.capitalize() }}
+                                </span>
+                            </div>
+                            
+                            {% if task.description %}
+                            <p class="card-text text-muted">
+                                {{ task.description[:100] }}{% if task.description|length > 100 %}...{% endif %}
+                            </p>
+                            {% endif %}
+                            
+                            <div class="mb-2">
+                                <span class="badge bg-secondary">{{ task.status.replace('_', ' ').title() }}</span>
+                                {% if task.due_date %}
+                                <small class="text-muted">Due: {{ task.due_date.strftime('%Y-%m-%d') }}</small>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a href="{{ url_for('task_detail', id=task.id) }}" class="btn btn-outline-primary">View</a>
+                                <a href="{{ url_for('update_task', id=task.id) }}" class="btn btn-outline-secondary">Edit</a>
+                                <button type="button" class="btn btn-outline-danger" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#deleteModal{{ task.id }}">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delete Confirmation Modal -->
+                <div class="modal fade" id="deleteModal{{ task.id }}" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Confirm Deletion</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete this task?</p>
+                                <p><strong>{{ task.title }}</strong></p>
+                                <p class="text-muted">This action cannot be undone.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <form action="{{ url_for('delete_task', id=task.id) }}" method="POST" style="display: inline;">
+                                    <button type="submit" class="btn btn-danger">Delete Task</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <h4>No tasks found</h4>
+                <p>Get started by creating your first task!</p>
+                <a href="{{ url_for('create_task') }}" class="btn btn-primary">Create Task</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+

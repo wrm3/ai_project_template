@@ -1,0 +1,294 @@
+---
+description: Comprehensive planning system for PRD creation, feature management, and scope validation
+globs: 
+alwaysApply: true
+---
+# Planning System
+
+This rule provides comprehensive planning functionality including PRD creation, feature management, scope validation, and requirements gathering.
+
+## PRD Generation
+
+### PRD Structure
+**Location**: `.fstrent_spec_tasks/PLAN.md` (single mandatory file)
+
+### PRD Template
+```markdown
+# PRD: [Project/Feature Title]
+
+## 1. Product overview
+### 1.1 Document title and version
+- PRD: [Project/Feature Title]
+- Version: 1.0
+
+### 1.2 Product summary
+[2-3 short paragraphs providing an overview of the project or feature.]
+
+## 2. Goals
+### 2.1 Business goals
+- [Bullet list of business objectives]
+
+### 2.2 User goals
+- [Bullet list of what users aim to achieve]
+
+### 2.3 Non-goals
+- [Bullet list of explicitly out-of-scope items]
+
+## 3. User personas
+### 3.1 Key user types
+- [Bullet list of primary user categories]
+
+### 3.2 Basic persona details
+- **[Persona Name 1]**: [Brief description]
+- **[Persona Name 2]**: [Brief description]
+
+### 3.3 Role-based access
+- **[Role Name 1]**: [Description of permissions/access]
+- **[Role Name 2]**: [Description of permissions/access]
+
+## 4. Features
+### 4.1 Core Features
+- **[Feature Name 1]** (Priority: [High/Medium/Low])
+  - [Requirement 1.1]
+  - [Requirement 1.2]
+- **[Feature Name 2]** (Priority: [High/Medium/Low])
+  - [Requirement 2.1]
+
+### 4.2 Feature References
+- Each feature should have a corresponding document in `features/` folder
+- Features are referenced by tasks in TASKS.md
+- Bugs reference affected features
+
+## 5. User experience
+### 5.1 Entry points & first-time user flow
+- [How users access this feature/product initially]
+
+### 5.2 Core experience
+- **[Step 1]**: [Explanation of the step]
+- **[Step 2]**: [Explanation of the step]
+
+### 5.3 Advanced features & edge cases
+- [Bullet list of less common scenarios or advanced capabilities]
+
+### 5.4 UI/UX highlights
+- [Key design principles or user interface elements]
+
+## 6. Narrative
+[A single paragraph describing the user's journey and the benefit they receive.]
+
+## 7. Success metrics
+### 7.1 User-centric metrics
+- [e.g., Task completion rate, user satisfaction]
+
+### 7.2 Business metrics
+- [e.g., Conversion rate, revenue impact]
+
+### 7.3 Technical metrics
+- [e.g., Page load time, error rate]
+
+## 8. Technical considerations
+### 8.1 Affected subsystems
+- **Primary subsystems** (directly modified/extended):
+  - [Subsystem Name 1]: [Impact description]
+  - [Subsystem Name 2]: [Impact description]
+- **Secondary subsystems** (indirectly affected):
+  - [Subsystem Name 3]: [Dependency/integration description]
+
+### 8.2 Integration points
+- [Interaction with other systems/services]
+
+### 8.3 Data storage & privacy
+- [How data is handled, GDPR/CCPA compliance etc.]
+
+### 8.4 Scalability & performance
+- [Anticipated load, performance targets]
+
+### 8.5 Potential challenges
+- [Risks or technical hurdles]
+
+## 9. Milestones & sequencing
+### 9.1 Project estimate
+- [Small/Medium/Large]: [Rough time estimate, e.g., 2-4 weeks]
+
+### 9.2 Team size & composition
+- [e.g., Small Team: 1-2 people (1 PM, 1 Eng)]
+
+### 9.3 Suggested phases
+- **[Phase 1]**: [Description] ([Time estimate])
+  - Key deliverables: [List]
+- **[Phase 2]**: [Description] ([Time estimate])
+  - Key deliverables: [List]
+
+## 10. User stories
+### 10.1 [User Story Title 1]
+- **ID**: US-001
+- **Description**: As a [persona], I want to [action] so that [benefit].
+- **Acceptance Criteria**:
+  - [Criterion 1.1]
+  - [Criterion 1.2]
+
+### 10.2 [User Story Title 2]
+- **ID**: US-002
+- **Description**: As a [persona], I want to [action] so that [benefit].
+- **Acceptance Criteria**:
+  - [Criterion 2.1]
+  - [Criterion 2.2]
+```
+
+## Feature Management
+
+### Features Folder Structure
+- **Location**: `.fstrent_spec_tasks/features/` (renamed from plans/)
+- **Format**: `{feature-name}.md` files
+- **Purpose**: Individual feature specifications referenced by PLAN.md
+
+### Feature Document Template
+```markdown
+# Feature: [Feature Name]
+
+## Overview
+[Brief description of the feature]
+
+## Requirements
+- [Requirement 1]
+- [Requirement 2]
+
+## User Stories
+- **US-001**: As a [persona], I want to [action] so that [benefit]
+- **US-002**: As a [persona], I want to [action] so that [benefit]
+
+## Technical Considerations
+- **Subsystems**: [List affected subsystems]
+- **Dependencies**: [List feature dependencies]
+- **Integration Points**: [List integration requirements]
+
+## Acceptance Criteria
+- [ ] [Criterion 1]
+- [ ] [Criterion 2]
+
+## Related Tasks
+- Links to tasks in TASKS.md that implement this feature
+- Links to bugs in BUGS.md that affect this feature
+```
+
+## Scope Validation
+
+### Mandatory Scope Questions
+Before creating any PRD, ask these essential questions:
+
+1. **User Context & Deployment**
+   - "Intended for personal use, small team, or broader deployment?"
+   - Personal (1 user): Simple, file-based, minimal security
+   - Small team (2-10): Basic sharing, simple user management  
+   - Broader (10+): Full authentication, role management, scalability
+
+2. **Security Requirements**
+   - "Security expectations?"
+   - Minimal: Basic validation, no authentication
+   - Standard: User auth, session management, basic authorization
+   - Enhanced: Role-based access, encryption, audit trails
+   - Enterprise: SAML/SSO, compliance, advanced security
+
+3. **Scalability Expectations**
+   - "Performance and scalability expectations?"
+   - Basic: Works for expected load, simple architecture
+   - Moderate: Handles growth, some optimization
+   - High: Speed-optimized, caching, efficient queries
+   - Enterprise: Load balancing, clustering, horizontal scaling
+
+4. **Feature Complexity**
+   - "How much complexity comfortable with?"
+   - Minimal: Core functionality, keep simple
+   - Standard: Core plus reasonable conveniences
+   - Feature-Rich: Comprehensive with advanced options
+   - Enterprise: Full-featured with extensive configuration
+
+5. **Integration Requirements**
+   - "Integration needs?"
+   - Standalone: No external integrations
+   - Basic: File import/export, basic API
+   - Standard: REST API, webhooks, common integrations
+   - Enterprise: Comprehensive API, message queues, enterprise systems
+
+### Over-Engineering Prevention
+- **Authentication**: Don't add role permissions unless requested
+- **Database**: Use simple file-based unless DB explicitly requested
+- **API**: Don't add comprehensive REST beyond required
+- **Architecture**: Default monolith unless scale requires separation
+
+## Planning Questionnaire
+
+### 27-Question Framework
+
+#### Phase 1: Project Context (Q1-Q7)
+**Q1**: Primary problem this system solves? → Follow-up: Who experiences it, how handled today?
+**Q2**: What does success look like? → Follow-up: How measured, failure indicators?
+**Q3**: Replacing existing or creating new? → If replacing: pain points; If new: why needed now?
+**Q4**: Primary users? (End users, Admins, Stakeholders, External)
+**Q5**: User count? (Single, 2-10, 11-50, 51-200, 200+)
+**Q6**: Usage frequency? (Occasional, Daily, Continuous, Peak periods)
+**Q7**: Access locations? (Local, Office, Remote, Internet, Mobile)
+
+#### Phase 2: Technical Requirements (Q8-Q16)
+**Q8**: Deployment? (Local desktop, Local server, Cloud, Hybrid, No preference)
+**Q9**: Maintenance comfort? (Minimal, Basic, Intermediate, Advanced)
+**Q10**: Integration needs? (AD, Databases, Business apps, Monitoring, Backup)
+**Q11**: Data types? (Public, Internal, PII, Financial, Healthcare, Regulated)
+**Q12**: Security requirements? (Basic, Industry compliance, Government, Custom, None)
+**Q13**: Access control? (All see all, Role-based, Department, Individual, External)
+**Q14**: Performance expectations? (Basic seconds, Good <1s, High instant, Not critical)
+**Q15**: Data volume? (Thousands, Hundreds of thousands, Millions, Billions, Growing)
+**Q16**: Peak usage? (Consistent, Business hours, Month/quarter, Seasonal, Event-driven)
+
+#### Phase 3: Feature Scope (Q17-Q22)
+**Q17**: Essential features (MVP)? → List core features and deal-breakers
+**Q18**: Nice-to-have features? → List convenience and future enhancements
+**Q19**: Features to avoid? → Over-complexity, specific integrations, approaches
+**Q20**: Priority: ease vs power? (Ease, Power, Balanced, Depends on user)
+**Q21**: Interface examples you like? → Reference apps, patterns, accessibility
+**Q22**: User training investment? (Self-explanatory, Brief, Formal, Complex OK)
+
+#### Phase 4: Timeline & Resources (Q23-Q27)
+**Q23**: Timeline drivers? (Business deadline, Budget, Competition, Regulatory, Personal)
+**Q24**: Delivery preference? (Quick prototype, Phased, Complete, Iterative)
+**Q25**: Trade-offs? (Core over polish, Polish over features, Speed over performance)
+**Q26**: Available resources? (Dev time, Expertise, Budget, Third-party services)
+**Q27**: Hard constraints? (Specific tech, No cloud, Budget limits, Policies)
+
+## Codebase Analysis for Existing Projects
+
+### Automatic Project Analysis
+When initializing in existing projects:
+1. **Scan codebase** for existing features and functionality
+2. **Generate PLAN.md** based on current code structure
+3. **Create feature documents** for each major component
+4. **Identify subsystems** from code organization
+5. **Document current architecture** and integration points
+
+### Analysis Process
+1. **File Structure Analysis**: Identify main components and modules
+2. **Dependency Mapping**: Map relationships between components
+3. **Feature Extraction**: Identify features from code patterns
+4. **Subsystem Identification**: Group related functionality
+5. **Integration Discovery**: Find external system connections
+
+## Integration Points
+
+### Task System Integration
+- Tasks reference features in their metadata
+- Feature completion tracked through task completion
+- Feature dependencies managed through task dependencies
+
+### Bug System Integration
+- Bugs reference affected features
+- Feature impact assessment through bug analysis
+- Feature fixes tracked through bug resolution
+
+### File Organization Integration
+- Features organized in dedicated features/ folder
+- Feature documents follow consistent naming conventions
+- Feature relationships documented in PLAN.md
+
+---
+
+*This comprehensive planning system provides all necessary functionality for project planning, feature management, and scope validation in a single, efficient rule.*

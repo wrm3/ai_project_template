@@ -1,0 +1,87 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# fstrent_spec_tasks System Overview
+
+Whenever you use this rule, start your message with the following:
+
+"Accessing fstrent_spec_tasks system overview..."
+
+The fstrent_spec_tasks system is a consolidated, practical task management framework optimized for daily coding work with minimal context overhead.
+
+## Core Rules (4 Consolidated Files)
+
+### 1. **`rules.mdc`** - Core System Management
+- **Task Management**: YAML-based task lifecycle with Windows-safe emojis
+- **File Organization**: Template vs working directory management
+- **Tool Integration**: MCP tool-first approach and automation
+- **Context Management**: Project awareness and goal alignment
+- **Scope Control**: Anti-scope-creep validation and over-engineering prevention
+- **Coding Standards**: Python, JavaScript/React, Oracle PL/SQL, Oracle Apex standards
+- **Template Setup**: MCP deployment template initialization
+
+### 2. **`plans.mdc`** - Planning & Requirements
+- **PRD Generation**: Product Requirements Document creation
+- **Planning Questionnaire**: 27-question requirements gathering framework
+- **Scope Clarification**: Scope validation and assumption checking
+- **Feature Management**: Features folder structure and documentation
+- **Codebase Analysis**: Automatic project analysis for existing codebases
+
+### 3. **`qa.mdc`** - Quality Assurance
+- **Bug Tracking**: Bug identification, categorization, and resolution tracking
+- **Design Fixes**: Retroactive documentation for completed fixes
+- **Documentation Templates**: Standardized templates for tasks, bugs, and fixes
+- **Quality Workflows**: Bug lifecycle and quality management processes
+
+### 4. **`workflow.mdc`** - Workflow Management
+- **Task Expansion**: Complexity assessment and sub-task breakdown
+- **Methodology Integration**: Kanban flow, WIP limits, DevOps practices
+- **Workflow Diagrams**: Mermaid diagram generation for visualization
+- **Architecture Visualization**: System component relationship diagrams
+- **Sprint Planning**: Iteration planning and story point estimation
+
+## Directory Structure
+```
+.fstrent_spec_tasks/
+├── tasks/                # Active task files
+├── features/             # Feature documentation (renamed from plans/)
+├── memory/               # Historical archives (using Cursor's built-in memory)
+├── TASKS.md              # Master task checklist
+├── BUGS.md               # Bug tracking (subset of TASKS.md)
+├── PROJECT_CONTEXT.md    # Project mission
+├── PLAN.md               # Product Requirements Document
+├── SUBSYSTEMS.md         # Component registry
+└── FILE_REGISTRY.md      # File documentation
+
+docs/                     # Project documentation (migration files, setup summaries)
+temp_scripts/             # Test and utility scripts
+```
+
+⚠️ **CRITICAL**: Migration files, conversion summaries, and temporary documentation go in `docs/` folder, NOT in `.fstrent_spec_tasks/`
+
+## Key Features
+
+### Context Optimization
+- **85% Reduction**: From 26+ rules to 4 consolidated rules
+- **Cursor Integration**: Built-in memory system + commands
+- **Single-Level Rules**: No progressive disclosure complexity
+- **Tool-First Approach**: MCP tool integration for automation
+
+### Practical Daily Use
+- **Clear Hierarchy**: PLAN → FEATURES → TASKS → BUGS
+- **Windows-Safe Emojis**: ✅ 🔄 ❌ for task status
+- **Simplified Workflows**: Focus on essential coding tasks
+- **No Rule Conflicts**: Clean, predictable activation
+
+### Commands Available
+- `/fstrent_spec_tasks_setup` - Initialize system
+- `/fstrent_spec_tasks_plan` - Activate planning system
+- `/fstrent_spec_tasks_qa` - Activate quality assurance
+- `/fstrent_spec_tasks_workflow` - Activate workflow management
+
+---
+
+*This consolidated system provides a solid, practical workhorse optimized for daily coding work with minimal context overhead while preserving 95% of original functionality.*
+

@@ -1,0 +1,28 @@
+{
+  "name": "fstrent-spec-tasks",
+  "version": "1.0.0",
+  "description": "Comprehensive task management, project planning, and QA system for Claude Code and Cursor with 100% cross-IDE compatibility",
+  "author": {
+    "name": "fstrent",
+    "email": "contact@fstrent.com"
+  },
+  "keywords": [
+    "task-management",
+    "project-planning",
+    "qa",
+    "bug-tracking",
+    "cursor-compatible",
+    "cross-ide",
+    "productivity"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fstrent/fstrent-spec-tasks"
+  },
+  "homepage": "https://github.com/fstrent/fstrent-spec-tasks#readme",
+  "bugs": {
+    "url": "https://github.com/fstrent/fstrent-spec-tasks/issues"
+  }
+}
+

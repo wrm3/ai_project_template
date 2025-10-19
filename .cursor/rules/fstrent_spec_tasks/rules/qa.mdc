@@ -1,0 +1,263 @@
+---
+description: Quality assurance system for bug tracking, design fixes, and documentation management
+globs: 
+alwaysApply: true
+---
+# Quality Assurance System
+
+This rule provides comprehensive quality assurance functionality including bug tracking, design fix documentation, and quality management.
+
+## Bug Tracking System
+
+### Bug Classification
+- **Critical**: System crashes, data loss, security vulnerabilities
+- **High**: Major feature failures, performance degradation >50%
+- **Medium**: Minor feature issues, usability problems
+- **Low**: Cosmetic issues, enhancement requests
+
+### Bug Source Attribution
+- **User Reported**: Issues reported by end users or stakeholders
+- **Development**: Bugs discovered during feature development
+- **Testing**: Issues found during QA or automated testing
+- **Production**: Live environment issues requiring immediate attention
+
+### BUGS.md Integration
+**Location**: `.fstrent_tasks_v2/BUGS.md`
+
+**Purpose**: Centralized bug tracking that integrates with TASKS.md system
+
+**Format**:
+```markdown
+# Bug Tracking
+
+## Active Bugs
+
+### Bug ID: BUG-001
+- **Title**: [Brief description of the issue]
+- **Severity**: [Critical/High/Medium/Low]
+- **Source**: [User Reported/Development/Testing/Production]
+- **Feature Impact**: [List affected features]
+- **Status**: [Open/Investigating/Fixing/Testing/Closed]
+- **Task Reference**: [Link to task in TASKS.md]
+- **Created**: [Date]
+- **Assigned**: [Developer/Team]
+
+## Bug Template
+```yaml
+---
+id: BUG-{number}
+title: '[BUG] {Brief description of the issue}'
+severity: {critical|high|medium|low}
+source: {user_reported|development|testing|production}
+feature_impact: [affected_features]
+status: {open|investigating|fixing|testing|closed}
+task_reference: {task_id}
+created_date: '{discovery_date}'
+assigned_to: {developer}
+---
+```
+
+### Bug Task Integration
+When a bug is identified:
+1. **Create BUGS.md entry** with bug details
+2. **Create corresponding task** in TASKS.md with `[BUG]` prefix
+3. **Create task file** in tasks/ folder with bug type
+4. **Link bug to affected features** in feature documents
+5. **Track resolution** through task completion
+
+### Bug Task Template
+```yaml
+---
+id: {next_available_id}
+title: '[BUG] {Brief description of the issue}'
+type: bug_fix
+status: pending
+priority: {severity_level}
+feature: {affected_feature}
+subsystems: {affected_subsystems}
+project_context: 'Resolves {bug_type} affecting {system_component}, maintaining {expected_behavior}'
+bug_reference: BUG-{number}
+severity: {critical|high|medium|low}
+source: {user_reported|development|testing|production}
+reproduction_steps: {step_by_step_instructions}
+expected_behavior: {what_should_happen}
+actual_behavior: {what_actually_happens}
+---
+```
+
+## Design Fix Documentation
+
+### Retroactive Fix Documentation
+**Purpose**: Capture and document design fixes, bug resolutions, and improvements completed in chat for historical context and memory preservation.
+
+### Activation Points
+**When**: After completing any unplanned fix, improvement, or solution in chat
+**Actions**:
+1. Assess if the work merits task documentation
+2. Generate retroactive task entry
+3. Update TASKS.md with completed status
+4. Archive to memory if appropriate
+
+### Scope Assessment Criteria
+**Document as retroactive task if**:
+- ✅ Fix required >15 minutes of work
+- ✅ Solution affects multiple files or subsystems  
+- ✅ Fix provides value for future reference
+- ✅ Resolution required technical analysis or debugging
+
+**Skip documentation if**:
+- ❌ Simple typo corrections
+- ❌ Minor formatting adjustments
+- ❌ Clarification-only conversations
+
+### Retroactive Task Template
+```yaml
+---
+id: {next_available_id}
+title: '[RETROACTIVE] {Description of fix/improvement}'
+type: retroactive_fix
+status: completed
+priority: {original_urgency_level}
+created_date: '{fix_completion_date}'
+completed_date: '{fix_completion_date}'
+project_context: 'Documents previously completed {solution_type} that addressed {project_need}, maintaining {system_capability}'
+subsystems: {affected_subsystems}
+estimated_effort: '{actual_time_spent}'
+actual_effort: '{actual_time_spent}'
+---
+```
+
+### Implementation Workflow
+1. **Fix Assessment**: Review completed chat work against scope criteria
+2. **Task Creation**: Generate task file using retroactive template
+3. **System Integration**: Add entry to TASKS.md with completed status
+4. **Archive**: Archive to memory if task meets archival criteria
+
+## Documentation Templates
+
+### Standardized Templates
+**Purpose**: Ensure consistent documentation quality and reduce creation overhead.
+
+### Task Template
+```markdown
+# Task: {title}
+**ID:** {task_id}
+**Priority:** {critical|high|medium|low}
+**Status:** {pending|in-progress|review|completed}
+**Estimated Effort:** {story_points}
+
+## Objective
+{Clear, actionable goal description}
+
+## Acceptance Criteria
+- [ ] {Specific, measurable outcome}
+- [ ] {Verification requirement}
+- [ ] {Quality standard}
+
+## Implementation Notes
+{Technical details, dependencies, constraints}
+
+## Verification
+- [ ] Functionality tested
+- [ ] Documentation updated
+- [ ] Integration verified
+```
+
+### Bug Template
+```markdown
+# Bug: {title}
+**ID:** {bug_id}
+**Severity:** {critical|high|medium|low}
+**Source:** {user_report|testing|production|code_review}
+**Status:** {open|investigating|fixing|testing|closed}
+
+## Problem Description
+{What is broken or not working as expected}
+
+## Reproduction Steps
+1. {Step-by-step instructions}
+2. {Expected vs actual behavior}
+
+## Environment
+- System: {operating_system}
+- Version: {software_version}
+- Configuration: {relevant_settings}
+
+## Fix Implementation
+{Solution approach and technical details}
+
+## Verification
+- [ ] Bug reproduced
+- [ ] Fix implemented
+- [ ] Regression testing completed
+```
+
+### Design Fix Template
+```markdown
+# Design Fix: {title}
+**Context:** {Original issue or improvement need}
+**Impact:** {Affected systems or workflows}
+**Date:** {implementation_date}
+
+## Problem Analysis
+{Root cause and contributing factors}
+
+## Solution Implementation
+{What was changed and why}
+
+## Validation Results
+{Evidence that fix addresses the problem}
+
+## Lessons Learned
+{Insights for preventing similar issues}
+```
+
+## Quality Management Workflow
+
+### Bug Lifecycle
+1. **Bug Discovery**: Bug identified and reported
+2. **Bug Documentation**: Entry created in BUGS.md
+3. **Task Creation**: Corresponding task created in TASKS.md
+4. **Investigation**: Root cause analysis and impact assessment
+5. **Fix Implementation**: Solution developed and tested
+6. **Verification**: Fix validated and regression tested
+7. **Documentation**: Fix documented and lessons learned captured
+8. **Closure**: Bug marked as resolved, task completed
+
+### Quality Metrics
+- **Bug Discovery Rate**: Bugs found per development cycle
+- **Bug Resolution Time**: Average time from discovery to resolution
+- **Bug Severity Distribution**: Breakdown of bugs by severity level
+- **Feature Impact Analysis**: Which features are most affected by bugs
+- **Regression Rate**: Percentage of fixes that introduce new bugs
+
+### Quality Gates
+- **Code Review**: All code changes require review
+- **Testing Requirements**: Unit tests, integration tests, manual testing
+- **Documentation Standards**: Code comments, API documentation, user guides
+- **Performance Benchmarks**: Performance regression testing
+- **Security Scanning**: Automated security vulnerability scanning
+
+## Integration Points
+
+### Task System Integration
+- Bugs automatically create corresponding tasks
+- Task completion updates bug status
+- Bug metrics integrated with task performance metrics
+- Feature impact tracking through task-feature relationships
+
+### Planning System Integration
+- Bug impact assessment affects feature planning
+- Quality metrics inform project timeline estimates
+- Bug patterns influence architectural decisions
+- Quality gates integrated with milestone planning
+
+### File Organization Integration
+- Bug documentation follows consistent file naming
+- Quality templates integrated with project templates
+- Bug tracking integrated with file change tracking
+- Quality metrics stored in project documentation
+
+---
+
+*This comprehensive quality assurance system provides all necessary functionality for bug tracking, design fix documentation, and quality management in a single, efficient rule.*

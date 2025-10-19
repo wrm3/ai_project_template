@@ -1,0 +1,41 @@
+{
+  "mcpServers": {
+    "fstrent_mcp_tasks": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "C:\\.ai\\mcps\\fstrent_mcp_tasks",
+        "run",
+        "fstrent_mcp_tasks"
+      ]
+    },
+    "fstrent_mcp_mysql": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "C:\\.ai\\mcps\\fstrent_mcp_mysql",
+        "run",
+        "fstrent_mcp_mysql"
+      ]
+    },
+    "fstrent_mcp_browser_use": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "C:\\.ai\\mcps\\fstrent_mcp_browser_use",
+        "run",
+        "fstrent_mcp_browser_use"
+      ]
+    },
+    "fstrent_mcp_computer_use": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "C:\\.ai\\mcps\\fstrent_mcp_computer_use",
+        "run",
+        "fstrent_mcp_computer_use"
+      ]
+    }
+  }
+}
+
