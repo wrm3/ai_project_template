@@ -1,89 +1,218 @@
-# Dependencies
-node_modules/
-venv/
-env/
-.venv/
+# AI Project Template - .gitignore
+# For public repository - blocks research, personal data, and sensitive files
+
+# ============================================================================
+# Research & Development (Private)
+# ============================================================================
+research/
+claude_code_research/
+
+# ============================================================================
+# Task Management & Planning (Private - may contain client/project info)
+# ============================================================================
+.fstrent_spec_tasks/
+.fstrent_tasks_v2/
+
+# ============================================================================
+# Environment & Secrets
+# ============================================================================
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+*.p12
+*.pfx
+secrets/
+credentials/
+
+# ============================================================================
+# API Keys & Tokens
+# ============================================================================
+*_api_key*
+*_token*
+*_secret*
+.anthropic_api_key
+.openai_api_key
+
+# ============================================================================
+# Personal Data & Logs
+# ============================================================================
+*.log
+logs/
+*.sqlite
+*.db
+*.db-journal
+personal/
+private/
+
+# ============================================================================
+# Temporary Files & Caches
+# ============================================================================
+temp_scripts/
+tmp/
+temp/
+*.tmp
+*.temp
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 .Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.coverage
+htmlcov/
 
-# IDE
+# ============================================================================
+# IDE & Editor Files
+# ============================================================================
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
-
-# Environment variables
-.env
-.env.local
-.env.*.local
-
-# Build outputs
-dist/
-build/
-*.egg-info/
-.eggs/
-*.egg
-
-# Logs
-*.log
-logs/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# OS files
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
 
-# Test coverage
-coverage/
-.coverage
-.pytest_cache/
-htmlcov/
+# ============================================================================
+# Node Modules & Dependencies
+# ============================================================================
+node_modules/
+package-lock.json
+yarn.lock
+.pnp.*
 
-# Temporary files
-*.tmp
-*.temp
+# ============================================================================
+# Python Virtual Environments
+# ============================================================================
+venv/
+.venv/
+env/
+ENV/
+virtualenv/
+
+# ============================================================================
+# Downloaded Videos & Media (for youtube-video-analysis skill)
+# ============================================================================
+youtube_downloads/
+*.mp4
+*.mp3
+*.wav
+*.avi
+*.mkv
+*.mov
+*.flv
+
+# ============================================================================
+# Large Binary Files (all executables blocked - too large for GitHub)
+# ============================================================================
+*.exe
+*.dll
+*.so
+*.dylib
+# Note: ffmpeg binaries (141MB each) exceed GitHub's 100MB limit
+# Users should download ffmpeg separately or use imageio-ffmpeg (bundled)
+
+# ============================================================================
+# Backup Files
+# ============================================================================
 *.bak
 *.backup
-temp_scripts/*.pyc
+*.old
+*_backup/
+*_old/
 
-# Database
-*.db
-*.sqlite
-*.sqlite3
+# ============================================================================
+# OS-Specific
+# ============================================================================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
 
-# Compiled files
-*.com
-*.class
-*.dll
-*.exe
-*.o
-*.so
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
 
-# Package files
-*.7z
-*.dmg
-*.gz
-*.iso
-*.jar
-*.rar
-*.tar
-*.zip
+# Linux
+*~
+.directory
 
-# Keep important folders but ignore contents initially
-docs/.gitkeep
-temp_scripts/.gitkeep
+# ============================================================================
+# AI-Specific
+# ============================================================================
+# Model files (too large for git)
+*.ckpt
+*.pt
+*.pth
+*.safetensors
+*.bin
+*.onnx
+models/
+checkpoints/
 
-# Task management - keep structure but can ignore some generated files
-.fstrent_spec_tasks/memory/
+# Whisper model cache
+~/.cache/whisper/
 
+# ============================================================================
+# Documentation Builds
+# ============================================================================
+_build/
+.doctrees/
+site/
+
+# ============================================================================
+# Test Coverage & Reports
+# ============================================================================
+.coverage
+.coverage.*
+coverage/
+*.cover
+.hypothesis/
+.tox/
+
+# ============================================================================
+# Keep These Files (Exceptions)
+# ============================================================================
+# Keep Claude Code configuration
+!.claude/
+!.claude/**/*
+
+# Keep Cursor configuration (for dual-IDE support)
+!.cursor/
+!.cursor/**/*
+
+# Keep example project
+!example-project/
+!example-project/**/*
+
+# Keep documentation
+!docs/
+!docs/**/*
+
+# Keep GitHub files
+!.github/
+!.github/**/*
+
+# Keep project root files
+!README.md
+!LICENSE
+!CONTRIBUTING.md
+!CODE_OF_CONDUCT.md
+!CHANGELOG.md
+!.gitignore
+!.mcp.json
+!CLAUDE.md
+
+# ============================================================================
+# User-Specific Additions
+# ============================================================================
+# Add any project-specific ignores below this line

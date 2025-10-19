@@ -1,0 +1,92 @@
+{
+  "video_id": "example123",
+  "video_url": "https://youtu.be/example123",
+  "video_title": "RSI Divergence Trading Strategy Explained",
+  "video_type": "trading_strategy",
+  "duration": "15:30",
+  "processed_at": "2025-10-19T14:30:00Z",
+  "model_size": "base",
+  "processing_time": "45.2s",
+  
+  "transcription": "In this video, I'm going to explain the RSI divergence trading strategy. This is a momentum reversal strategy that works particularly well in ranging markets. The key is to look for divergence between price action and the RSI indicator. When price makes a lower low but RSI makes a higher low, that's bullish divergence...",
+  
+  "analysis": {
+    "strategy_name": "RSI Divergence Strategy",
+    "summary": "The RSI Divergence Strategy is a momentum reversal trading approach that identifies potential trend reversals by spotting divergences between price action and the RSI (Relative Strength Index) indicator. The strategy works best in ranging or choppy markets where price is making new highs or lows but momentum is weakening. Traders enter positions when divergence is confirmed with additional signals like volume or candlestick patterns.",
+    
+    "key_points": [
+      "Look for divergence between price and RSI indicator",
+      "Bullish divergence: price makes lower low, RSI makes higher low",
+      "Bearish divergence: price makes higher high, RSI makes lower high",
+      "Confirm with volume and candlestick patterns",
+      "Works best in ranging markets",
+      "Use multiple timeframe analysis for confirmation"
+    ],
+    
+    "entry_criteria": [
+      "Identify clear divergence between price and RSI",
+      "Wait for price to reach support (bullish) or resistance (bearish)",
+      "Confirm with volume increase on reversal candle",
+      "Look for bullish/bearish candlestick pattern",
+      "RSI should be in oversold (<30) or overbought (>70) zone",
+      "Check higher timeframe for trend alignment"
+    ],
+    
+    "exit_criteria": [
+      "RSI reaches opposite extreme (70 for long, 30 for short)",
+      "Price hits predetermined resistance/support level",
+      "Stop loss at 2% below entry for longs, 2% above for shorts",
+      "Take profit at 1:2 or 1:3 risk/reward ratio",
+      "Exit if divergence fails and price breaks support/resistance"
+    ],
+    
+    "risk_management": [
+      "Maximum 2% risk per trade",
+      "Position size based on stop loss distance",
+      "Use trailing stop once in 1:1 profit",
+      "Never risk more than 6% total portfolio on correlated trades",
+      "Set stop loss immediately upon entry"
+    ],
+    
+    "timeframes": [
+      "1-hour chart for entry signals",
+      "4-hour chart for trend confirmation",
+      "Daily chart for overall market context"
+    ],
+    
+    "markets": [
+      "Cryptocurrency (BTC, ETH, major altcoins)",
+      "Forex (major pairs like EUR/USD, GBP/USD)",
+      "Stocks (liquid stocks with good volatility)",
+      "Indices (S&P 500, NASDAQ)"
+    ],
+    
+    "indicators": [
+      "RSI (14 period)",
+      "Volume indicator",
+      "Support and Resistance levels",
+      "Moving Average (50 and 200 period) for trend context"
+    ],
+    
+    "pros": [
+      "Catches potential trend reversals early",
+      "Works in ranging markets where trend following fails",
+      "Clear entry and exit signals",
+      "Good risk/reward ratio potential",
+      "Can be combined with other strategies"
+    ],
+    
+    "cons": [
+      "False signals in strong trending markets",
+      "Requires patience to wait for proper setup",
+      "Can be subjective in identifying divergence",
+      "Needs confirmation from multiple indicators",
+      "Lower win rate but higher reward when correct"
+    ],
+    
+    "backtest_results": "Mentioned 58% win rate with average 1:2.5 risk/reward over 100 trades in ranging BTC market during 2024. Performed poorly in strong trending conditions.",
+    
+    "implementation_notes": "Requires real-time RSI calculation, support/resistance detection, volume analysis, and pattern recognition. Consider using TradingView alerts or custom Python script with TA-Lib library."
+  }
+}
+
