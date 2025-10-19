@@ -2,7 +2,7 @@
 id: 018
 title: 'Add rules.md files to Claude Code Skills'
 type: enhancement
-status: pending
+status: completed
 priority: medium
 feature: Claude Code Skills
 subsystems: [claude_skills, cross_ide_compatibility]

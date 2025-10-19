@@ -26,7 +26,7 @@
 - [✅] Task 015: Add to GitHub repository
 - [ ] Task 016: Create video tutorial (optional)
 - [ ] Task 017: Implement Claude Code plugin distribution system
-- [ ] Task 018: Add rules.md files to Claude Code Skills
+- [✅] Task 018: Add rules.md files to Claude Code Skills
 
 ## Completed Tasks
 (None yet)
