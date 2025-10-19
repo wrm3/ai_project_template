@@ -116,7 +116,9 @@ youtube_downloads/
 *.so
 *.dylib
 # Note: ffmpeg binaries (141MB each) exceed GitHub's 100MB limit
-# Users should download ffmpeg separately or use imageio-ffmpeg (bundled)
+# Local copies remain in .claude/skills/youtube-video-analysis/bin/ for your use
+# Users cloning from GitHub should use imageio-ffmpeg or download manually
+# See .claude/skills/youtube-video-analysis/bin/README.md for instructions
 
 # ============================================================================
 # Backup Files
