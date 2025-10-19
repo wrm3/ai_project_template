@@ -1,0 +1,72 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# PowerShell Command Reference for Windows Development
+
+## Powershell on Windows 10/11
+- You are running powershell on windows 10/11, ensure that your commands and powershell usage is adjusted accordingly
+- You have issues with using curl as its interpretted as a 'Invoke-Webrequest command and you will end up hung up on a prompt waiting for uri:
+- && does not work as a command seperator well, you perform better when using ;
+
+## Powershell Date Time
+- when using powershell to get the time, use this command first "powershell -Command "(Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')"
+
+
+## Curl/HTTP Request Commands
+
+**CRITICAL:** In PowerShell on Windows, `curl` is an alias for `Invoke-WebRequest` cmdlet, NOT the actual curl executable. This causes interactive prompts that block automation.
+
+### ❌ AVOID - Gets stuck on Uri prompt:
+```powershell
+curl -s http://localhost:5000/api/status
+# This will prompt: "Uri:" and hang
+```
+
+### ✅ USE INSTEAD:
+```powershell
+# Option 1: Use Invoke-WebRequest with proper syntax
+Invoke-WebRequest -Uri "http://localhost:5000/api/status" -UseBasicParsing
+
+# Option 2: Use shorthand 'iwr'
+iwr "http://localhost:5000/api/status" -UseBasicParsing
+
+# Option 3: Force actual curl executable
+curl.exe -s http://localhost:5000/api/status
+
+# Option 4: For JSON responses
+(Invoke-WebRequest -Uri "http://localhost:5000/api/status").Content | ConvertFrom-Json
+```
+
+## Directory Navigation
+```powershell
+# Change directory and run command in one line
+cd flask-vpn-manager; uv run python main.py
+
+# Create multiple directories
+New-Item -ItemType Directory -Path "app\templates", "app\static" -Force
+```
+
+## Powershell Flask Servers
+- You often get hung when running a flask web server in chat... its better if you run it as a background task
+
+## Flask Development
+```powershell
+# Start Flask in background
+uv run python main.py &
+
+# Test endpoints
+Invoke-WebRequest -Uri "http://127.0.0.1:5000/" -UseBasicParsing
+Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/status" -UseBasicParsing
+```
+
+## Common Gotchas
+- Use `-UseBasicParsing` to avoid DOM parsing issues
+- Always quote URLs with special characters
+- Use `curl.exe` if you need actual curl behavior
+- PowerShell aliases can override expected behavior
+
+
+
+

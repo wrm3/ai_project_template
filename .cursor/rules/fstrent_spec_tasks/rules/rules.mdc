@@ -1,0 +1,191 @@
+---
+description: Core fstrent_spec_tasks rules for task management, file organization, and tool integration
+globs: 
+alwaysApply: true
+---
+# Core Rules System
+
+This rule consolidates the essential fstrent_spec_tasks functionality into a single, efficient rule for daily coding work.
+
+## Task Management
+
+### Task Creation
+- Create task files in `.fstrent_spec_tasks/tasks/` with format: `task{id}_descriptive_name.md`
+- Update `TASKS.md` with task entry
+- Use Windows-safe emojis: `[ ]` pending, `[🔄]` in-progress, `[✅]` completed, `[❌]` failed
+
+### Task File Format
+```yaml
+---
+id: {id}
+title: 'Task Title'
+status: pending
+priority: medium
+feature: Feature Name
+subsystems: [affected_subsystems]
+project_context: Brief connection to project goal
+dependencies: [task_ids]
+---
+```
+
+### Task Status Management
+- **Start**: Update status to `in-progress`, update TASKS.md with `[🔄]`
+- **Complete**: Update status to `completed`, update TASKS.md with `[✅]`
+- **Fail**: Update status to `failed`, update TASKS.md with `[❌]`
+
+## File Organization
+
+### Working Directory: `/.fstrent_spec_tasks/` (99% of operations)
+- Active task management (TASKS.md updates)
+- Project planning (PRD creation, goals)
+- Documentation updates
+- Memory archival operations
+
+### Template Directory: `/templates/fstrent_spec_tasks/` (1% of operations)
+- Updating installation templates
+- Adding rules that ALL projects need
+- MCP server deployment preparation
+
+### File Categories
+- **Config**: Configuration files, environment settings, build scripts
+- **Source**: Application code, business logic, utilities
+- **Data**: Schemas, migrations, seed data, static resources
+- **Tests**: Unit tests, integration tests, test utilities
+- **Docs**: Documentation, README files, architectural diagrams
+- **Tools**: Build tools, scripts, development utilities
+
+### Project Documentation Rules
+- **Project Documentation**: All `.md` files documenting project aspects go in `docs/` folder in project root
+- **Auto-Create**: If `docs/` folder doesn't exist, create it automatically
+- **Examples**: API documentation, architecture docs, user guides, technical specifications
+
+### Test Scripts Rules
+- **Test Scripts**: All script files for testing project code go in `temp_scripts/` folder in project root
+- **Auto-Create**: If `temp_scripts/` folder doesn't exist, create it automatically
+- **Examples**: Test automation scripts, data validation scripts, performance testing scripts
+
+### ⚠️ CRITICAL: File Placement Rules (MUST FOLLOW)
+- **.fstrent_spec_tasks/**: ONLY core planning documents (PLAN.md, TASKS.md, BUGS.md, PROJECT_CONTEXT.md, SUBSYSTEMS.md, FILE_REGISTRY.md, MCP_TOOLS_INVENTORY.md)
+- **docs/**: ALL temporary, migration, or ad-hoc documentation files (including setup summaries, conversion reports, migration files, etc.)
+- **temp_scripts/**: Test scripts and utility files
+- **NEVER** place task migration files, conversion summaries, or temporary documentation in `.fstrent_spec_tasks/`
+
+### Auto-Creation & No-Confirmation Rules
+- **Auto-Create Folders**: Always create missing folders (`docs/`, `temp_scripts/`, `.fstrent_spec_tasks/`, etc.) without asking
+- **Auto-Create Templates**: Create missing `.md` files (PLAN.md, TASKS.md, etc.) with blank templates if they don't exist
+- **No Confirmation Prompts**: Never ask for confirmation before editing PLAN.md, TASKS.md, or other system files
+- **Direct Editing**: Edit files directly - user will accept/reject final changes in their IDE
+- **Silent Operations**: Create folders and files silently, only report what was created
+
+### Complete System Setup
+When initializing or updating the system, automatically create:
+
+#### Required Folders:
+- `.fstrent_spec_tasks/` - Main system directory
+- `.fstrent_spec_tasks/tasks/` - Task files directory
+- `.fstrent_spec_tasks/features/` - Feature documentation directory
+- `docs/` - Project documentation directory
+- `temp_scripts/` - Test scripts directory
+
+#### Required Template Files:
+- `.fstrent_spec_tasks/PLAN.md` - Product Requirements Document template
+- `.fstrent_spec_tasks/TASKS.md` - Master task checklist template
+- `.fstrent_spec_tasks/PROJECT_CONTEXT.md` - Project context template
+- `.fstrent_spec_tasks/SUBSYSTEMS.md` - Component registry template
+- `.fstrent_spec_tasks/FILE_REGISTRY.md` - File structure documentation template
+- `.fstrent_spec_tasks/MCP_TOOLS_INVENTORY.md` - Tool inventory template
+
+#### File Placement Reminder:
+- **Migration files, conversion summaries, setup reports**: Place in `docs/` folder, NOT in `.fstrent_spec_tasks/`
+- **Core planning documents only**: Keep `.fstrent_spec_tasks/` clean and focused
+
+## Tool Integration (MCP)
+
+### Tool-First Principle
+**Before implementing any solution manually, check available MCP tools first.**
+
+### Tool Categories
+- **Web/Browser**: Navigation, clicking, form filling, content extraction
+- **Database**: Read queries, write operations, schema management
+- **Research**: Web search, content scraping, API calls
+- **Screen/Visual**: Screenshots, image analysis, visual automation
+- **Code/System**: Code execution, system commands, file operations
+
+### Tool Workflow Patterns
+- **Web Testing**: Database Read → Web Interaction → Visual Tools → Database Verification
+- **Database Operations**: Read Current State → Make Changes → Verify Changes
+- **Research**: Search → Extract → Process → Document
+
+## Context Management
+
+### Project Context Display
+When starting tasks, display:
+```
+📋 PROJECT CONTEXT OVERVIEW
+🎯 Mission: [Brief mission from PROJECT_CONTEXT.md]
+📍 Current Phase: [Phase and focus area]
+✅ Success Criteria: [Key objectives for current phase]
+🔄 Current Status: [Active tasks, progress, blockers]
+🛡️ Scope Boundaries: [Key limitations and approved complexity]
+```
+
+### Context Optimization
+- **75% threshold**: Archive low-priority content automatically
+- **90% threshold**: Emergency cleanup, defer non-essential content
+- **Priority levels**: Critical (always retained) → High → Medium → Low (aggressive cleanup)
+
+## Scope Control
+
+### Over-Engineering Prevention
+- **Authentication**: Don't add role permissions unless requested
+- **Database**: Use simple file-based unless DB explicitly requested
+- **API**: Don't add comprehensive REST beyond required
+- **Architecture**: Default monolith unless scale requires separation
+
+### Scope Validation Questions
+1. **User Context**: Personal use, small team, or broader deployment?
+2. **Security Requirements**: Minimal, standard, enhanced, or enterprise?
+3. **Scalability**: Basic, moderate, high, or enterprise?
+4. **Feature Complexity**: Minimal, standard, feature-rich, or enterprise?
+5. **Integration Needs**: Standalone, basic, standard, or enterprise?
+
+## Coding Standards
+
+### Python
+- Follow PEP 8 guidelines (relaxed enforcement)
+- Use black formatter, 88-100 character line length
+- Use type hints when possible
+- Write comprehensive docstrings
+
+### JavaScript/React
+- Follow ESLint configuration, use Prettier for formatting
+- Use functional components with hooks
+- Use React.memo, useCallback, useMemo for performance
+- Use Jest and React Testing Library for testing
+
+### Oracle PL/SQL
+- Use business area prefixes (AA_, AC_, MG_, etc.)
+- Prefer package APIs over standalone procedures/functions
+- Always use bind variables to prevent SQL injection
+- Use bulk operations for large datasets
+
+## Integration Points
+
+### Task System Integration
+- Automatically record metrics during task lifecycle events
+- Track effort estimation accuracy for continuous improvement
+- Monitor task pipeline health and bottlenecks
+
+### File System Integration
+- Use FILE_REGISTRY.md to understand current system structure
+- Map file organization to component architecture
+- Identify component boundaries from directory structure
+
+### Tool System Integration
+- Reference MCP_TOOLS_INVENTORY.md for available tools
+- Use tool combinations for comprehensive workflows
+- Validate tool selection against task requirements
+
+---
+
+*This consolidated rule provides all essential fstrent_tasks_v2 functionality in a single, efficient rule optimized for daily coding work.*
