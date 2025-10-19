@@ -2,27 +2,47 @@
 
 ## FFmpeg Installation
 
-**⚠️ IMPORTANT**: FFmpeg binaries (141MB each) are too large for GitHub's 100MB limit and are NOT included in this repository.
+**📍 Local Installation**: `.claude/skills/youtube-video-analysis/bin/`
 
-### Installation Options
+**Note**: FFmpeg binaries (141MB each) are too large for GitHub's 100MB limit and are excluded from the repository via .gitignore, but they remain in your local copy for optimal performance.
 
-**Option 1: Use imageio-ffmpeg (Recommended - Easiest)**
+### Installation Priority (Automatic Fallback)
+
+The skill automatically searches for ffmpeg in this order:
+
+**1. Local Skill Binaries (Preferred - Fastest)**
+- Location: `.claude/skills/youtube-video-analysis/bin/ffmpeg.exe`
+- Version: 2025-03-27 build (git-114fccc4a5)
+- Status: ✅ Already installed in your local copy
+- Performance: Best (no overhead)
+
+**2. imageio-ffmpeg (Fallback - Easy)**
 ```bash
 pip install imageio-ffmpeg
 ```
-This automatically downloads and bundles ffmpeg binaries (~50MB). No manual setup needed!
+- Automatically downloads and bundles ffmpeg (~50MB)
+- Good for users cloning from GitHub
+- Performance: Good (slight overhead)
 
-**Option 2: Download FFmpeg Manually**
-1. Download from [https://ffmpeg.org/download.html](https://ffmpeg.org/download.html)
-2. Extract to `.claude/skills/youtube-video-analysis/bin/`
-3. Or add to system PATH
-
-**Option 3: System Installation**
+**3. System PATH (Fallback - Manual)**
 - **Windows**: Download from ffmpeg.org, add to PATH
 - **Mac**: `brew install ffmpeg`
-- **Linux**: `apt-get install ffmpeg` or `yum install ffmpeg`
+- **Linux**: `apt-get install ffmpeg`
+- Performance: Good (depends on version)
 
-**Version Used**: 2025-03-27 build (git-114fccc4a5) - but any recent version works
+### For New Users (Cloning from GitHub)
+
+If you clone this repo and don't have the local binaries:
+
+**Option A: Download Manually** (Recommended for best performance)
+1. Download from [https://ffmpeg.org/download.html](https://ffmpeg.org/download.html)
+2. Extract `ffmpeg.exe`, `ffprobe.exe`, `ffplay.exe` to `.claude/skills/youtube-video-analysis/bin/`
+
+**Option B: Use imageio-ffmpeg** (Easiest)
+```bash
+pip install imageio-ffmpeg
+```
+Already included in requirements.txt!
 
 ## Common FFmpeg Commands
 
