@@ -1,0 +1,27 @@
+# YouTube Video Analysis - Python Dependencies
+# Based on user's proven Hanx tools stack (4 months production use)
+# Last Updated: 2025-10-19
+
+# Core Dependencies
+pytubefix>=6.0.0              # YouTube video downloading
+openai-whisper>=20231117      # Audio transcription (Whisper AI)
+moviepy>=1.0.3                # Video/audio processing
+imageio-ffmpeg>=0.4.9         # FFmpeg binaries (bundled)
+anthropic>=0.7.0              # Claude API for LLM analysis
+
+# Standard Library Enhancements
+python-dotenv>=1.0.0          # Environment variable management
+requests>=2.31.0              # HTTP requests (for API calls)
+
+# Optional: Faster Processing
+# faster-whisper>=0.10.0      # 4x faster than openai-whisper (uncomment if needed)
+# yt-dlp>=2023.10.13          # Alternative YouTube downloader (uncomment if needed)
+
+# Optional: Audio Processing
+# pydub>=0.25.1               # Audio manipulation (uncomment if needed)
+
+# Development Dependencies (optional)
+# pytest>=7.4.0               # Testing framework
+# black>=23.0.0               # Code formatter
+# flake8>=6.0.0               # Linter
+

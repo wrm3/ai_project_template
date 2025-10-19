@@ -1,14 +1,14 @@
-# fstrent_spec_tasks Toolkit
+# AI Project Template
 
-## Task Management & Project Planning for Claude Code and Cursor
+## Multi-IDE Development Framework for AI-Powered Coding
 
-**One system. Two IDEs. Zero duplication.**
+**One system. Multiple IDEs. Zero duplication.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/your-username/fstrent-spec-tasks-toolkit)
+[![Version](https://img.shields.io/badge/version-0.2.0-blue.svg)](https://github.com/wrm3/ai_project_template)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-> A comprehensive task management and project planning system that works seamlessly in both **Claude Code** and **Cursor**, enabling teams to collaborate regardless of IDE preference.
+> A comprehensive project template that works seamlessly across multiple AI-powered IDEs (**Claude Code**, **Cursor**, **Windsurf**, **Roo-Code**, and more), enabling teams to collaborate regardless of IDE preference.
 
 ---
 
