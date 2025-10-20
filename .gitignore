@@ -215,6 +215,16 @@ coverage/
 !CLAUDE.md
 
 # ============================================================================
+# FTP Configuration & Credentials (NEVER commit these!)
+# ============================================================================
+ftp_sites.json
+*ftp*.json
+*ftp_config*
+*ftp_credentials*
+.ftpconfig
+.ftppass
+
+# ============================================================================
 # User-Specific Additions
 # ============================================================================
 # Add any project-specific ignores below this line

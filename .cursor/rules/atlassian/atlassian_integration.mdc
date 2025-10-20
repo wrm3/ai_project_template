@@ -1,0 +1,169 @@
+# Atlassian Integration - Cursor Rules
+
+## Overview
+
+Complete integration with Atlassian products (Jira, Confluence, Bitbucket, Trello) for project management, documentation, and code repository operations.
+
+## When to Apply
+
+Use these rules when user requests involve:
+- Jira issue operations (create, update, query)
+- Confluence page management
+- Bitbucket repository/PR operations
+- Trello board/card management
+- Atlassian workflow automation
+- Cross-product integrations
+
+## Available Integrations
+
+**Jira:** Issue tracking, project management, agile workflows
+**Confluence:** Documentation, knowledge base, collaboration (MCP: `fstrent_mcp_confluence`)
+**Bitbucket:** Code repositories, pull requests, code review
+**Trello:** Board management, task tracking
+
+## Core Workflows
+
+### Jira Issue Management
+```
+Create issue:
+1. Gather: project key, type, summary, description
+2. Validate project exists
+3. Create via API
+4. Return issue key and URL
+
+Query issues (JQL):
+1. Build JQL query from criteria
+2. Execute search
+3. Format results
+4. Return structured data
+
+Transition issue:
+1. Get issue key and target status
+2. Verify transition is valid
+3. Execute transition
+4. Return confirmation
+```
+
+### Confluence Pages
+```
+Create page:
+1. Gather: space key, title, content
+2. Convert to Confluence format
+3. Create via MCP or API
+4. Return page ID and URL
+
+Update page:
+1. Get page ID
+2. Increment version
+3. Update content
+4. Return updated page URL
+
+Search:
+1. Build CQL query
+2. Execute search
+3. Return matching pages
+```
+
+### Bitbucket Operations
+```
+Create PR:
+1. Get source and target branches
+2. Generate title/description from commits
+3. Add reviewers
+4. Create PR
+5. Return PR URL
+
+Review PR:
+1. Get PR changes
+2. Review code
+3. Add comments
+4. Approve or request changes
+```
+
+### Trello Management
+```
+Create card:
+1. Get board and list IDs
+2. Set card details
+3. Create via API
+4. Return card URL
+
+Move card:
+1. Get card and target list
+2. Move card
+3. Return confirmation
+```
+
+## Query Languages
+
+### JQL (Jira)
+```jql
+# Open bugs in current sprint
+project = PROJ AND type = Bug AND sprint in openSprints() AND status != Done
+
+# My high priority issues
+assignee = currentUser() AND priority = High
+```
+
+### CQL (Confluence)
+```cql
+# Search by title
+title ~ "API Documentation"
+
+# Recent pages in space
+space = TEAM AND lastModified >= now("-7d")
+```
+
+## Authentication
+
+Store credentials in `.env.atlassian`:
+```bash
+JIRA_URL=https://company.atlassian.net
+JIRA_API_TOKEN=your_token
+CONFLUENCE_URL=https://company.atlassian.net/wiki
+CONFLUENCE_API_TOKEN=your_token
+```
+
+## Error Handling
+
+**401 Unauthorized:** Check API token validity
+**403 Forbidden:** Verify user permissions
+**429 Rate Limited:** Implement exponential backoff
+**404 Not Found:** Verify resource ID/key
+
+## Best Practices
+
+**Security:**
+- ✅ Store tokens in environment variables
+- ✅ Use minimum required permissions
+- ❌ Never commit tokens to repository
+
+**Operations:**
+- ✅ Validate inputs before API calls
+- ✅ Use bulk operations for efficiency
+- ✅ Handle rate limiting
+- ✅ Cache responses appropriately
+
+**User Experience:**
+- ✅ Explain operations before executing
+- ✅ Provide progress updates
+- ✅ Return URLs for created resources
+
+## MCP Server (Confluence)
+
+If `fstrent_mcp_confluence` is configured in `.mcp.json`, prefer MCP tools:
+- `confluence_create_page`
+- `confluence_update_page`
+- `confluence_get_page`
+- `confluence_search`
+
+## Reference
+
+For detailed information, see Claude Code Skill:
+- `.claude/skills/atlassian-integration/SKILL.md`
+- `.claude/skills/atlassian-integration/rules.md`
+- `.claude/skills/atlassian-integration/examples/workflow_examples.md`
+
+---
+
+**Remember:** Ensure proper authorization and follow organizational policies for Atlassian API access.
