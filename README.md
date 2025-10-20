@@ -63,8 +63,8 @@ You love Claude Code's Skills and Agents. Your teammate prefers Cursor's rules-b
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/fstrent-spec-tasks-toolkit.git
-cd fstrent-spec-tasks-toolkit
+git clone https://github.com/wrm3/ai_project_template.git
+cd ai_project_template
 
 # Copy Claude Code interface to your project
 cp -r .claude your-project/
@@ -83,8 +83,8 @@ Try it:
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/fstrent-spec-tasks-toolkit.git
-cd fstrent-spec-tasks-toolkit
+git clone https://github.com/wrm3/ai_project_template.git
+cd ai_project_template
 
 # Copy Cursor interface to your project
 cp -r .cursor your-project/
@@ -321,10 +321,10 @@ python src/app.py
 
 ```bash
 # Clone this repository
-git clone https://github.com/your-username/fstrent-spec-tasks-toolkit.git
+git clone https://github.com/wrm3/ai_project_template.git
 
 # Copy example to your project
-cp -r fstrent-spec-tasks-toolkit/example-project my-project
+cp -r ai_project_template/example-project my-project
 cd my-project
 
 # Customize for your project
@@ -340,16 +340,16 @@ cd my-project
 cd my-existing-project
 
 # Copy interfaces
-cp -r /path/to/fstrent-spec-tasks-toolkit/.claude .
-cp -r /path/to/fstrent-spec-tasks-toolkit/.claude-plugin .
-cp -r /path/to/fstrent-spec-tasks-toolkit/.cursor .
+cp -r /path/to/ai_project_template/.claude .
+cp -r /path/to/ai_project_template/.claude-plugin .
+cp -r /path/to/ai_project_template/.cursor .
 
 # Initialize task system
 mkdir -p .fstrent_spec_tasks/tasks
 mkdir -p .fstrent_spec_tasks/features
 
 # Copy template files
-cp /path/to/fstrent-spec-tasks-toolkit/example-project/.fstrent_spec_tasks/*.md .fstrent_spec_tasks/
+cp /path/to/ai_project_template/example-project/.fstrent_spec_tasks/*.md .fstrent_spec_tasks/
 
 # Customize for your project
 ```
@@ -358,8 +358,8 @@ cp /path/to/fstrent-spec-tasks-toolkit/example-project/.fstrent_spec_tasks/*.md 
 
 ```bash
 # Coming soon!
-# /plugin marketplace add your-username/fstrent-spec-tasks-toolkit
-# /plugin install fstrent-spec-tasks-toolkit
+# /plugin marketplace add your-username/ai_project_template
+# /plugin install ai_project_template
 ```
 
 ---
@@ -641,10 +641,10 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/fstrent-spec-tasks-toolkit.git
+git clone https://github.com/wrm3/ai_project_template.git
 
 # Explore the example
-cd fstrent-spec-tasks-toolkit/example-project
+cd ai_project_template/example-project
 pip install -r requirements.txt
 python src/app.py
 
@@ -654,7 +654,7 @@ cp -r .claude .cursor .fstrent_spec_tasks ../my-project/
 # Start planning!
 ```
 
-**Questions?** Check the [documentation](docs/) or [open an issue](https://github.com/your-username/fstrent-spec-tasks-toolkit/issues).
+**Questions?** Check the [documentation](docs/) or [open an issue](https://github.com/wrm3/ai_project_template/issues).
 
 **Ready to collaborate across IDEs?** Give it a try! ⭐
 
@@ -664,6 +664,6 @@ cp -r .claude .cursor .fstrent_spec_tasks ../my-project/
 
 **Made with ❤️ for developers who value flexibility**
 
-[Documentation](docs/) • [Example Project](example-project/) • [Issues](https://github.com/your-username/fstrent-spec-tasks-toolkit/issues) • [Discussions](https://github.com/your-username/fstrent-spec-tasks-toolkit/discussions)
+[Documentation](docs/) • [Example Project](example-project/) • [Issues](https://github.com/wrm3/ai_project_template/issues) • [Discussions](https://github.com/wrm3/ai_project_template/discussions)
 
 </div>

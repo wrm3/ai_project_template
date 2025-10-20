@@ -1,4 +1,4 @@
-# Claude Code Project Template
+# AI Project Template
 
 ## 📋 Project Overview
 This is a template project for setting up new development projects with comprehensive AI assistant integration across multiple IDEs (Cursor, Windsurf, Roo-Code, Claude Code).
