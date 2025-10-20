@@ -1,0 +1,331 @@
+# Computer Use Agent - Cursor Rules
+
+## Overview
+
+AI-powered desktop automation using screenshots and vision-guided actions to control any desktop application.
+
+## When to Apply
+
+Use these rules when user requests involve:
+- Desktop application automation
+- GUI control or navigation
+- Form filling in native applications
+- Multi-application workflows
+- Tasks requiring vision-based screen analysis
+- Automation that can't be done via browser or API
+
+## MCP Tools Available
+
+The `fstrent_mcp_computer_use` MCP server provides:
+- `computer_use_run_task` - Execute complete multi-step automation task
+- `computer_use_screenshot` - Capture current screen
+- `computer_use_click` - Click at screen coordinates
+- `computer_use_type` - Type text into focused element
+- `computer_use_key_press` - Press keyboard keys
+- `computer_use_scroll` - Scroll in specified direction
+- `computer_use_mouse_move` - Move mouse to coordinates
+
+## Safety Requirements
+
+### Mandatory Safety Checks
+
+**BEFORE executing ANY automation:**
+1. ✅ Verify FAILSAFE is enabled (move mouse to upper-left corner to abort)
+2. ✅ Confirm appropriate action delay is set (0.5-2.0 seconds)
+3. ✅ Set reasonable max steps limit (10-100 based on complexity)
+4. ✅ Enable screenshot logging for audit trail
+5. ✅ Explain to user what will happen
+
+**DURING automation:**
+1. ✅ Pause between actions (respect action_delay)
+2. ✅ Verify each action completed successfully
+3. ✅ Check for unexpected states
+4. ✅ Count steps to prevent infinite loops
+5. ✅ Save screenshots for audit trail
+
+**AFTER automation:**
+1. ✅ Verify task completed as expected
+2. ✅ Report results to user
+3. ✅ Note any errors or issues
+4. ✅ Provide screenshot paths for audit
+
+### Prohibited Actions
+
+**NEVER automate:**
+- ❌ Password entry (security risk)
+- ❌ Banking or financial transactions (too risky)
+- ❌ System configuration changes (without explicit user permission)
+- ❌ File deletion (without confirmation)
+- ❌ Email sending (without user review)
+- ❌ Social media posting (without user review)
+- ❌ Anything involving PII or sensitive data
+
+## Core Workflow
+
+### Step 1: Task Analysis
+1. Understand the goal
+2. Identify applications involved
+3. Assess complexity
+4. Check safety implications
+5. Confirm approach with user
+
+### Step 2: Safety Configuration
+```yaml
+failsafe_enabled: true        # Always enabled
+action_delay: 0.5-2.0         # Based on UI speed
+max_steps: 10-100             # Based on complexity
+confirmation_mode: varies     # true for first run/high risk
+screenshot_logging: true      # Always enabled
+```
+
+### Step 3: Execute Automation
+Use `computer_use_run_task` MCP tool:
+```
+computer_use_run_task(
+    task_description="Clear description of task",
+    max_steps=25,
+    action_delay=0.5,
+    save_screenshots=true
+)
+```
+
+### Step 4: Monitor and Report
+1. Check results
+2. Review screenshots
+3. Report to user
+4. Provide audit trail
+5. Note any issues
+
+## Action Types
+
+### Click Actions
+- Click buttons, links, menu items
+- Select checkboxes/radio buttons
+- Activate UI controls
+
+**Best Practices:**
+- Verify element location via screenshot first
+- Use appropriate delay after click
+- Confirm expected state change
+
+### Type Actions
+- Fill text fields
+- Enter search queries
+- Input form data
+
+**Best Practices:**
+- Click field first to ensure focus
+- Type slowly for character-by-character processing apps
+- Verify text entered correctly
+
+### Key Press Actions
+Common keys:
+- `Enter` - Submit forms, confirm dialogs
+- `Tab` - Navigate between fields
+- `Escape` - Close dialogs
+- `Ctrl+C` - Copy
+- `Ctrl+V` - Paste
+- `Ctrl+S` - Save
+
+### Scroll Actions
+- `down` - Scroll down (most common)
+- `up` - Scroll up
+- `left` - Scroll left
+- `right` - Scroll right
+
+**Best Practices:**
+- Capture screenshot after scrolling
+- Use multiple small scrolls vs one large
+- Verify target element visible
+
+## Multi-Step Workflow Patterns
+
+### Form Filling
+```
+1. Capture screenshot to locate form
+2. For each field:
+   a. Click field to focus
+   b. Type value
+   c. Verify value entered
+3. Click submit button
+4. Verify submission confirmation
+```
+
+### Menu Navigation
+```
+1. Capture screenshot to locate menu
+2. Click menu to open
+3. Wait for menu animation
+4. Capture screenshot of open menu
+5. Click menu item
+6. Verify expected result
+```
+
+### File Operations
+```
+1. Open File Explorer
+2. Navigate to source folder
+3. Select file(s)
+4. Copy/cut (Ctrl+C or Ctrl+X)
+5. Navigate to destination
+6. Paste (Ctrl+V)
+7. Verify files copied/moved
+```
+
+## Error Handling
+
+### Element Not Found
+1. Capture fresh screenshot
+2. Verify application state
+3. Scroll if element off-screen
+4. Try alternate identification
+5. Report to user if still not found
+
+### Unexpected Dialog
+1. Capture screenshot of dialog
+2. Analyze dialog type
+3. Click appropriate button
+4. Return to expected state
+5. Retry original action
+
+### Application Not Responding
+1. Wait longer (increase delay)
+2. Check if application crashed
+3. Try keyboard shortcut to activate
+4. Report to user if unrecoverable
+5. Do NOT force close without permission
+
+## Risk Assessment
+
+### Low Risk (✅ Safe to Automate)
+- Read-only operations
+- Test environments
+- Easily reversible
+- No sensitive data
+
+**Examples:** Reading content, navigating menus, taking screenshots
+
+### Medium Risk (⚠️ Requires Caution)
+- Modifies non-critical data
+- Production environments
+- Reversible with effort
+- Professional data
+
+**Examples:** Filling forms, creating documents, moving files
+
+### High Risk (🛑 Extreme Caution)
+- Deletes/overwrites data
+- Difficult to reverse
+- External communications
+- System-level changes
+
+**Examples:** Deleting files, sending emails, system settings
+
+**Require confirmation + continuous monitoring**
+
+### Prohibited (❌ Never Automate)
+- Credentials/secrets
+- Financial transactions
+- Sensitive personal data
+- Irreversible consequences
+
+## User Communication
+
+### Initial Response
+```
+I'll help you automate [TASK]. Here's my plan:
+
+1. [Step 1]
+2. [Step 2]
+3. [Step 3]
+
+Safety settings:
+- FAILSAFE enabled (move mouse to upper-left corner to abort)
+- Action delay: [X] seconds
+- Max steps: [Y]
+- Screenshot logging: enabled
+
+Ready to proceed?
+```
+
+### Progress Updates
+```
+Progress update:
+- Completed: [Steps completed]
+- Current: [Current action]
+- Remaining: [Estimated remaining]
+- Status: [On track / Issue detected]
+```
+
+### Completion Report
+```
+Task completed successfully!
+
+Summary:
+- Task: [Description]
+- Steps executed: [X]
+- Time elapsed: [Y] seconds
+- Screenshots saved: [Z] files
+
+Screenshot audit trail: [Path]
+```
+
+## Integration with Other Tools
+
+### With Web Tools
+- Use web-tools for browser automation
+- Use computer-use-agent for native app parts
+- Combine for workflows spanning web and desktop
+
+### With Database Tools
+- Use database-tools for data queries
+- Use computer-use-agent for UI without API
+- Combine for data import/export workflows
+
+### With File Operations
+- Use file-operations for batch file processing
+- Use computer-use-agent for GUI file operations
+
+## Best Practices
+
+1. **Always prioritize safety** - FAILSAFE, confirmations, logging
+2. **Start simple** - Test easy tasks first
+3. **Explain before executing** - Tell user the plan
+4. **Monitor closely** - Watch first runs carefully
+5. **Use appropriate delays** - Don't rush
+6. **Set realistic step limits** - Prevent runaway automation
+7. **Enable logging** - Always save screenshots
+8. **Verify results** - Check task completed correctly
+9. **Handle errors gracefully** - Detect, recover, or report
+10. **Communicate clearly** - Keep user informed
+
+## Configuration
+
+Ensure `fstrent_mcp_computer_use` is in `.mcp.json`:
+```json
+{
+  "mcpServers": {
+    "fstrent_mcp_computer_use": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "C:\\.ai\\mcps\\fstrent_mcp_computer_use",
+        "run",
+        "fstrent_mcp_computer_use"
+      ]
+    }
+  }
+}
+```
+
+## Reference
+
+For detailed information, see Claude Code Skill:
+- `.claude/skills/computer-use-agent/SKILL.md`
+- `.claude/skills/computer-use-agent/rules.md`
+- `.claude/skills/computer-use-agent/reference/safety_guidelines.md`
+- `.claude/skills/computer-use-agent/examples/automation_workflows.md`
+
+---
+
+**Remember:** This controls the user's actual computer. Safety must always be the top priority. When in doubt, ask for confirmation.
