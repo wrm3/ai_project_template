@@ -1,0 +1,406 @@
+---
+description: GitHub integration for repository management, issues, PRs, releases, and Actions
+globs: ["**/*.md", "**/*.yml", "**/*.yaml", ".github/**/*"]
+---
+
+# GitHub Integration - Cursor Rules
+
+Complete GitHub integration using GitHub CLI (`gh`) for repository management, issues, pull requests, releases, and GitHub Actions.
+
+## When to Use
+
+Activate for GitHub operations:
+- Repository topics/tags/description updates
+- Issue and PR management
+- Release creation and management
+- GitHub Actions workflows
+- Repository settings and configuration
+
+## Prerequisites
+
+**Verify gh CLI authentication:**
+```bash
+gh auth status
+```
+
+If not authenticated, guide user through:
+```bash
+gh auth login
+```
+
+## Core Workflows
+
+### Repository Topics
+
+**Add topics (user's primary use case):**
+1. Normalize topics: lowercase, hyphens only
+2. Get current: `gh repo view --json repositoryTopics`
+3. Add topics: `gh repo edit --add-topic topic1,topic2,topic3`
+4. Verify: `gh repo view --json repositoryTopics`
+
+**Topic format rules:**
+- Lowercase only
+- Hyphens for spaces: "Claude Code" → "claude-code"
+- Max 50 chars per topic, 20 topics total
+- No underscores or special chars
+
+**Remove topics:**
+```bash
+gh repo edit --remove-topic old-topic1,old-topic2
+```
+
+### Repository Description & Homepage
+
+**Update both:**
+```bash
+gh repo edit \
+  --description "Your project description" \
+  --homepage "https://example.com"
+```
+
+**Best practices:**
+- Description under 350 chars
+- Include key technologies and features
+- Homepage should be HTTPS
+
+### Issue Management
+
+**Create issue:**
+```bash
+gh issue create \
+  --title "Issue title" \
+  --body "Description" \
+  --label bug,high-priority \
+  --assignee username
+```
+
+**List issues:**
+```bash
+# Open bugs
+gh issue list --label bug --state open
+
+# My assigned issues
+gh issue list --assignee @me
+```
+
+**Close issue:**
+```bash
+gh issue close 123 --comment "Fixed in PR #456"
+```
+
+### Pull Request Management
+
+**Create PR:**
+```bash
+gh pr create \
+  --title "PR title" \
+  --body "Description\n\nFixes #123" \
+  --reviewer username \
+  --label enhancement
+```
+
+**PR description template:**
+```markdown
+## Summary
+Brief description
+
+## Changes
+- Change 1
+- Change 2
+
+## Test Plan
+- How tested
+
+## Related Issues
+Fixes #123
+```
+
+**Review PR:**
+```bash
+# Approve
+gh pr review 123 --approve --body "LGTM!"
+
+# Request changes
+gh pr review 123 --request-changes --body "Please fix..."
+```
+
+**Check PR status:**
+```bash
+# View details
+gh pr view 123
+
+# Check CI/CD
+gh pr checks 123
+```
+
+**Merge PR:**
+```bash
+# Squash and delete branch
+gh pr merge 123 --squash --delete-branch
+
+# Regular merge
+gh pr merge 123 --merge
+```
+
+### Release Management
+
+**Create release:**
+```bash
+# With auto-generated notes
+gh release create v1.0.0 \
+  --title "Version 1.0.0" \
+  --generate-notes \
+  file1.zip file2.tar.gz
+
+# With manual notes
+gh release create v1.0.0 \
+  --title "Version 1.0.0" \
+  --notes "Release notes here"
+
+# Pre-release
+gh release create v1.0.0-beta.1 \
+  --prerelease \
+  --title "Beta 1"
+```
+
+**Version naming:**
+- Use semantic versioning: v1.2.3 (vMAJOR.MINOR.PATCH)
+- Pre-releases: v1.0.0-alpha.1, v1.0.0-beta.2
+- Prefix with 'v'
+
+**Upload assets:**
+```bash
+gh release upload v1.0.0 dist/*.zip
+```
+
+**Edit release:**
+```bash
+gh release edit v1.0.0 \
+  --title "New title" \
+  --notes "Updated notes"
+```
+
+### GitHub Actions
+
+**Trigger workflow:**
+```bash
+# Basic trigger
+gh workflow run workflow-name.yml
+
+# With inputs
+gh workflow run deploy.yml \
+  -f environment=staging \
+  -f version=v1.0.0
+```
+
+**Check workflow status:**
+```bash
+# List recent runs
+gh run list --workflow workflow-name.yml --limit 10
+
+# View specific run
+gh run view 12345
+
+# View logs
+gh run view 12345 --log
+```
+
+**Download artifacts:**
+```bash
+gh run download 12345 --dir ./artifacts
+```
+
+**Rerun workflow:**
+```bash
+# Rerun all jobs
+gh run rerun 12345
+
+# Rerun failed only
+gh run rerun 12345 --failed
+```
+
+## Error Handling
+
+### Authentication Errors (401)
+```bash
+# Check status
+gh auth status
+
+# Re-authenticate
+gh auth login
+```
+
+### Permission Errors (403)
+- Verify user has required repo permissions
+- Check if rate limited: `gh api rate_limit`
+
+### Not Found (404)
+- Verify repository name: owner/repo format
+- Check repository exists and user has access
+
+### Validation Errors
+- Topic format: lowercase, hyphens only
+- Too many topics: max 20
+- Topic too long: max 50 chars
+
+### Rate Limiting
+```bash
+# Check rate limit
+gh api rate_limit --jq '.resources.core.remaining'
+
+# Wait if needed (rate limit resets hourly)
+```
+
+## Best Practices
+
+### Repository Topics
+✅ Use 7-15 topics (ideal range)
+✅ Include platform: claude-code, cursor
+✅ Include category: ai-assistant, automation
+✅ Include language: python, typescript
+✅ Include features: task-management, mcp
+✅ Use established topics (check similar repos)
+
+❌ Don't use all 20 slots
+❌ Don't use generic topics (software, tool)
+❌ Don't use brand new topic names without research
+
+### Issue Management
+✅ Descriptive titles
+✅ Use templates when available
+✅ Add relevant labels
+✅ Link related issues (Fixes #123)
+
+### Pull Requests
+✅ Clear title describing what changed
+✅ Detailed description with context
+✅ Link to issues (Fixes #123)
+✅ Request appropriate reviewers
+✅ Squash commits if many small commits
+
+### Releases
+✅ Use semantic versioning
+✅ Write clear release notes
+✅ Include changelog
+✅ Attach relevant assets
+✅ Mark pre-releases appropriately
+
+### Security
+✅ Use gh CLI authentication (not hardcoded tokens)
+✅ Never commit tokens to repository
+✅ Verify auth before operations
+✅ Confirm destructive operations
+
+## User Communication
+
+### Initial Response
+```
+I'll [operation] for [repository].
+
+Details:
+- Repository: owner/repo
+- Operation: [action]
+- Current state: [if applicable]
+
+Proceeding...
+```
+
+### Success Report
+```
+✓ Operation completed!
+
+Result:
+- [Details]
+- URL: [link]
+
+Current state:
+- [Updated values]
+```
+
+### Error Report
+```
+Operation failed: [summary]
+
+Error: [message]
+Cause: [analysis]
+
+To fix:
+1. [Step 1]
+2. [Step 2]
+```
+
+## Common Operations Quick Reference
+
+```bash
+# Repository metadata
+gh repo edit --description "..." --homepage "..." --add-topic t1,t2
+
+# Issues
+gh issue create --title "..." --label bug
+gh issue list --assignee @me --state open
+gh issue close 123
+
+# Pull Requests
+gh pr create --title "..." --body "..."
+gh pr review 123 --approve
+gh pr merge 123 --squash --delete-branch
+
+# Releases
+gh release create v1.0.0 --generate-notes assets.zip
+gh release upload v1.0.0 file.zip
+
+# Workflows
+gh workflow run workflow.yml -f input=value
+gh run list --workflow workflow.yml
+gh run view 12345 --log
+```
+
+## Examples
+
+### Update Repository Topics (Primary Use Case)
+```
+User: "Add topics: Claude Code, Cursor, AI Assistant"
+
+Process:
+1. Normalize: claude-code, cursor, ai-assistant
+2. Get current: gh repo view --json repositoryTopics
+3. Add: gh repo edit --add-topic claude-code,cursor,ai-assistant
+4. Verify: gh repo view --json repositoryTopics
+
+Response: "✓ Added 3 topics! View: https://github.com/owner/repo"
+```
+
+### Create and Merge PR
+```
+User: "Create PR for feature-branch and merge after approval"
+
+Process:
+1. Create: gh pr create --fill --reviewer team-lead
+2. Check: gh pr checks <number>
+3. Review: gh pr review <number> --approve
+4. Merge: gh pr merge <number> --squash --delete-branch
+
+Response: "✓ PR #123 created, approved, and merged!"
+```
+
+### Create Production Release
+```
+User: "Release v1.5.0 with distribution files"
+
+Process:
+1. Verify tag: git tag -l v1.5.0
+2. Create: gh release create v1.5.0 --generate-notes dist/*.zip
+3. Verify: gh release view v1.5.0
+
+Response: "✓ Release v1.5.0 published! URL: https://github.com/owner/repo/releases/tag/v1.5.0"
+```
+
+---
+
+**For more details, see:**
+- `.claude/skills/github-integration/SKILL.md` - Full skill documentation
+- `.claude/skills/github-integration/rules.md` - Detailed implementation rules
+- `.claude/skills/github-integration/reference/` - Complete reference guides
+- `.claude/skills/github-integration/examples/` - Practical workflow examples
+
+**GitHub CLI Manual:** https://cli.github.com/manual/
