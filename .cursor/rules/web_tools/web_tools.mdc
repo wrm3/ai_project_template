@@ -1,0 +1,150 @@
+# Web Tools - Cursor Rules
+
+## Overview
+
+Comprehensive web interaction tools for search, scraping, browser automation, and screenshots.
+
+## When to Apply
+
+Use these rules when user requests involve:
+- Web search queries
+- Website scraping or content extraction
+- Browser automation workflows
+- Screenshot capture of web pages
+- Multi-page data collection
+- Website monitoring
+
+## MCP Tools Available
+
+The `fstrent_mcp_browser_use` MCP server provides:
+
+**Search:** `web_search`, `web_search_advanced`
+**Scraping:** `web_scrape`, `web_scrape_batch`, `web_extract_links`, `web_extract_text`, `web_extract_metadata`
+**Browser:** `browser_navigate`, `browser_click`, `browser_type`, `browser_extract`, `browser_execute_js`, `browser_wait`, `browser_screenshot`
+**Screenshots:** `screenshot_webpage`, `screenshot_element`, `screenshot_fullpage`
+
+## Tool Selection
+
+**Use Static Scraping (`web_scrape`) when:**
+- Simple HTML pages
+- Fast extraction needed
+- No JavaScript required
+
+**Use Browser Automation (`browser_*`) when:**
+- JavaScript-heavy sites
+- SPAs (Single Page Applications)
+- Requires interaction
+- Dynamic content loading
+
+**Use Concurrent Scraping (`web_scrape_batch`) when:**
+- Multiple URLs (5+)
+- Batch data collection
+- Parallel processing needed
+
+## Core Workflows
+
+### Web Search
+```
+1. User provides search query
+2. Use web_search(query)
+3. Get structured results
+4. Optionally scrape top results for details
+5. Present findings
+```
+
+### Single Page Scraping
+```
+1. Validate URL
+2. Choose method (static vs browser)
+3. Extract content (text, links, metadata)
+4. Clean and structure
+5. Return result
+```
+
+### Multi-Page Scraping
+```
+1. Validate all URLs
+2. Use web_scrape_batch:
+   - max_concurrent: 5
+   - timeout: 30
+   - retry_max: 3
+3. Process results
+4. Handle failures
+```
+
+### Browser Automation
+```
+1. browser_navigate to URL
+2. browser_wait for load
+3. Interact (click, type, scroll)
+4. Extract content
+5. Capture screenshot if needed
+```
+
+## Ethical Guidelines
+
+**Always:**
+- ✅ Check robots.txt
+- ✅ Respect rate limits (min 0.5s delay)
+- ✅ Use appropriate user agent
+- ✅ Cache results
+- ✅ Be a good web citizen
+
+**Never:**
+- ❌ Scrape private/gated content
+- ❌ Overwhelm servers
+- ❌ Ignore robots.txt
+- ❌ Scrape PII without permission
+
+## Error Handling
+
+**Network Errors:** Retry with exponential backoff (1s, 2s, 4s)
+**HTTP 404:** Report not found
+**HTTP 429:** Rate limited, slow down
+**HTTP 500:** Server error, retry after delay
+**Empty Content:** Try browser automation if static failed
+
+## Configuration
+
+```yaml
+# Scraping
+max_concurrent: 5
+timeout: 30
+retry_max: 3
+rate_limit: 1.0
+
+# Browser
+headless: true
+viewport: 1920x1080
+timeout: 30000
+```
+
+## MCP Server Configuration
+
+Ensure `fstrent_mcp_browser_use` is in `.mcp.json`:
+```json
+{
+  "mcpServers": {
+    "fstrent_mcp_browser_use": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "C:\\.ai\\mcps\\fstrent_mcp_browser_use",
+        "run",
+        "fstrent_mcp_browser_use"
+      ]
+    }
+  }
+}
+```
+
+## Reference
+
+For detailed information, see Claude Code Skill:
+- `.claude/skills/web-tools/SKILL.md`
+- `.claude/skills/web-tools/rules.md`
+- `.claude/skills/web-tools/reference/scraping_guide.md`
+
+---
+
+**Remember:** Always scrape ethically and legally. Respect website ToS, robots.txt, and rate limits.

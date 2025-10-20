@@ -5,5 +5,12 @@
     ],
     "deny": [],
     "ask": []
-  }
+  },
+  "enabledMcpjsonServers": [
+    "fstrent_mcp_tasks",
+    "fstrent_mcp_mysql",
+    "fstrent_mcp_browser_use",
+    "fstrent_mcp_computer_use"
+  ],
+  "enableAllProjectMcpServers": true
 }
