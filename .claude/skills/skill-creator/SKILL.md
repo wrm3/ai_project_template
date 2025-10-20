@@ -134,15 +134,33 @@ At this point, it is time to actually create the skill.
 
 Skip this step only if the skill being developed already exists, and iteration or packaging is needed. In this case, continue to the next step.
 
-When creating a new skill from scratch, create the skill directory structure:
+When creating a new skill from scratch, always run the `init_skill.py` script. The script conveniently generates a new template skill directory that automatically includes everything a skill requires, making the skill creation process much more efficient and reliable.
 
+
+```bash
+scripts/init_skill.py <skill-name> --path <output-directory>
+```
+
+
+Usage:
 ```
 skill-name/
 ├── SKILL.md
+├── rules.md
 ├── scripts/ (if needed)
 ├── references/ (if needed)
 └── assets/ (if needed)
 ```
+
+
+The script:
+
+- Creates the skill directory at the specified path
+- Generates a SKILL.md template with proper frontmatter and TODO placeholders
+- Creates example resource directories: `scripts/`, `references/`, and `assets/`
+- Adds example files in each directory that can be customized or deleted
+
+After initialization, customize or remove the generated SKILL.md and example files as needed.
 
 ### Step 4: Edit the Skill
 
@@ -152,7 +170,7 @@ When editing the (newly-generated or existing) skill, remember that the skill is
 
 To begin implementation, start with the reusable resources identified above: `scripts/`, `references/`, and `assets/` files. Note that this step may require user input. For example, when implementing a `brand-guidelines` skill, the user may need to provide brand assets or templates to store in `assets/`, or documentation to store in `references/`.
 
-Also, delete any example files and directories not needed for the skill.
+Also, delete any example files and directories not needed for the skill. The initialization script creates example files in `scripts/`, `references/`, and `assets/` to demonstrate structure, but most skills won't need all of them.
 
 #### Update SKILL.md
 
@@ -164,12 +182,38 @@ To complete SKILL.md, answer the following questions:
 2. When should the skill be used?
 3. In practice, how should Claude use the skill? All reusable skill contents developed above should be referenced so that Claude knows how to use them.
 
-### Step 5: Testing and Iteration
+### Step 5: Packaging a Skill
 
-After creating the skill:
+Once the skill is ready, it should be packaged into a distributable zip file that gets shared with the user. The packaging process automatically validates the skill first to ensure it meets all requirements:
 
+```bash
+scripts/package_skill.py <path/to/skill-folder>
+```
+
+Optional output directory specification:
+
+```bash
+scripts/package_skill.py <path/to/skill-folder> ./dist
+```
+
+The packaging script will:
+
+1. **Validate** the skill automatically, checking:
+   - YAML frontmatter format and required fields
+   - Skill naming conventions and directory structure
+   - Description completeness and quality
+   - File organization and resource references
+
+2. **Package** the skill if validation passes, creating a zip file named after the skill (e.g., `my-skill.zip`) that includes all files and maintains the proper directory structure for distribution.
+
+If validation fails, the script will report the errors and exit without creating a package. Fix any validation errors and run the packaging command again.
+
+### Step 6: Iterate
+
+After testing the skill, users may request improvements. Often this happens right after using the skill, with fresh context of how the skill performed.
+
+**Iteration workflow:**
 1. Use the skill on real tasks
 2. Notice struggles or inefficiencies
 3. Identify how SKILL.md or bundled resources should be updated
 4. Implement changes and test again
-

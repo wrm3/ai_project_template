@@ -12,8 +12,8 @@ import base64
 from typing import Optional, Union, List
 import mimetypes
 import time
-from . import token_tracker
-from .token_tracker import TokenUsage, APIResponse, get_token_tracker
+import token_tracker
+from token_tracker import TokenUsage, APIResponse, get_token_tracker
 
 def load_environment():
     """Load environment variables from .env files in order of precedence"""
@@ -153,7 +153,7 @@ def query_llm(prompt: str, client=None, model=None, provider="openai", image_pat
             elif provider == "deepseek":
                 model = "deepseek-chat"
             elif provider == "anthropic":
-                model = "claude-3-5-sonnet-20241022"
+                model = "claude-3-7-sonnet-latest"
             elif provider == "gemini":
                 model = "gemini-pro"
             elif provider == "local":
@@ -300,7 +300,7 @@ def main():
         elif args.provider == "deepseek":
             args.model = "deepseek-chat"
         elif args.provider == 'anthropic':
-            args.model = "claude-3-5-sonnet-20241022"
+            args.model = "claude-3-7-sonnet-latest"
         elif args.provider == 'gemini':
             args.model = "gemini-2.0-flash-exp"
         elif args.provider == 'azure':

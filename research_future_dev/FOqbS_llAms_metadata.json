@@ -1,0 +1,15 @@
+{
+  "video_url": "https://www.youtube.com/watch?v=FOqbS_llAms",
+  "video_id": "FOqbS_llAms",
+  "title": "Claude Skills: Glimpse of Continual Learning?",
+  "author": "Prompt Engineering",
+  "length_seconds": 828,
+  "views": 14544,
+  "downloaded_at": "2025-10-19T15:44:38.092624",
+  "files": {
+    "video": "FOqbS_llAms_video.mp4",
+    "audio": "FOqbS_llAms_audio.mp3",
+    "transcript": "FOqbS_llAms_transcript.txt",
+    "analysis_prompt": "FOqbS_llAms_analysis_prompt.txt"
+  }
+}

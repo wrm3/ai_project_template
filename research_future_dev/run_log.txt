@@ -1,0 +1,40 @@
+C:\Python313\Lib\site-packages\whisper\transcribe.py:132: UserWarning: FP16 is not supported on CPU; using FP32 instead
+  warnings.warn("FP16 is not supported on CPU; using FP32 instead")
+================================================================================
+YouTube Video Analysis - Claude Skills
+================================================================================
+
+Video URL: https://www.youtube.com/watch?v=FOqbS_llAms
+Output Directory: C:\git\claude_code_project_template\research_future_dev
+
+Checking dependencies...
+[OK] pytubefix - installed
+[OK] whisper - installed
+[OK] moviepy - installed
+[OK] imageio-ffmpeg - installed
+
+================================================================================
+STEP 1: Download Video
+================================================================================
+
+Title: Claude Skills: Glimpse of Continual Learning?
+Author: Prompt Engineering
+Length: 828 seconds (13 minutes)
+Views: 14,544
+
+Downloading: 360p - 21.60 MB
+[OK] Downloaded: C:\git\claude_code_project_template\research_future_dev\FOqbS_llAms_video.mp4
+
+================================================================================
+STEP 2: Extract Audio
+================================================================================
+
+[OK] Audio extracted (moviepy): C:\git\claude_code_project_template\research_future_dev\FOqbS_llAms_audio.mp3
+
+================================================================================
+STEP 3: Transcribe Audio
+================================================================================
+
+Loading Whisper model (base)...
+Transcribing audio (this may take a few minutes)...
+[FAIL] Error transcribing: [WinError 2] The system cannot find the file specified

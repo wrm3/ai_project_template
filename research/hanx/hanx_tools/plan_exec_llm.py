@@ -6,10 +6,10 @@ from pathlib import Path
 from dotenv import load_dotenv
 import sys
 import time
-from tools.token_tracker import TokenUsage, APIResponse, get_token_tracker
-from tools.llm_api import query_llm, create_llm_client
+from token_tracker import TokenUsage, APIResponse, get_token_tracker
+from llm_api import query_llm, create_llm_client
 
-STATUS_FILE = '.cursorrules'
+STATUS_FILE = 'hanx_plan.md'
 
 def load_environment():
     """Load environment variables from .env files"""
@@ -73,7 +73,7 @@ Project Plan and Status:
     if user_prompt:
         combined_prompt += f"\nUser Query:\n{user_prompt}\n"
 
-    combined_prompt += """\nYour response should be focusing on revising the Multi-Agent Scratchpad section in the .cursorrules file. There is no need to regenerate the entire document. You can use the following format to prompt how to revise the document:
+    combined_prompt += f"""\nYour response should be focusing on revising the Multi-Agent Scratchpad section in the {STATUS_FILE} file. There is no need to regenerate the entire document. You can use the following format to prompt how to revise the document:
 
 <<<<<<<SEARCH
 <text in the original document>
@@ -81,7 +81,7 @@ Project Plan and Status:
 <Proprosed changes>
 >>>>>>>
 
-We will do the actual changes in the .cursorrules file.
+We will do the actual changes in the {STATUS_FILE} file.
 """
 
     # Use the imported query_llm function
@@ -91,6 +91,7 @@ We will do the actual changes in the .cursorrules file.
 def main():
     parser = argparse.ArgumentParser(description='Query LLM with project plan context')
     parser.add_argument('--prompt', type=str, help='Additional prompt to send to the LLM', required=False)
+    parser.add_argument('--prompt-file', type=str, help='Path to a file containing the prompt to send to the LLM', required=False)
     parser.add_argument('--file', type=str, help='Path to a file whose content should be included in the prompt', required=False)
     parser.add_argument('--provider', choices=['openai','anthropic','gemini','local','deepseek','azure'], default='openai', help='The API provider to use')
     parser.add_argument('--model', type=str, help='The model to use (default depends on provider)')
@@ -108,15 +109,29 @@ def main():
         file_content = read_file_content(args.file)
         if file_content is None:
             sys.exit(1)
+    
+    # Get the prompt from either the command line or a file
+    user_prompt = None
+    if args.prompt:
+        user_prompt = args.prompt
+    elif args.prompt_file:
+        prompt_content = read_file_content(args.prompt_file)
+        if prompt_content is None:
+            sys.exit(1)
+        user_prompt = prompt_content
+    
+    if not user_prompt:
+        print("Error: Either --prompt or --prompt-file must be provided")
+        sys.exit(1)
 
     # Query LLM and output response
-    response = query_llm_with_plan(plan_content, args.prompt, file_content, provider=args.provider, model=args.model)
+    response = query_llm_with_plan(plan_content, user_prompt, file_content, provider=args.provider, model=args.model)
     if response:
-        print('Following is the instruction on how to revise the Multi-Agent Scratchpad section in .cursorrules:')
+        print(f'Following is the instruction on how to revise the Multi-Agent Scratchpad section in {STATUS_FILE}:')
         print('========================================================')
         print(response)
         print('========================================================')
-        print('Now please do the actual changes in the .cursorrules file. And then switch to the executor role, and read the content of the file to decide what to do next.')
+        print(f'Now please do the actual changes in the {STATUS_FILE} file. And then switch to the executor role, and read the content of the file to decide what to do next.')
     else:
         print("Failed to get response from LLM")
         sys.exit(1)
