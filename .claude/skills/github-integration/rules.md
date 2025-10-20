@@ -28,16 +28,86 @@ Determine which GitHub operation is needed:
 **Releases** - Keywords: release, tag, version, publish
 **Actions** - Keywords: workflow, CI/CD, automation, GitHub Actions
 
-### Step 2: Verify GitHub CLI Authentication
+### Step 2: Verify GitHub CLI Installation & Authentication
 
-Before any operation:
-```bash
-# Check authentication status
-gh auth status
+**CRITICAL:** Always check if GitHub CLI is installed before any operation.
 
-# If not authenticated, guide user:
-# gh auth login
-```
+**Installation Check Workflow:**
+
+1. **Check if `gh` is installed:**
+   ```bash
+   gh --version
+   ```
+
+2. **If command not found, detect platform and provide installation instructions:**
+
+   **Windows:**
+   ```
+   GitHub CLI is not installed. Installing now...
+
+   Please run:
+   winget install GitHub.cli
+
+   Or download from: https://cli.github.com/
+   ```
+
+   **macOS:**
+   ```
+   GitHub CLI is not installed. Installing now...
+
+   Please run:
+   brew install gh
+
+   Or download from: https://cli.github.com/
+   ```
+
+   **Linux (Debian/Ubuntu):**
+   ```
+   GitHub CLI is not installed. Installing now...
+
+   Please run:
+   sudo apt install gh
+
+   Or see: https://github.com/cli/cli/blob/trunk/docs/install_linux.md
+   ```
+
+   **Linux (Fedora/RHEL):**
+   ```
+   GitHub CLI is not installed. Installing now...
+
+   Please run:
+   sudo dnf install gh
+   ```
+
+   **Linux (Arch):**
+   ```
+   GitHub CLI is not installed. Installing now...
+
+   Please run:
+   sudo pacman -S github-cli
+   ```
+
+3. **After installation, check authentication:**
+   ```bash
+   gh auth status
+   ```
+
+4. **If not authenticated, guide user through authentication:**
+   ```
+   GitHub CLI is installed but not authenticated.
+
+   Please run:
+   gh auth login
+
+   Follow the prompts to:
+   1. Choose GitHub.com or GitHub Enterprise
+   2. Choose HTTPS or SSH
+   3. Authenticate via browser or token
+
+   Then we can proceed with the GitHub operation.
+   ```
+
+5. **Only proceed with GitHub operations after both installation and authentication are confirmed.**
 
 ### Step 3: Identify Target Repository
 

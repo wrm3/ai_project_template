@@ -236,14 +236,51 @@ Workflow:
 
 ## Configuration
 
-### GitHub CLI Setup
-```bash
-# Install GitHub CLI
-# Windows: winget install GitHub.cli
-# Mac: brew install gh
-# Linux: See https://cli.github.com/
+### Automatic GitHub CLI Setup
 
-# Authenticate
+**IMPORTANT:** This skill requires GitHub CLI (`gh`). The skill will automatically:
+1. Check if `gh` is installed
+2. If not installed, provide platform-specific installation instructions
+3. Guide user through authentication if needed
+
+### GitHub CLI Installation
+
+**Automatic Check:**
+Before any GitHub operation, the skill will verify `gh` is installed:
+```bash
+gh --version
+```
+
+**If not installed, provide instructions based on platform:**
+
+**Windows:**
+```powershell
+winget install GitHub.cli
+```
+
+**macOS:**
+```bash
+brew install gh
+```
+
+**Linux (Debian/Ubuntu):**
+```bash
+sudo apt install gh
+```
+
+**Linux (Fedora/RHEL):**
+```bash
+sudo dnf install gh
+```
+
+**Linux (Arch):**
+```bash
+sudo pacman -S github-cli
+```
+
+### Authentication Setup
+After installation, authenticate with GitHub:
+```bash
 gh auth login
 
 # Set default repository (optional)
