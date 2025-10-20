@@ -10,7 +10,7 @@
 ### Found Locations
 
 ```
-1. ./claude_code_project_template/.claude-plugin/          ✅ ROOT (current)
+1. ./ai_project_template/.claude-plugin/          ✅ ROOT (current)
 2. ./example-project/.claude-plugin/                       ✅ ROOT
 3. ./research/skills-main/.claude-plugin/                  ✅ ROOT (example)
 ```
@@ -18,7 +18,7 @@
 ### Your Current Structure
 
 ```
-claude_code_project_template/
+ai_project_template/
 ├── .claude/                    # Claude Code configuration
 │   ├── skills/                 # Skills
 │   ├── commands/               # Commands

@@ -100,7 +100,7 @@ Model-invoked capabilities that activate automatically:
 ## Project Structure Overview
 
 ```
-claude_code_project_template/
+ai_project_template/
 ├── CLAUDE.md                          # 📄 Claude Code reference
 ├── README.md                          # 📄 Project documentation
 ├── .gitignore                         # 🔒 Git ignore rules

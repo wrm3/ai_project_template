@@ -94,7 +94,7 @@ Custom onboarding material that packages expertise, enabling Claude to become a 
 
 ## Context for This Project
 
-This research is relevant to the `claude_code_project_template` because:
+This research is relevant to the `ai_project_template` because:
 - We already have Skills implemented in `.claude/skills/`
 - Understanding progressive disclosure can improve our skill design
 - Context efficiency matters for complex projects

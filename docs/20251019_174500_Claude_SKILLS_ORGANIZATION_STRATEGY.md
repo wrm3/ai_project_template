@@ -121,7 +121,7 @@ Other 11 skills remain as metadata only
 
 **Structure:**
 ```
-claude_code_project_template/
+ai_project_template/
 ├── .claude/
 │   ├── skills/
 │   │   ├── fstrent-task-management/    ⭐ Yours
@@ -288,7 +288,7 @@ cp -r fstrent-spec-tasks/.fstrent_spec_tasks .
 
 ### Phase 1: Current (Development Phase)
 
-**Keep everything in `claude_code_project_template`:**
+**Keep everything in `ai_project_template`:**
 - Develop and test all skills together
 - Iterate quickly
 - No overhead of multiple repos
@@ -465,7 +465,7 @@ du -sh .
 ### Now (Keep Developing)
 
 ```
-✅ Keep everything in claude_code_project_template
+✅ Keep everything in ai_project_template
 ✅ Continue development and testing
 ✅ Iterate on skills together
 ✅ Don't worry about context usage (12 skills is fine!)

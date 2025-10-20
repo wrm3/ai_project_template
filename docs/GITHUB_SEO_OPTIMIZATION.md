@@ -1,6 +1,6 @@
 # GitHub Repository SEO & Discoverability Optimization Guide
 
-**Repository:** claude_code_project_template
+**Repository:** ai_project_template
 **Date:** 2025-10-20
 **Goal:** Maximize GitHub discoverability and search ranking
 
@@ -316,7 +316,7 @@ If you get featured on:
 - Identify new keyword opportunities
 
 **GitHub Star History:**
-- https://star-history.com/#wrm3/claude_code_project_template
+- https://star-history.com/#wrm3/ai_project_template
 
 **Social Mentions:**
 - Google Alerts for "claude code project template"
