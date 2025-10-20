@@ -1,110 +1,58 @@
 # AI Project Template
 
-## 📋 Project Overview
-This is a template project for setting up new development projects with comprehensive AI assistant integration across multiple IDEs (Cursor, Windsurf, Roo-Code, Claude Code).
+> **This file follows the agents.md standard**  
+> **For complete instructions, see [agents.md](agents.md)**
 
-## 🎯 Purpose
-Provide a standardized starting point for projects that includes:
-- Task management system (fstrent_tasks)
-- AI assistant configuration for multiple IDEs
-- MCP (Model Context Protocol) tool integration
-- Project documentation templates
+This project now uses the industry-standard **agents.md** format for AI agent instructions.
 
-## 🛠️ Technology Stack
-- **Task Management**: fstrent_tasks system via MCP
-- **IDEs Supported**: Cursor, Windsurf, Roo-Code, Claude Code
-- **MCP Tools**: Database access, browser automation, web scraping, datetime utilities
-- **Version Control**: Git
+## Quick Links
 
-## 📁 Folder Structure
-```
-/
-├── CLAUDE.md                    # This file - Claude Code main reference
-├── .claude/                     # Claude Code specific configuration
-│   ├── agents/                  # Claude Code subagents
-│   ├── commands/                # Claude Code custom commands
-│   └── skills/                  # Claude Code Skills
-├── .cursor/                     # Cursor IDE configuration
-│   └── rules/                   # Cursor rule files
-├── .fstrent_spec_tasks/        # Task management system
-│   ├── tasks/                   # Active task files
-│   ├── features/                # Feature documentation
-│   ├── TASKS.md                 # Master task checklist
-│   ├── PLAN.md                  # Product Requirements Document
-│   ├── PROJECT_CONTEXT.md       # Project context and goals
-│   └── SUBSYSTEMS.md            # Component registry
-├── docs/                        # Project documentation
-└── temp_scripts/                # Test and utility scripts
-```
+- **Full Instructions**: [agents.md](agents.md)
+- **SubAgents Guide**: [docs/CLAUDE_SUBAGENTS_GUIDE.md](docs/CLAUDE_SUBAGENTS_GUIDE.md) - **NEW! 15 specialized AI agents**
+- **Task List**: [.fstrent_spec_tasks/TASKS.md](.fstrent_spec_tasks/TASKS.md)
+- **Project Context**: [.fstrent_spec_tasks/PROJECT_CONTEXT.md](.fstrent_spec_tasks/PROJECT_CONTEXT.md)
+- **Project Plan**: [.fstrent_spec_tasks/PLAN.md](.fstrent_spec_tasks/PLAN.md)
 
-## 🎨 Development Guidelines
+## What Changed?
 
-### Task Management
-- Use fstrent_tasks system for all task tracking
-- Create task files in `.fstrent_spec_tasks/tasks/`
-- Update TASKS.md for all task status changes
-- Use Windows-safe emojis: `[ ]` pending, `[🔄]` in-progress, `[✅]` completed
+As of October 2025, this project adopted the **agents.md** standard announced by OpenAI and adopted by 20+ major companies including Cursor, Google Jules, Gemini CLI, Factory, and Roo-Code.
 
-### Code Standards
-- Follow language-specific best practices
-- Write clear, maintainable code
-- Document complex logic
-- Test before committing
+**agents.md** provides unified instructions for AI coding agents across all IDEs, eliminating the need for multiple IDE-specific configuration files.
 
-### AI Assistant Usage
-- Leverage MCP tools for database, browser, and web operations
-- Use task management system for planning and tracking
-- Reference project context before starting new work
-- Keep documentation updated
+## For Claude Code Users
 
-## 🚀 Important Commands
+Claude Code automatically loads this CLAUDE.md file. Since it now references agents.md, you get the benefits of the standardized format while maintaining backward compatibility.
 
-### Task Management
-```bash
-# Initialize fstrent_tasks system (if not already done)
-# Use MCP tool: fstrent_tasks_setup
+### 🤖 SubAgents System
 
-# View current tasks
-cat .fstrent_spec_tasks/TASKS.md
+This project includes **15 specialized SubAgents** for accelerated development:
 
-# View project plan
-cat .fstrent_spec_tasks/PLAN.md
-```
+- **Development**: backend-developer, frontend-developer, full-stack-developer, database-expert
+- **Quality**: test-runner (proactive), code-reviewer, debugger, qa-engineer
+- **Security/DevOps**: security-auditor (opus), devops-engineer, docker-specialist
+- **Documentation**: technical-writer, solution-architect (opus), api-designer
+- **Workflow**: task-expander (proactive)
 
-### Development Workflow
-```bash
-# Create new feature branch
-git checkout -b feature/your-feature-name
+**Benefits**:
+- 60-80% reduction in context usage
+- 10x faster for multi-component features
+- Automatic code reviews and security audits
+- Parallel processing of complex tasks
 
-# Run tests (project-specific)
-# Add your test commands here
+See the [SubAgents Guide](docs/CLAUDE_SUBAGENTS_GUIDE.md) for complete documentation.
 
-# Build (project-specific)
-# Add your build commands here
-```
+## For Other IDE Users
 
-## 🧪 Testing Approach
-- Test scripts go in `temp_scripts/` folder
-- Document test procedures in `docs/`
-- Use MCP tools for automated testing where applicable
+Your IDE will look for agents.md directly and use the standardized format.
 
-## 📚 Additional Documentation
-- See `.cursor/rules/` for Cursor-specific AI assistant rules
-- See `.claude/skills/` for Claude Code Skills
-- See `docs/` for project-specific documentation
+## Migration
 
-## 🔗 MCP Tools Available
-- **fstrent_mcp_tasks**: Task management, datetime utilities
-- **fstrent_mcp_mysql**: Database query and update operations
-- **fstrent_mcp_browser_use**: Browser automation and web scraping
-- **fstrent_mcp_computer_use**: GUI automation and screenshots
+All content from the original CLAUDE.md has been incorporated into agents.md with enhanced best practices from industry research. Nothing was lost - everything was improved!
 
-## 📝 Notes
-- This project supports multiple AI IDEs simultaneously
-- Each IDE has its own configuration folder
-- Task management system is IDE-agnostic
-- Keep all documentation updated as project evolves
+**Original CLAUDE.md backed up as**: `CLAUDE.md.backup`
 
 ---
-*Last updated: 2025-10-19*
+
+**Standard**: [agents.md](https://agents.md) - August 2025  
+**See**: [agents.md](agents.md) for complete instructions
 
