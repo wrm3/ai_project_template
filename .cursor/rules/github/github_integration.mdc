@@ -18,15 +18,30 @@ Activate for GitHub operations:
 
 ## Prerequisites
 
-**Verify gh CLI authentication:**
-```bash
-gh auth status
-```
+**CRITICAL: Always check GitHub CLI installation first**
 
-If not authenticated, guide user through:
-```bash
-gh auth login
-```
+1. **Check if installed:**
+   ```bash
+   gh --version
+   ```
+
+2. **If not installed, provide platform-specific instructions:**
+   - **Windows:** `winget install GitHub.cli`
+   - **macOS:** `brew install gh`
+   - **Linux (Debian/Ubuntu):** `sudo apt install gh`
+   - **Linux (Fedora/RHEL):** `sudo dnf install gh`
+   - **Linux (Arch):** `sudo pacman -S github-cli`
+
+3. **Verify authentication:**
+   ```bash
+   gh auth status
+   ```
+
+4. **If not authenticated, guide user:**
+   ```bash
+   gh auth login
+   ```
+   Follow prompts to authenticate via browser or token.
 
 ## Core Workflows
 
