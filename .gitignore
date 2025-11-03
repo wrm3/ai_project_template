@@ -250,3 +250,21 @@ ftp_sites.json
 *.mkv
 *.webm
 *.flv
+
+# Project-specific content (not for template distribution)
+/.fstrent_spec_tasks/
+/claude_code_research/
+/docs/
+/example-project/
+/research/
+/research_future_dev/
+/research_future_dev_claude/
+/scripts/
+/test_frames/
+/youtube_analysis/
+/QUICK_GITHUB_SETUP.md
+/WINDOWS_SYMBOLIC_LINKS_GUIDE.md
+/metadata.json
+/setup-symlinks.ps1
+/supebase.md
+/transcript.txt
