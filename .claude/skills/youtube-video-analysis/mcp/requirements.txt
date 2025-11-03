@@ -1,0 +1,12 @@
+fastmcp>=2.2.1
+mcp[cli]>=1.6.0
+pytubefix>=6.0.0
+openai-whisper>=20231117
+moviepy>=1.0.3
+openai>=1.0.0
+python-dotenv>=1.0.0
+psycopg2-binary>=2.9.0
+pgvector>=0.2.0
+pytesseract>=0.3.10
+Pillow>=10.0.0
+opencv-python>=4.8.0

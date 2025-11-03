@@ -25,9 +25,9 @@ Claude Code automatically loads this CLAUDE.md file. Since it now references age
 
 ### 🤖 SubAgents System
 
-This project includes **15 specialized SubAgents** for accelerated development:
+This project includes **16 specialized SubAgents** for accelerated development:
 
-- **Development**: backend-developer, frontend-developer, full-stack-developer, database-expert
+- **Development**: backend-developer, frontend-developer, full-stack-developer, database-expert, oracle-apex-specialist (opus)
 - **Quality**: test-runner (proactive), code-reviewer, debugger, qa-engineer
 - **Security/DevOps**: security-auditor (opus), devops-engineer, docker-specialist
 - **Documentation**: technical-writer, solution-architect (opus), api-designer

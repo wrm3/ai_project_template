@@ -1,20 +1,20 @@
 ---
 name: youtube-video-analysis
-description: Download, transcribe, and analyze YouTube videos to extract knowledge, generate summaries, and create code/requirements. Use when user provides a YouTube URL or wants to process video content for information extraction. Supports trading strategies, framework tutorials, and general content analysis.
+description: Download, transcribe, and analyze YouTube videos using Claude Code's native capabilities. Use when user provides a YouTube URL. Automatically downloads, extracts audio, transcribes with Whisper AI, then Claude Code analyzes directly - no external API key needed!
 ---
 
 # YouTube Video Analysis Skill
 
-Extract knowledge from YouTube videos through automated downloading, transcription, and LLM-powered analysis. Transform video content into actionable summaries, code templates, requirements documents, and structured data.
+Extract knowledge from YouTube videos through automated downloading, transcription, and Claude Code native analysis. Transform video content into actionable summaries, code templates, requirements documents, and structured data.
 
 ## Overview
 
-This Skill provides end-to-end YouTube video processing capabilities:
+This Skill provides end-to-end YouTube video processing capabilities optimized for Claude Code:
 
 1. **Download**: Fetch YouTube videos by URL or ID
 2. **Extract**: Pull audio tracks from videos
 3. **Transcribe**: Convert audio to text using Whisper AI
-4. **Analyze**: Extract structured information using Claude
+4. **Analyze**: Claude Code analyzes the transcript directly using native capabilities (no external API!)
 5. **Generate**: Create summaries, code, requirements, or tasks
 
 ## When to Use This Skill
@@ -299,7 +299,7 @@ pytubefix>=6.0.0          # YouTube downloading
 openai-whisper>=20231117  # Audio transcription
 moviepy>=1.0.3            # Video/audio processing
 imageio-ffmpeg>=0.4.9     # FFmpeg binaries (bundled)
-anthropic>=0.7.0          # Claude API for analysis
+# NOTE: No anthropic package needed! Claude Code analyzes natively
 ```
 
 ### FFmpeg Integration

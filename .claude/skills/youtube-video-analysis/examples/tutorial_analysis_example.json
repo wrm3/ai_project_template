@@ -1,0 +1,163 @@
+{
+  "video_id": "dQw4w9WgXcQ",
+  "video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+  "video_title": "React Hooks Complete Tutorial - useState, useEffect, useContext",
+  "video_type": "framework_tool",
+  "duration": "1847",
+  "processed_at": "2025-11-01T12:00:00Z",
+  "model_size": "base",
+  "processing_time": "89.5s",
+
+  "transcription": "Welcome to this comprehensive React Hooks tutorial. In this video, we're going to cover the three most important hooks: useState, useEffect, and useContext. These are the building blocks of modern React development. Let's start with useState. The useState hook allows you to add state to functional components. Before hooks, you had to use class components to manage state, but now you can do everything with functions. Here's the basic syntax: const [count, setCount] = useState(0). The first value is the current state, and the second is a function to update it. Let me show you a practical example. We'll create a counter component that increments when you click a button...",
+
+  "analysis": {
+    "tool_name": "React Hooks",
+    "summary": "This comprehensive tutorial covers the three essential React Hooks that form the foundation of modern React development: useState for state management in functional components, useEffect for side effects and lifecycle events, and useContext for global state management without prop drilling. The tutorial provides practical examples of each hook, explains when to use them, covers common pitfalls, and demonstrates best practices for building scalable React applications.",
+
+    "key_features": [
+      "useState - State management in functional components",
+      "useEffect - Side effects and lifecycle management",
+      "useContext - Global state without prop drilling",
+      "Custom hooks - Creating reusable logic",
+      "Hook rules - Only call at top level, only in React functions",
+      "Performance optimization - useMemo and useCallback",
+      "Error boundaries - Catching errors in components"
+    ],
+
+    "installation": [
+      "Ensure React 16.8+ is installed (hooks were introduced in 16.8)",
+      "No additional packages needed for built-in hooks",
+      "Create React App: npx create-react-app my-app",
+      "Import hooks from React: import { useState, useEffect } from 'react'",
+      "For Context API: create context with createContext()"
+    ],
+
+    "basic_usage": [
+      "useState: const [state, setState] = useState(initialValue)",
+      "useEffect: useEffect(() => { /* effect */ }, [dependencies])",
+      "useContext: const value = useContext(MyContext)",
+      "Always call hooks at the top level of components",
+      "Don't call hooks inside loops, conditions, or nested functions",
+      "Use the ESLint plugin (eslint-plugin-react-hooks) to enforce rules"
+    ],
+
+    "code_examples": [
+      {
+        "title": "useState - Counter Example",
+        "language": "jsx",
+        "code": "import { useState } from 'react';\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <div>\n      <p>Count: {count}</p>\n      <button onClick={() => setCount(count + 1)}>\n        Increment\n      </button>\n    </div>\n  );\n}"
+      },
+      {
+        "title": "useEffect - Data Fetching",
+        "language": "jsx",
+        "code": "import { useState, useEffect } from 'react';\n\nfunction UserProfile({ userId }) {\n  const [user, setUser] = useState(null);\n  const [loading, setLoading] = useState(true);\n\n  useEffect(() => {\n    setLoading(true);\n    fetch(`/api/users/${userId}`)\n      .then(res => res.json())\n      .then(data => {\n        setUser(data);\n        setLoading(false);\n      });\n  }, [userId]); // Re-run when userId changes\n\n  if (loading) return <div>Loading...</div>;\n  return <div>{user.name}</div>;\n}"
+      },
+      {
+        "title": "useContext - Theme Provider",
+        "language": "jsx",
+        "code": "import { createContext, useContext, useState } from 'react';\n\nconst ThemeContext = createContext();\n\nfunction ThemeProvider({ children }) {\n  const [theme, setTheme] = useState('light');\n\n  return (\n    <ThemeContext.Provider value={{ theme, setTheme }}>\n      {children}\n    </ThemeContext.Provider>\n  );\n}\n\nfunction ThemedButton() {\n  const { theme, setTheme } = useContext(ThemeContext);\n\n  return (\n    <button\n      style={{ background: theme === 'light' ? '#fff' : '#333' }}\n      onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}\n    >\n      Toggle Theme\n    </button>\n  );\n}"
+      },
+      {
+        "title": "Custom Hook - useLocalStorage",
+        "language": "jsx",
+        "code": "import { useState, useEffect } from 'react';\n\nfunction useLocalStorage(key, initialValue) {\n  const [value, setValue] = useState(() => {\n    const saved = localStorage.getItem(key);\n    return saved !== null ? JSON.parse(saved) : initialValue;\n  });\n\n  useEffect(() => {\n    localStorage.setItem(key, JSON.stringify(value));\n  }, [key, value]);\n\n  return [value, setValue];\n}\n\n// Usage\nfunction Settings() {\n  const [username, setUsername] = useLocalStorage('username', '');\n\n  return (\n    <input\n      value={username}\n      onChange={(e) => setUsername(e.target.value)}\n    />\n  );\n}"
+      }
+    ],
+
+    "best_practices": [
+      "Always include dependencies in useEffect dependency array",
+      "Use multiple useEffect calls for different concerns (separation of concerns)",
+      "Clean up effects by returning a cleanup function",
+      "Avoid setting state in render (causes infinite loops)",
+      "Use functional updates when new state depends on previous state",
+      "Memoize expensive computations with useMemo",
+      "Memoize callback functions with useCallback to prevent unnecessary re-renders",
+      "Create custom hooks to extract reusable logic",
+      "Follow the Rules of Hooks (use ESLint plugin)"
+    ],
+
+    "common_pitfalls": [
+      {
+        "issue": "Stale closures in useEffect",
+        "explanation": "When using variables inside useEffect without including them in dependencies",
+        "solution": "Always include all used variables in the dependency array"
+      },
+      {
+        "issue": "Infinite re-render loops",
+        "explanation": "Setting state inside render or useEffect without dependencies",
+        "solution": "Only set state in event handlers or useEffect with proper dependencies"
+      },
+      {
+        "issue": "Missing cleanup in useEffect",
+        "explanation": "Not cleaning up subscriptions or timers can cause memory leaks",
+        "solution": "Return a cleanup function from useEffect"
+      },
+      {
+        "issue": "Object/array dependencies causing unnecessary re-renders",
+        "explanation": "Objects/arrays are recreated on each render, triggering effects",
+        "solution": "Use useMemo/useCallback or destructure primitive values"
+      }
+    ],
+
+    "advanced_topics": [
+      "useReducer - Complex state logic (like Redux)",
+      "useMemo - Memoizing expensive calculations",
+      "useCallback - Memoizing callback functions",
+      "useRef - Accessing DOM elements and storing mutable values",
+      "useImperativeHandle - Customizing instance value exposed to parent",
+      "useLayoutEffect - Synchronous effects (rare use case)",
+      "useDebugValue - Custom hook debugging in React DevTools"
+    ],
+
+    "performance_tips": [
+      "Use React.memo() to prevent unnecessary component re-renders",
+      "Wrap callback functions with useCallback when passing to child components",
+      "Use useMemo for expensive calculations",
+      "Split context providers to avoid unnecessary re-renders",
+      "Use code splitting (React.lazy) for large components",
+      "Virtualize long lists with libraries like react-window",
+      "Profile with React DevTools Profiler to identify bottlenecks"
+    ],
+
+    "external_resources": [
+      "React Hooks Documentation: https://react.dev/reference/react",
+      "ESLint Plugin: eslint-plugin-react-hooks",
+      "React DevTools: Browser extension for debugging",
+      "Community Hooks: https://usehooks.com",
+      "Advanced Patterns: https://kentcdodds.com/blog/react-hooks"
+    ],
+
+    "implementation_notes": "To implement the concepts from this tutorial, create a new React app with Create React App or Vite, and start by replacing class components with functional components using hooks. Begin with useState for simple state, add useEffect for data fetching and side effects, and useContext for global state. Gradually introduce custom hooks to extract reusable logic. Use the React DevTools profiler to identify performance issues and apply optimization hooks (useMemo, useCallback) as needed. Follow the Rules of Hooks strictly and enable the ESLint plugin to catch violations early.",
+
+    "key_timestamps": [
+      {
+        "time": "00:00",
+        "topic": "Introduction to React Hooks"
+      },
+      {
+        "time": "02:30",
+        "topic": "useState basics and counter example"
+      },
+      {
+        "time": "08:15",
+        "topic": "useEffect for side effects and data fetching"
+      },
+      {
+        "time": "15:45",
+        "topic": "useEffect dependency array deep dive"
+      },
+      {
+        "time": "20:30",
+        "topic": "useContext for global state management"
+      },
+      {
+        "time": "25:10",
+        "topic": "Creating custom hooks (useLocalStorage example)"
+      },
+      {
+        "time": "28:40",
+        "topic": "Common pitfalls and how to avoid them"
+      }
+    ]
+  }
+}

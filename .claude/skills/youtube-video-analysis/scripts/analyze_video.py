@@ -18,17 +18,18 @@ import json
 from pathlib import Path
 from datetime import datetime
 import subprocess
+from tqdm import tqdm
 
 
-def check_dependencies():
+def check_dependencies(check_vision=False):
     """Check if all required dependencies are installed (Cursor enhancement)"""
     print("=" * 80)
     print("DEPENDENCY CHECK")
     print("=" * 80)
     print()
-    
+
     missing = []
-    
+
     try:
         from pytubefix import YouTube
         print("[OK] pytubefix - installed")
@@ -36,7 +37,7 @@ def check_dependencies():
         print("[FAIL] pytubefix - NOT INSTALLED")
         print("   Install: pip install pytubefix>=6.0.0")
         missing.append("pytubefix>=6.0.0")
-    
+
     try:
         import whisper
         print("[OK] whisper - installed")
@@ -44,7 +45,7 @@ def check_dependencies():
         print("[FAIL] whisper - NOT INSTALLED")
         print("   Install: pip install openai-whisper>=20231117")
         missing.append("openai-whisper>=20231117")
-    
+
     try:
         import moviepy
         print("[OK] moviepy - installed")
@@ -52,16 +53,34 @@ def check_dependencies():
         print("[FAIL] moviepy - NOT INSTALLED")
         print("   Install: pip install moviepy>=1.0.3")
         missing.append("moviepy>=1.0.3")
-    
+
     try:
         import imageio_ffmpeg
         print("[OK] imageio-ffmpeg - installed")
     except ImportError:
         print("[WARN] imageio-ffmpeg - NOT INSTALLED (optional)")
         print("   Install: pip install imageio-ffmpeg>=0.4.9")
-    
+
+    # Check vision dependencies if frame extraction is enabled
+    if check_vision:
+        try:
+            import cv2
+            print("[OK] opencv-python - installed")
+        except ImportError:
+            print("[FAIL] opencv-python - NOT INSTALLED (required for --extract-visual)")
+            print("   Install: pip install opencv-python>=4.8.0")
+            missing.append("opencv-python>=4.8.0")
+
+        try:
+            from PIL import Image
+            print("[OK] Pillow - installed")
+        except ImportError:
+            print("[FAIL] Pillow - NOT INSTALLED (required for --extract-visual)")
+            print("   Install: pip install Pillow>=10.0.0")
+            missing.append("Pillow>=10.0.0")
+
     print()
-    
+
     if missing:
         print("=" * 80)
         print("MISSING DEPENDENCIES")
@@ -71,7 +90,7 @@ def check_dependencies():
         print(f"pip install {' '.join(missing)}")
         print()
         sys.exit(1)
-    
+
     print("All required dependencies installed!")
     print()
 
@@ -93,15 +112,25 @@ def download_video(url, output_dir):
     print(f"Video URL: {url}")
     print()
 
-    # Custom progress callback to avoid Unicode issues
+    # Progress tracking with tqdm
+    progress_bar = None
+
     def progress_callback(stream, chunk, bytes_remaining):
-        total = stream.filesize
-        downloaded = total - bytes_remaining
-        percent = (downloaded / total) * 100
-        print(f"\rDownloading... {percent:.1f}%", end='', flush=True)
+        nonlocal progress_bar
+        if progress_bar is None:
+            total = stream.filesize
+            progress_bar = tqdm(
+                total=total,
+                desc="Downloading video",
+                unit='B',
+                unit_scale=True,
+                unit_divisor=1024
+            )
+
+        progress_bar.update(len(chunk))
 
     yt = YouTube(url, on_progress_callback=progress_callback)
-    print(f"\n\nTitle: {yt.title}")
+    print(f"\nTitle: {yt.title}")
     print(f"Author: {yt.author}")
     print(f"Duration: {yt.length} seconds ({yt.length // 60} minutes)")
     print(f"Views: {yt.views:,}")
@@ -109,11 +138,15 @@ def download_video(url, output_dir):
 
     # Get highest resolution stream
     stream = yt.streams.get_highest_resolution()
-    print(f"Downloading: {stream.resolution} - {stream.filesize / 1024 / 1024:.2f} MB")
+    print(f"Downloading: {stream.resolution} - {stream.filesize / 1024 / 1024:.2f} MB\n")
 
     # Download to output directory
     video_path = stream.download(output_path=output_dir, filename="video.mp4")
-    print(f"\n[OK] Downloaded: {video_path}")
+
+    if progress_bar:
+        progress_bar.close()
+
+    print(f"[OK] Downloaded: {video_path}")
     print()
 
     return video_path, {
@@ -219,45 +252,29 @@ def transcribe_audio(audio_path, model_size="base"):
     return transcript
 
 
-def analyze_with_claude(transcript, video_metadata, api_key=None, analysis_style="both"):
+def prepare_analysis_prompts(transcript, video_metadata):
     """
-    Analyze transcript using Claude API with dual analysis styles
-    
+    Prepare analysis prompt templates for Claude Code to use natively.
+    This function returns the prompts that Claude Code will execute directly.
+
     Args:
         transcript: Video transcript text
         video_metadata: Video metadata dict
-        api_key: Anthropic API key
-        analysis_style: "comprehensive", "actionable", or "both" (default)
-    
+
     Returns:
-        dict with 'comprehensive' and/or 'actionable' analysis results
+        dict with 'comprehensive' and 'actionable' prompt templates
     """
     print("=" * 80)
-    print("STEP 4: Analyze with Claude")
+    print("STEP 4: Prepare for Claude Code Analysis")
     print("=" * 80)
     print()
-    
-    if not api_key:
-        print("[WARN] No Anthropic API key provided. Skipping LLM analysis.")
-        print("   Set ANTHROPIC_API_KEY environment variable to enable analysis.")
-        print()
-        return None
 
-    try:
-        from anthropic import Anthropic
-    except ImportError:
-        print("[FAIL] anthropic package not installed.")
-        print("   Install: pip install anthropic")
-        print()
-        return None
+    print("[INFO] Transcript prepared for Claude Code native analysis")
+    print("[INFO] Claude Code will analyze this transcript directly - no external API needed")
+    print()
 
-    client = Anthropic(api_key=api_key)
-    results = {}
-    
-    # Comprehensive Analysis (Claude Code style - reference quality)
-    if analysis_style in ["comprehensive", "both"]:
-        print("Running comprehensive analysis (reference-quality)...")
-        comprehensive_prompt = f"""Analyze this YouTube video transcript and provide a comprehensive, reference-quality analysis.
+    # Comprehensive Analysis Prompt (Claude Code style - reference quality)
+    comprehensive_prompt = f"""Analyze this YouTube video transcript and provide a comprehensive, reference-quality analysis.
 
 Video Title: {video_metadata.get('title', 'Unknown')}
 Duration: {video_metadata.get('duration', 0)} seconds ({video_metadata.get('duration', 0) // 60} minutes)
@@ -281,21 +298,9 @@ Please provide a COMPREHENSIVE analysis suitable for documentation and sharing:
 
 Format as detailed markdown suitable for a reference document.
 """
-        
-        message = client.messages.create(
-            model="claude-sonnet-4-20250514",
-            max_tokens=8192,  # Larger for comprehensive analysis
-            messages=[{"role": "user", "content": comprehensive_prompt}]
-        )
-        
-        results['comprehensive'] = message.content[0].text
-        print("[OK] Comprehensive analysis complete")
-        print()
-    
-    # Actionable Analysis (Cursor style - project-specific)
-    if analysis_style in ["actionable", "both"]:
-        print("Running actionable analysis (implementation-focused)...")
-        actionable_prompt = f"""Analyze this YouTube video transcript and provide ACTIONABLE insights for implementation.
+
+    # Actionable Analysis Prompt (Cursor style - project-specific)
+    actionable_prompt = f"""Analyze this YouTube video transcript and provide ACTIONABLE insights for implementation.
 
 Video Title: {video_metadata.get('title', 'Unknown')}
 Duration: {video_metadata.get('duration', 0)} seconds
@@ -323,22 +328,17 @@ Include code examples if relevant.
 
 Format as markdown optimized for quick reference during development.
 """
-        
-        message = client.messages.create(
-            model="claude-sonnet-4-20250514",
-            max_tokens=6144,  # Medium for actionable analysis
-            messages=[{"role": "user", "content": actionable_prompt}]
-        )
-        
-        results['actionable'] = message.content[0].text
-        print("[OK] Actionable analysis complete")
-        print()
-    
-    return results
+
+    return {
+        'comprehensive_prompt': comprehensive_prompt,
+        'actionable_prompt': actionable_prompt,
+        'metadata': video_metadata,
+        'transcript': transcript
+    }
 
 
-def save_results(output_dir, video_metadata, transcript, analysis):
-    """Save all results to files (Enhanced with dual analysis support)"""
+def save_results(output_dir, video_metadata, transcript, prompts_data=None):
+    """Save all results to files - transcript and prompts for Claude Code analysis"""
     print("=" * 80)
     print("STEP 5: Save Results")
     print("=" * 80)
@@ -356,35 +356,20 @@ def save_results(output_dir, video_metadata, transcript, analysis):
         f.write(transcript)
     print(f"[OK] Saved transcript: {transcript_path}")
 
-    # Save analysis files if available
-    if analysis:
-        # Save comprehensive analysis (Claude Code style)
-        if 'comprehensive' in analysis:
-            comprehensive_path = os.path.join(output_dir, "ANALYSIS_COMPREHENSIVE.md")
-            with open(comprehensive_path, 'w', encoding='utf-8') as f:
-                f.write(f"# Comprehensive Analysis: {video_metadata.get('title', 'Unknown')}\n\n")
-                f.write(f"**Video URL:** {video_metadata.get('url', 'Unknown')}\n")
-                f.write(f"**Author:** {video_metadata.get('author', 'Unknown')}\n")
-                f.write(f"**Duration:** {video_metadata.get('duration', 0) // 60} minutes\n")
-                f.write(f"**Views:** {video_metadata.get('views', 'Unknown'):,}\n")
-                f.write(f"**Analyzed:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
-                f.write("---\n\n")
-                f.write(analysis['comprehensive'])
-            print(f"[OK] Saved comprehensive analysis: {comprehensive_path}")
-        
-        # Save actionable analysis (Cursor style)
-        if 'actionable' in analysis:
-            actionable_path = os.path.join(output_dir, "ANALYSIS_ACTIONABLE.md")
-            with open(actionable_path, 'w', encoding='utf-8') as f:
-                f.write(f"# Actionable Analysis: {video_metadata.get('title', 'Unknown')}\n\n")
-                f.write(f"**Video URL:** {video_metadata.get('url', 'Unknown')}\n")
-                f.write(f"**Author:** {video_metadata.get('author', 'Unknown')}\n")
-                f.write(f"**Duration:** {video_metadata.get('duration', 0) // 60} minutes\n")
-                f.write(f"**Analyzed:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
-                f.write("---\n\n")
-                f.write(analysis['actionable'])
-            print(f"[OK] Saved actionable analysis: {actionable_path}")
-        
+    # Save analysis prompts for Claude Code
+    if prompts_data:
+        # Save comprehensive prompt
+        comprehensive_prompt_path = os.path.join(output_dir, "PROMPT_COMPREHENSIVE.txt")
+        with open(comprehensive_prompt_path, 'w', encoding='utf-8') as f:
+            f.write(prompts_data['comprehensive_prompt'])
+        print(f"[OK] Saved comprehensive analysis prompt: {comprehensive_prompt_path}")
+
+        # Save actionable prompt
+        actionable_prompt_path = os.path.join(output_dir, "PROMPT_ACTIONABLE.txt")
+        with open(actionable_prompt_path, 'w', encoding='utf-8') as f:
+            f.write(prompts_data['actionable_prompt'])
+        print(f"[OK] Saved actionable analysis prompt: {actionable_prompt_path}")
+
         # Create README for navigation
         readme_path = os.path.join(output_dir, "README.md")
         with open(readme_path, 'w', encoding='utf-8') as f:
@@ -392,27 +377,25 @@ def save_results(output_dir, video_metadata, transcript, analysis):
             f.write(f"**Video:** {video_metadata.get('title', 'Unknown')}\n")
             f.write(f"**Author:** {video_metadata.get('author', 'Unknown')}\n")
             f.write(f"**Duration:** {video_metadata.get('duration', 0) // 60} minutes\n")
-            f.write(f"**Analyzed:** {datetime.now().strftime('%Y-%m-%d')}\n\n")
+            f.write(f"**Processed:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+            f.write("---\n\n")
             f.write("## Files\n\n")
-            f.write("### Analysis Files\n")
-            if 'comprehensive' in analysis:
-                f.write("- **[ANALYSIS_COMPREHENSIVE.md](ANALYSIS_COMPREHENSIVE.md)** - Reference-quality analysis (Claude Code style)\n")
-                f.write("  - Best for: Documentation, sharing, deep understanding\n")
-                f.write("  - Includes: Executive summary, detailed explanations, quotes, industry context\n\n")
-            if 'actionable' in analysis:
-                f.write("- **[ANALYSIS_ACTIONABLE.md](ANALYSIS_ACTIONABLE.md)** - Implementation-focused analysis (Cursor style)\n")
-                f.write("  - Best for: Quick reference, immediate action items, code examples\n")
-                f.write("  - Includes: Quick summary, actionable items, questions, best practices\n\n")
             f.write("### Source Files\n")
             f.write("- **[transcript.txt](transcript.txt)** - Full video transcript\n")
             f.write("- **[metadata.json](metadata.json)** - Video metadata\n")
             f.write("- **video.mp4** - Downloaded video\n")
-            f.write("- **audio.mp3** - Extracted audio\n")
+            f.write("- **audio.mp3** - Extracted audio\n\n")
+            f.write("### Analysis Prompts (for Claude Code)\n")
+            f.write("- **[PROMPT_COMPREHENSIVE.txt](PROMPT_COMPREHENSIVE.txt)** - Comprehensive analysis prompt\n")
+            f.write("- **[PROMPT_ACTIONABLE.txt](PROMPT_ACTIONABLE.txt)** - Actionable analysis prompt\n\n")
+            f.write("## Next Steps\n\n")
+            f.write("Claude Code will automatically analyze the transcript using these prompts.\n")
+            f.write("No external API key needed - Claude Code uses native capabilities!\n")
         print(f"[OK] Saved README: {readme_path}")
 
     print()
     print("=" * 80)
-    print("ANALYSIS COMPLETE")
+    print("TRANSCRIPTION COMPLETE")
     print("=" * 80)
     print()
     print(f"Results saved to: {output_dir}")
@@ -420,86 +403,279 @@ def save_results(output_dir, video_metadata, transcript, analysis):
     print("Files created:")
     print(f"  1. metadata.json - Video metadata")
     print(f"  2. transcript.txt - Full transcript")
-    if analysis:
-        if 'comprehensive' in analysis:
-            print(f"  3. ANALYSIS_COMPREHENSIVE.md - Reference-quality analysis")
-        if 'actionable' in analysis:
-            print(f"  4. ANALYSIS_ACTIONABLE.md - Implementation-focused analysis")
+    if prompts_data:
+        print(f"  3. PROMPT_COMPREHENSIVE.txt - Comprehensive analysis prompt")
+        print(f"  4. PROMPT_ACTIONABLE.txt - Actionable analysis prompt")
         print(f"  5. README.md - Navigation guide")
     print()
-    print("Next steps:")
-    if analysis and 'comprehensive' in analysis:
-        print("  - Read ANALYSIS_COMPREHENSIVE.md for deep understanding")
-    if analysis and 'actionable' in analysis:
-        print("  - Read ANALYSIS_ACTIONABLE.md for immediate action items")
+    print("=" * 80)
+    print("READY FOR CLAUDE CODE ANALYSIS")
+    print("=" * 80)
+    print()
+    print("The transcript is ready! Claude Code will now analyze it using native capabilities.")
+    print("No external API needed - Claude Code handles the analysis directly.")
     print()
 
 
 def main():
-    """Main entry point (Enhanced with dependency checking and dual analysis)"""
-    if len(sys.argv) < 2:
-        print("Usage: python analyze_video.py <youtube_url> [output_dir] [model_size] [analysis_style]")
-        print()
-        print("Arguments:")
-        print("  youtube_url     - YouTube video URL (required)")
-        print("  output_dir      - Output directory (default: ./output)")
-        print("  model_size      - Whisper model: tiny, base, small, medium, large (default: base)")
-        print("  analysis_style  - Analysis type: comprehensive, actionable, both (default: both)")
-        print()
-        print("Examples:")
-        print("  python analyze_video.py https://www.youtube.com/watch?v=FOqbS_llAms")
-        print("  python analyze_video.py https://www.youtube.com/watch?v=FOqbS_llAms ./output base both")
-        print("  python analyze_video.py https://www.youtube.com/watch?v=FOqbS_llAms ./output small actionable")
-        print()
-        sys.exit(1)
+    """Main entry point - Claude Code native integration"""
+    import argparse
 
-    url = sys.argv[1]
-    output_dir = sys.argv[2] if len(sys.argv) > 2 else "./output"
-    model_size = sys.argv[3] if len(sys.argv) > 3 else "base"
-    analysis_style = sys.argv[4] if len(sys.argv) > 4 else "both"
+    parser = argparse.ArgumentParser(
+        description='YouTube Video Analysis - Download, transcribe, and optionally extract frames for vision analysis',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog='''
+Examples:
+  # Basic transcription only
+  python analyze_video.py https://www.youtube.com/watch?v=FOqbS_llAms
+
+  # With frame extraction for vision analysis
+  python analyze_video.py https://www.youtube.com/watch?v=FOqbS_llAms --extract-visual
+
+  # Custom interval for frame extraction (every 60 seconds)
+  python analyze_video.py https://www.youtube.com/watch?v=FOqbS_llAms --extract-visual --frame-interval 60
+
+  # Specify output directory and Whisper model
+  python analyze_video.py https://www.youtube.com/watch?v=FOqbS_llAms --output ./my_output --model small
+
+Note: This script prepares content for Claude Code to analyze natively.
+      No external API key needed - Claude Code handles analysis directly!
+        '''
+    )
+
+    parser.add_argument('url', help='YouTube video URL')
+    parser.add_argument('--output', '-o', default='./output',
+                       help='Output directory (default: ./output)')
+    parser.add_argument('--model', '-m', default='base',
+                       choices=['tiny', 'base', 'small', 'medium', 'large'],
+                       help='Whisper model size (default: base)')
+    parser.add_argument('--extract-visual', action='store_true',
+                       help='Extract video frames for vision analysis (Task 044-1)')
+    parser.add_argument('--frame-interval', type=int, default=30,
+                       help='Interval between frame extractions in seconds (default: 30)')
+    parser.add_argument('--smart-frames', action='store_true',
+                       help='Use smart frame selection (scene detection + content analysis) - reduces frames by 70-80%')
+    parser.add_argument('--no-ocr', action='store_true',
+                       help='Disable OCR-based code detection in smart frames (faster but less accurate)')
+    parser.add_argument('--multimodal', action='store_true',
+                       help='Enable multi-modal integration (combines visual frames + transcript analysis)')
+    parser.add_argument('--skip-download', action='store_true',
+                       help='Skip download if video already exists')
+    parser.add_argument('--skip-transcription', action='store_true',
+                       help='Skip transcription if transcript already exists')
+
+    args = parser.parse_args()
+
+    url = args.url
+    output_dir = args.output
+    model_size = args.model
 
     # Create output directory
     os.makedirs(output_dir, exist_ok=True)
 
     print("=" * 80)
-    print("YouTube Video Analysis - Enhanced Edition")
+    print("YouTube Video Analysis - Claude Code Native Integration")
     print("=" * 80)
     print()
-    print("Combining best features from Cursor and Claude Code implementations:")
-    print("  - Comprehensive dependency checking (Cursor)")
-    print("  - Moviepy fallback logic (Cursor)")
-    print("  - Detailed step separators (Cursor)")
-    print("  - Modular, reusable functions (Claude Code)")
-    print("  - Full LLM integration (Claude Code)")
-    print("  - Dual analysis styles (Both!)")
+    print("Features:")
+    print("  - Download and transcribe YouTube videos")
+    print("  - Prepare transcript for Claude Code native analysis")
+    if args.multimodal:
+        print("  - MULTI-MODAL INTEGRATION (combines visual + audio analysis)")
+        if args.smart_frames:
+            print("    - Smart frame selection (scene detection + content analysis)")
+        elif args.extract_visual:
+            print("    - Frame extraction for vision analysis")
+    elif args.extract_visual or args.smart_frames:
+        if args.smart_frames:
+            print("  - SMART frame extraction (scene detection + content analysis)")
+        else:
+            print("  - Extract video frames for multi-modal vision analysis")
+    print("  - No external API key required")
+    print("  - Claude Code analyzes directly using built-in capabilities")
     print()
     print(f"Configuration:")
     print(f"  Video URL: {url}")
     print(f"  Output Directory: {output_dir}")
     print(f"  Whisper Model: {model_size}")
-    print(f"  Analysis Style: {analysis_style}")
+    if args.multimodal:
+        print(f"  Multi-Modal Integration: ENABLED")
+        if args.smart_frames:
+            print(f"    Frame Selection: SMART (scene detection + content analysis)")
+            print(f"    OCR Detection: {'Disabled' if args.no_ocr else 'Enabled'}")
+        elif args.extract_visual:
+            print(f"    Frame Extraction: Fixed interval (every {args.frame_interval}s)")
+    elif args.smart_frames:
+        print(f"  Frame Selection: SMART (scene detection + content analysis)")
+        print(f"  OCR Detection: {'Disabled' if args.no_ocr else 'Enabled'}")
+    elif args.extract_visual:
+        print(f"  Frame Extraction: Fixed interval (every {args.frame_interval}s)")
     print()
 
-    # Check dependencies first (Cursor enhancement)
-    check_dependencies()
+    # Check dependencies first
+    check_vision = args.extract_visual or args.smart_frames or args.multimodal
+    check_dependencies(check_vision=check_vision)
+
+    # Import frame extraction modules if needed
+    if args.extract_visual or args.smart_frames or args.multimodal:
+        try:
+            from frame_extractor import FrameExtractor
+            from vision_analyzer import VisionAnalyzer
+            if args.smart_frames or args.multimodal:
+                from smart_frame_selector import SmartFrameSelector
+            if args.multimodal:
+                from multimodal_integration import MultiModalIntegrator
+            print("[OK] Frame extraction modules loaded")
+            print()
+        except ImportError as e:
+            print(f"[FAIL] Could not import frame extraction modules: {e}")
+            print("Make sure frame_extractor.py, vision_analyzer.py, smart_frame_selector.py, and multimodal_integration.py are in the same directory")
+            sys.exit(1)
 
     try:
         # Step 1: Download video
-        video_path, metadata = download_video(url, output_dir)
-        metadata['url'] = url  # Add URL to metadata
+        video_path = None
+        if args.skip_download and os.path.exists(os.path.join(output_dir, "video.mp4")):
+            print("[SKIP] Video already exists, skipping download")
+            video_path = os.path.join(output_dir, "video.mp4")
+            # Load metadata if exists
+            metadata_path = os.path.join(output_dir, "metadata.json")
+            if os.path.exists(metadata_path):
+                with open(metadata_path, 'r', encoding='utf-8') as f:
+                    metadata = json.load(f)
+            else:
+                metadata = {"url": url}
+        else:
+            video_path, metadata = download_video(url, output_dir)
+            metadata['url'] = url  # Add URL to metadata
 
         # Step 2: Extract audio
-        audio_path = extract_audio(video_path, output_dir)
+        audio_path = os.path.join(output_dir, "audio.mp3")
+        if args.skip_transcription and os.path.exists(audio_path):
+            print("[SKIP] Audio already exists, skipping extraction")
+        else:
+            audio_path = extract_audio(video_path, output_dir)
 
         # Step 3: Transcribe
-        transcript = transcribe_audio(audio_path, model_size)
+        transcript_path = os.path.join(output_dir, "transcript.txt")
+        if args.skip_transcription and os.path.exists(transcript_path):
+            print("[SKIP] Transcript already exists, loading from file")
+            with open(transcript_path, 'r', encoding='utf-8') as f:
+                transcript = f.read()
+        else:
+            transcript = transcribe_audio(audio_path, model_size)
 
-        # Step 4: Analyze with Claude (if API key available)
-        api_key = os.getenv('ANTHROPIC_API_KEY')
-        analysis = analyze_with_claude(transcript, metadata, api_key, analysis_style)
+        # Step 4: Prepare prompts for Claude Code native analysis
+        prompts_data = prepare_analysis_prompts(transcript, metadata)
 
-        # Step 5: Save results
-        save_results(output_dir, metadata, transcript, analysis)
+        # Step 5: Save results (transcript + prompts)
+        save_results(output_dir, metadata, transcript, prompts_data)
+
+        # Step 6: Extract frames and perform multi-modal integration (if requested)
+        if args.multimodal:
+            # Multi-modal integration: Combine visual + audio analysis
+            print("=" * 80)
+            print("STEP 6: Multi-Modal Integration (Visual + Audio)")
+            print("=" * 80)
+            print()
+
+            frames_dir = os.path.join(output_dir, "smart_frames" if args.smart_frames else "frames")
+            multimodal_dir = os.path.join(output_dir, "multimodal_output")
+
+            # Extract frames using smart selection (recommended) or fixed interval
+            print("Extracting frames...")
+            if args.smart_frames or not args.extract_visual:
+                # Default to smart selection for multimodal
+                selector = SmartFrameSelector(output_dir=frames_dir)
+                frames = selector.select_frames(video_path, metadata, enable_ocr=not args.no_ocr)
+            else:
+                # Fixed interval extraction
+                extractor = FrameExtractor(output_dir=frames_dir, interval_seconds=args.frame_interval)
+                frames = extractor.extract_frames(video_path, metadata)
+
+            # Perform multi-modal integration
+            integrator = MultiModalIntegrator(output_dir=multimodal_dir)
+
+            # Align frames with transcript
+            aligned_data = integrator.align_frames_with_transcript(
+                frames=frames,
+                transcript=transcript,
+                window_seconds=30
+            )
+
+            # Merge multi-modal insights
+            comprehensive_analysis = integrator.merge_multimodal_insights(
+                aligned_data=aligned_data,
+                video_metadata=metadata
+            )
+
+            # Generate all output formats
+            output_files = integrator.generate_multimodal_output(comprehensive_analysis)
+
+            print()
+            print("=" * 80)
+            print("MULTI-MODAL INTEGRATION COMPLETE")
+            print("=" * 80)
+            print()
+            print(f"Analyzed {len(frames)} segments combining visual + audio")
+            print(f"Frames saved to: {frames_dir}/")
+            print(f"Multi-modal analysis: {multimodal_dir}/")
+            print()
+            print("Generated files:")
+            for format_name, file_path in output_files.items():
+                print(f"  - {format_name.upper()}: {file_path}")
+            print()
+            print("Next: Review MULTIMODAL_ANALYSIS.md or use PROMPT_MULTIMODAL.txt with Claude Code")
+            print()
+
+        elif args.extract_visual or args.smart_frames:
+            # Vision-only analysis (no multi-modal integration)
+            print("=" * 80)
+            print("STEP 6: Extract Frames for Vision Analysis")
+            print("=" * 80)
+            print()
+
+            frames_dir = os.path.join(output_dir, "smart_frames" if args.smart_frames else "frames")
+            vision_dir = os.path.join(output_dir, "vision_results")
+
+            # Extract frames using smart selection or fixed interval
+            if args.smart_frames:
+                # Smart frame selection (scene detection + content analysis)
+                selector = SmartFrameSelector(output_dir=frames_dir)
+                frames = selector.select_frames(video_path, metadata, enable_ocr=not args.no_ocr)
+            else:
+                # Fixed interval extraction
+                extractor = FrameExtractor(output_dir=frames_dir, interval_seconds=args.frame_interval)
+                frames = extractor.extract_frames(video_path, metadata)
+
+            # Prepare vision analysis prompts
+            analyzer = VisionAnalyzer(output_dir=vision_dir)
+
+            # Load transcript segments if available (for context)
+            transcript_data = None
+            if hasattr(prompts_data, 'get') and 'transcript' in prompts_data:
+                transcript_data = {'text': prompts_data['transcript']}
+
+            prompts = analyzer.prepare_frame_analysis_prompts(frames, transcript_data)
+
+            # Create workflow for Claude Code
+            analyzer.create_claude_code_workflow(frames)
+
+            print()
+            print("=" * 80)
+            print("VISION ANALYSIS PREPARED")
+            print("=" * 80)
+            print()
+            print(f"Extracted {len(frames)} frames")
+            print(f"Frames saved to: {frames_dir}/")
+            print(f"Vision prompts saved to: {vision_dir}/")
+            print(f"Claude Code workflow: {vision_dir}/vision_workflow_workflow.md")
+            print()
+            print("Next: Use Claude Code to analyze frames using the prepared workflow")
+            print()
+
+        # Return the data for Claude Code to use
+        return prompts_data
 
     except KeyboardInterrupt:
         print("\n\n[CANCELLED] Analysis interrupted by user")

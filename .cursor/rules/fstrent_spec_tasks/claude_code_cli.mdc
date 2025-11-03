@@ -1,0 +1,511 @@
+---
+description: 'Integration rule for using Claude Code CLI from Cursor'
+globs: []
+alwaysApply: false
+---
+
+# Claude Code CLI Integration
+
+This rule enables Cursor to leverage Claude Code CLI for operations that benefit from unrestricted system access.
+
+## When to Use Claude Code CLI
+
+**✅ Use Claude Code CLI for**:
+- Batch file operations requiring many permission prompts in VS Code (50+ files)
+- Complex system-level tasks (package installation, system configuration)
+- MCP server interactions requiring full access
+- Automation scripts that would be blocked in sandboxed environment
+- Operations requiring shell scripting or piping
+- Bulk task file creation/updates in fstrent_spec_tasks
+- Large-scale refactoring operations
+- System-wide configuration changes
+
+**❌ Don't use Claude Code CLI for**:
+- Simple file reads/writes (use Cursor's native tools)
+- Single file operations
+- Interactive debugging sessions
+- Tasks requiring IDE context (open files, cursor position)
+- Quick edits or minor changes
+- Operations that need immediate IDE feedback
+
+## Command Patterns
+
+### Basic Usage
+```bash
+# Execute Claude Code CLI command
+claude-code "Your instruction here"
+
+# With specific file context
+claude-code "Analyze this file" --file path/to/file.py
+
+# With directory context
+claude-code "Refactor all Python files" --directory src/
+
+# With output capture
+claude-code "Generate report" > output.txt
+
+# Dry run first (recommended for destructive operations)
+claude-code "Refactor codebase" --dry-run
+claude-code "Refactor codebase" --auto-approve  # After reviewing dry run
+```
+
+### Integration Patterns
+
+#### Pattern 1: Batch File Processing
+```bash
+# Process multiple files that would require many VS Code permissions
+claude-code "Add type hints to all Python files in src/" \
+  --directory src/ \
+  --auto-approve
+```
+
+#### Pattern 2: System Configuration
+```bash
+# System-level operations
+claude-code "Install and configure development environment" \
+  --auto-approve
+```
+
+#### Pattern 3: MCP Server Interaction
+```bash
+# Direct MCP operations
+claude-code "Use MCP to query database and generate report" \
+  --mcp-server fstrent_mcp_mysql
+```
+
+#### Pattern 4: Pipeline Integration
+```bash
+# Combine with other CLI tools
+claude-code "Extract data from logs" | jq '.' | \
+  claude-code "Analyze this JSON and generate insights"
+```
+
+#### Pattern 5: Context Gathering + Batch Execution
+```bash
+# Cursor gathers context
+echo "Current project structure analysis..." > context.txt
+
+# CLI performs bulk operations
+claude-code "Process based on context.txt" \
+  --file context.txt \
+  --directory src/
+
+# Cursor validates results
+echo "Validating results..."
+```
+
+## Best Practices
+
+### 1. Use for Unrestricted Access
+When VS Code extension would require multiple permission prompts, use CLI instead.
+
+**Example**: Refactoring 150 Python files
+```bash
+# VS Code extension: 150+ permission prompts
+# CLI: Single command execution
+
+claude-code "Refactor all Python imports according to plan.md" \
+  --file refactor_plan.md \
+  --directory src/ \
+  --dry-run  # Review first
+
+# After approval
+claude-code "Apply refactoring" \
+  --file refactor_plan.md \
+  --directory src/ \
+  --auto-approve
+```
+
+### 2. Capture Context First
+```bash
+# Cursor reads current state and generates plan
+# CLI performs bulk operations
+
+# Step 1: Cursor analyzes
+cat > execution_plan.md << EOF
+# Execution Plan
+- Files to process: $(find src -name "*.py" | wc -l)
+- Changes: Update import structure
+- Validation: Run tests after
+EOF
+
+# Step 2: CLI executes
+claude-code "Execute plan" --file execution_plan.md
+```
+
+### 3. Verify Before Execution
+For destructive operations, validate command before running:
+```bash
+# Dry run first
+claude-code "Preview changes for refactoring" --dry-run
+
+# Review output, then execute
+claude-code "Execute refactoring" --auto-approve
+```
+
+### 4. Error Handling
+```bash
+# Capture errors for Cursor to handle
+if ! claude-code "Risky operation" 2>error.log; then
+    echo "Operation failed, analyzing error..."
+    # Cursor analyzes error.log and decides next steps
+    cat error.log
+fi
+```
+
+### 5. Progress Tracking
+```bash
+# For long operations, provide progress updates
+claude-code "Process large dataset with progress indicators" \
+  --directory data/ \
+  --verbose
+```
+
+## Security Considerations
+
+**⚠️ CRITICAL**: Claude Code CLI has full system access.
+
+### Security Checklist
+- ✅ Review commands before execution
+- ✅ Use `--dry-run` for destructive operations
+- ✅ Avoid passing sensitive data in command line (use files instead)
+- ✅ Validate file paths to prevent directory traversal
+- ✅ Never use `--auto-approve` for unreviewed operations
+- ✅ Use environment variables for sensitive configuration
+- ✅ Log all CLI operations for audit trail
+- ❌ Never hardcode credentials in commands
+- ❌ Never execute commands from untrusted sources
+- ❌ Never bypass security checks for convenience
+
+### Safe Command Examples
+
+**✅ SAFE** - Uses file for context, validates paths:
+```bash
+claude-code "Process files in validated directory" \
+  --file context.txt \
+  --directory /validated/path
+```
+
+**❌ UNSAFE** - Accepts user input directly:
+```bash
+# BAD: Could execute arbitrary commands
+user_input="$1"
+claude-code "$user_input" --auto-approve
+```
+
+**✅ SAFE** - Validates and sanitizes input:
+```bash
+# GOOD: Validates input first
+if [[ "$1" =~ ^[a-zA-Z0-9_/-]+$ ]]; then
+  claude-code "Process validated input" --file "$1"
+else
+  echo "Invalid input"
+fi
+```
+
+## Tool Selection Matrix
+
+| Task | Use Cursor | Use Claude CLI | Reason |
+|------|------------|----------------|--------|
+| Read single file | ✅ | ❌ | Faster, no overhead |
+| Modify 50+ files | ❌ | ✅ | Avoid permission prompts |
+| Interactive debugging | ✅ | ❌ | IDE context needed |
+| System package install | ❌ | ✅ | Requires system access |
+| MCP database query | Either | Either | Both have MCP access |
+| Batch file renaming | ❌ | ✅ | Bulk operation |
+| Code review current file | ✅ | ❌ | IDE context better |
+| Generate 20 new files | ❌ | ✅ | Avoid repeated prompts |
+| Quick typo fix | ✅ | ❌ | Immediate feedback |
+| Large-scale refactor | ❌ | ✅ | Batch processing |
+| Test single function | ✅ | ❌ | IDE integration |
+| Test entire suite | Either | ✅ | CLI can run complete suite |
+
+## Integration with fstrent_spec_tasks
+
+### Task Creation via CLI
+```bash
+# Create multiple tasks from plan
+claude-code "Read PLAN.md and create task files for all features" \
+  --file .fstrent_spec_tasks/PLAN.md \
+  --output-dir .fstrent_spec_tasks/tasks/ \
+  --dry-run
+
+# Review task files, then approve
+claude-code "Create task files" \
+  --file .fstrent_spec_tasks/PLAN.md \
+  --output-dir .fstrent_spec_tasks/tasks/ \
+  --auto-approve
+```
+
+### Bulk Task Updates
+```bash
+# Update all pending tasks to new format
+claude-code "Update all task files to include new YAML fields" \
+  --directory .fstrent_spec_tasks/tasks/ \
+  --dry-run
+
+# After review
+claude-code "Apply task updates" \
+  --directory .fstrent_spec_tasks/tasks/ \
+  --auto-approve
+```
+
+### Documentation Generation
+```bash
+# Generate documentation from codebase
+claude-code "Analyze codebase and generate API documentation" \
+  --directory src/ \
+  --output docs/API_DOCUMENTATION.md
+
+# Generate task summaries
+claude-code "Generate task completion summary for sprint" \
+  --directory .fstrent_spec_tasks/tasks/ \
+  --output docs/SPRINT_SUMMARY.md
+```
+
+### Feature File Creation
+```bash
+# Create feature files from PLAN.md
+claude-code "Create feature files for all features in PLAN.md" \
+  --file .fstrent_spec_tasks/PLAN.md \
+  --output-dir .fstrent_spec_tasks/features/
+```
+
+## Performance Optimization
+
+### Parallel Processing
+```bash
+# Process file groups in parallel
+for group in group1 group2 group3; do
+    claude-code "Process $group" --directory $group &
+done
+wait
+
+echo "All groups processed"
+```
+
+### Caching Strategy
+```bash
+# Cache analysis results
+if [ ! -f .cache/analysis.json ]; then
+    claude-code "Analyze codebase structure" > .cache/analysis.json
+fi
+
+# Use cached results
+claude-code "Refactor based on cached analysis" \
+  --file .cache/analysis.json
+```
+
+### Batch Operations
+```bash
+# Group related operations
+claude-code "Batch process: lint, format, update imports" \
+  --directory src/ \
+  --batch-mode
+```
+
+## Error Recovery Patterns
+
+### Pattern 1: Graceful Degradation
+```bash
+# Try CLI first, fall back to Cursor if needed
+if ! claude-code "Bulk operation" 2>error.log; then
+    echo "CLI failed, falling back to Cursor native operations"
+    # Cursor handles operation in smaller batches
+fi
+```
+
+### Pattern 2: Retry with Smaller Batches
+```bash
+# If bulk operation fails, split into chunks
+if ! claude-code "Process all 500 files"; then
+    echo "Breaking into smaller batches..."
+    for batch in batch_*.txt; do
+        claude-code "Process batch" --file $batch
+    done
+fi
+```
+
+### Pattern 3: Checkpoint and Resume
+```bash
+# Save progress for resumable operations
+claude-code "Process files with checkpoints" \
+  --directory src/ \
+  --checkpoint-file .progress.json
+
+# Resume from checkpoint if interrupted
+claude-code "Resume from checkpoint" \
+  --checkpoint-file .progress.json
+```
+
+## Common Use Cases
+
+### Use Case 1: Large-Scale Refactoring
+```bash
+# Refactor 150 Python files to new import structure
+# Cursor: Analyze structure, generate plan
+# CLI: Execute bulk refactoring
+
+# Step 1: Cursor generates plan
+cat > refactor_plan.md << EOF
+# Refactoring Plan
+- Old: from utils import helper
+- New: from src.utils.helpers import helper
+- Files: 150
+EOF
+
+# Step 2: CLI executes
+claude-code "Refactor according to plan" \
+  --file refactor_plan.md \
+  --directory src/ \
+  --dry-run
+
+# Step 3: Review and approve
+claude-code "Apply refactoring" \
+  --file refactor_plan.md \
+  --directory src/ \
+  --auto-approve
+
+# Step 4: Cursor validates
+echo "Running tests to validate refactoring..."
+```
+
+### Use Case 2: System Environment Setup
+```bash
+# Setup development environment
+# CLI handles system-level operations
+
+claude-code "Install Python 3.11, uv, configure virtual environment" \
+  --auto-approve
+
+claude-code "Install project dependencies from requirements.txt" \
+  --file requirements.txt
+
+# Cursor validates installation
+echo "Validating environment setup..."
+```
+
+### Use Case 3: Documentation Generation
+```bash
+# Generate comprehensive API documentation
+# CLI analyzes entire codebase at once
+
+claude-code "Analyze all Python files and generate API docs with examples" \
+  --directory src/ \
+  --output docs/API_DOCUMENTATION.md
+
+# Cursor validates formatting
+echo "Validating documentation format..."
+```
+
+### Use Case 4: Task Automation
+```bash
+# Automate task file creation for sprint
+# CLI creates all tasks from plan
+
+claude-code "Create task files for Sprint 5 features" \
+  --file .fstrent_spec_tasks/PLAN.md \
+  --output-dir .fstrent_spec_tasks/tasks/ \
+  --filter "sprint:5"
+
+# Cursor updates TASKS.md
+echo "Updating TASKS.md with new tasks..."
+```
+
+## Troubleshooting
+
+### Issue: CLI Not Found
+```bash
+# Check if CLI is installed
+which claude-code
+
+# If not found, install or add to PATH
+export PATH="$PATH:/path/to/claude-code"
+```
+
+### Issue: Permission Denied
+```bash
+# Check file permissions
+ls -la /path/to/files
+
+# Fix permissions if needed
+chmod +x /path/to/files
+```
+
+### Issue: Command Hangs
+```bash
+# Use timeout to prevent hanging
+timeout 300 claude-code "Long running operation"
+
+# Check for interactive prompts
+claude-code "Operation" --non-interactive
+```
+
+### Issue: Unexpected Results
+```bash
+# Always dry run first
+claude-code "Complex operation" --dry-run
+
+# Increase verbosity for debugging
+claude-code "Operation" --verbose --debug
+```
+
+## Integration with Other Tools
+
+### Git Integration
+```bash
+# Automated commit with grouped changes
+claude-code "Process files and stage changes" \
+  --directory src/ \
+  --auto-stage
+
+# Cursor creates commit
+git commit -m "Batch refactoring via CLI"
+```
+
+### Testing Integration
+```bash
+# Run tests after CLI operations
+claude-code "Refactor code" --directory src/
+pytest tests/ -v
+```
+
+### CI/CD Integration
+```bash
+# Use in CI/CD pipelines
+claude-code "Generate deployment artifacts" \
+  --output-dir dist/ \
+  --production-mode
+```
+
+## Monitoring and Logging
+
+### Operation Logging
+```bash
+# Log all CLI operations
+claude-code "Operation" 2>&1 | tee operation.log
+
+# Structured logging
+claude-code "Operation" \
+  --log-level info \
+  --log-file operations.log
+```
+
+### Performance Metrics
+```bash
+# Track execution time
+start_time=$(date +%s)
+claude-code "Operation"
+end_time=$(date +%s)
+echo "Execution time: $((end_time - start_time)) seconds"
+```
+
+### Success Rate Tracking
+```bash
+# Track success/failure rates
+claude-code "Operation" && echo "SUCCESS" >> metrics.log || echo "FAILURE" >> metrics.log
+```
+
+---
+
+*This rule provides comprehensive guidelines for when and how to use Claude Code CLI from Cursor to leverage unrestricted system access for appropriate tasks while maintaining security and efficiency.*

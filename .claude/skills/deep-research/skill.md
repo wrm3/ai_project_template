@@ -1,4 +1,4 @@
-Base directory for this skill: /mnt/c/git/ai_project_template/.claude/skills/deep-research
+Base directory for this skill: /mnt/c/git/claude_code_project_template/.claude/skills/deep-research
 
 # Deep Research Skill - Claude-Native Autonomous Research
 

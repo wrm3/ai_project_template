@@ -1,0 +1,300 @@
+{
+  "video_metadata": {
+    "title": "Building a RAG System with Python and LangChain",
+    "duration": 1248,
+    "author": "TechExplainer",
+    "views": 45823,
+    "url": "https://www.youtube.com/watch?v=example123"
+  },
+  "analysis_metadata": {
+    "generated_at": "2025-10-26T14:30:00",
+    "total_segments": 15,
+    "alignment_window": 30
+  },
+  "segments": [
+    {
+      "timestamp": 45.5,
+      "timestamp_formatted": "00:45",
+      "type": "architecture_overview",
+      "visual_content": {
+        "has_code": false,
+        "has_diagram": true,
+        "code_score": 0.0,
+        "diagram_score": 0.85,
+        "frame_path": "smart_frames/frame_000045s.jpg",
+        "detection_reasons": ["12_shapes", "8_lines", "high_contrast_slide"],
+        "priority": 0.82
+      },
+      "audio_content": {
+        "text": "So here we have the overall architecture of our RAG system. On the left, we have the document ingestion pipeline where we load PDFs and split them into chunks. In the middle, you can see the embedding generation using OpenAI, and on the right, the vector database stores these embeddings for retrieval.",
+        "word_count": 52,
+        "time_window": "15.5s - 75.5s"
+      },
+      "insights": [
+        "✅ Visual diagram with accompanying narration",
+        "🎯 High priority visual content"
+      ],
+      "alignment_quality": "excellent"
+    },
+    {
+      "timestamp": 123.0,
+      "timestamp_formatted": "02:03",
+      "type": "code_explanation",
+      "visual_content": {
+        "has_code": true,
+        "has_diagram": false,
+        "code_score": 0.92,
+        "diagram_score": 0.0,
+        "frame_path": "smart_frames/frame_000123s.jpg",
+        "detection_reasons": ["dark_background", "text_pattern", "3_code_keywords"],
+        "priority": 0.91
+      },
+      "audio_content": {
+        "text": "Now let's look at the implementation. We import the document loader from LangChain, specify our PDF file path, and then we use the recursive character text splitter to break it down into manageable chunks. I've set the chunk size to 1000 characters with a 200 character overlap to maintain context between chunks.",
+        "word_count": 54,
+        "time_window": "93.0s - 153.0s"
+      },
+      "insights": [
+        "✅ Code shown on screen with spoken explanation",
+        "🐍 Python code segment",
+        "🎯 High priority visual content"
+      ],
+      "alignment_quality": "excellent"
+    },
+    {
+      "timestamp": 267.0,
+      "timestamp_formatted": "04:27",
+      "type": "code_with_discussion",
+      "visual_content": {
+        "has_code": true,
+        "has_diagram": false,
+        "code_score": 0.78,
+        "diagram_score": 0.15,
+        "frame_path": "smart_frames/frame_000267s.jpg",
+        "detection_reasons": ["dark_background", "editor_window"],
+        "priority": 0.65
+      },
+      "audio_content": {
+        "text": "The embedding generation is straightforward. We create an embeddings object using OpenAI's text embedding model. This will convert each chunk into a vector representation that captures the semantic meaning. The dimension here is 1536, which is the standard for OpenAI's ada-002 model.",
+        "word_count": 46,
+        "time_window": "237.0s - 297.0s"
+      },
+      "insights": [
+        "✅ Code shown on screen with spoken explanation",
+        "🐍 Python code segment"
+      ],
+      "alignment_quality": "good"
+    },
+    {
+      "timestamp": 445.0,
+      "timestamp_formatted": "07:25",
+      "type": "code_only",
+      "visual_content": {
+        "has_code": true,
+        "has_diagram": false,
+        "code_score": 0.88,
+        "diagram_score": 0.0,
+        "frame_path": "smart_frames/frame_000445s.jpg",
+        "detection_reasons": ["dark_background", "text_pattern", "code_symbols"],
+        "priority": 0.72
+      },
+      "audio_content": {
+        "text": "Okay, so...",
+        "word_count": 3,
+        "time_window": "415.0s - 475.0s"
+      },
+      "insights": [
+        "⚠️ Code shown but minimal verbal explanation"
+      ],
+      "alignment_quality": "poor"
+    },
+    {
+      "timestamp": 589.0,
+      "timestamp_formatted": "09:49",
+      "type": "architecture_overview",
+      "visual_content": {
+        "has_code": false,
+        "has_diagram": true,
+        "code_score": 0.2,
+        "diagram_score": 0.76,
+        "frame_path": "smart_frames/frame_000589s.jpg",
+        "detection_reasons": ["8_shapes", "6_lines", "organized_content"],
+        "priority": 0.68
+      },
+      "audio_content": {
+        "text": "Here's the query flow. When a user asks a question, we first convert their question into an embedding. Then we perform a similarity search in the vector database to find the most relevant chunks. These chunks are then passed to the language model along with the original question to generate a contextual answer.",
+        "word_count": 52,
+        "time_window": "559.0s - 619.0s"
+      },
+      "insights": [
+        "✅ Visual diagram with accompanying narration"
+      ],
+      "alignment_quality": "excellent"
+    },
+    {
+      "timestamp": 723.0,
+      "timestamp_formatted": "12:03",
+      "type": "spoken_only",
+      "visual_content": {
+        "has_code": false,
+        "has_diagram": false,
+        "code_score": 0.15,
+        "diagram_score": 0.25,
+        "frame_path": "smart_frames/frame_000723s.jpg",
+        "detection_reasons": ["major_scene_change"],
+        "priority": 0.42
+      },
+      "audio_content": {
+        "text": "Now there's an important consideration when implementing the retrieval function. You need to think about the similarity threshold and the number of results to return. Too few results and you might miss relevant context, too many and you'll waste tokens and potentially confuse the model with irrelevant information.",
+        "word_count": 48,
+        "time_window": "693.0s - 753.0s"
+      },
+      "insights": [
+        "⚠️ Code concepts discussed but not shown visually"
+      ],
+      "alignment_quality": "fair"
+    },
+    {
+      "timestamp": 891.0,
+      "timestamp_formatted": "14:51",
+      "type": "code_explanation",
+      "visual_content": {
+        "has_code": true,
+        "has_diagram": false,
+        "code_score": 0.95,
+        "diagram_score": 0.0,
+        "frame_path": "smart_frames/frame_000891s.jpg",
+        "detection_reasons": ["dark_background", "text_pattern", "5_code_keywords", "code_symbols"],
+        "priority": 0.89
+      },
+      "audio_content": {
+        "text": "Let me show you the retrieval function. We create a retriever from our vector store with k equals 4, meaning we'll get the top 4 most similar chunks. Then we set up the QA chain using the retrieval QA class from LangChain, passing in our language model and the retriever. The chain type here is stuff, which simply stuffs all the retrieved documents into the prompt.",
+        "word_count": 67,
+        "time_window": "861.0s - 921.0s"
+      },
+      "insights": [
+        "✅ Code shown on screen with spoken explanation",
+        "🐍 Python code segment",
+        "🎯 High priority visual content"
+      ],
+      "alignment_quality": "excellent"
+    },
+    {
+      "timestamp": 1045.0,
+      "timestamp_formatted": "17:25",
+      "type": "diagram_with_discussion",
+      "visual_content": {
+        "has_code": false,
+        "has_diagram": true,
+        "code_score": 0.1,
+        "diagram_score": 0.71,
+        "frame_path": "smart_frames/frame_001045s.jpg",
+        "detection_reasons": ["10_shapes", "5_lines", "high_contrast_slide"],
+        "priority": 0.63
+      },
+      "audio_content": {
+        "text": "This flowchart shows the complete end-to-end process. Notice how the embedding step happens twice - once during ingestion and once during querying. This is crucial because we need to compare apples to apples in the vector space. Both document chunks and user queries must be embedded using the same model to ensure accurate similarity comparisons.",
+        "word_count": 56,
+        "time_window": "1015.0s - 1075.0s"
+      },
+      "insights": [
+        "✅ Visual diagram with accompanying narration"
+      ],
+      "alignment_quality": "excellent"
+    }
+  ],
+  "summary": "This multi-modal analysis combines visual frame analysis with transcript narration for the video \"Building a RAG System with Python and LangChain\".\n\nAnalyzed 15 key moments across 20 minutes:\n- 7 segments contain code snippets (46.7%)\n- 5 segments show diagrams or architecture (33.3%)\n- 12 segments demonstrate excellent visual-audio alignment (80.0%)\n\nThe analysis identifies where visual content (code, diagrams) aligns with spoken explanations, as well as gaps where content is shown but not explained or discussed but not visualized.",
+  "statistics": {
+    "total_segments": 15,
+    "code_segments": 7,
+    "diagram_segments": 5,
+    "code_and_diagram": 0,
+    "spoken_only": 2,
+    "visual_only": 0,
+    "well_aligned": 12,
+    "gaps_count": 3,
+    "avg_alignment_quality": 3.27,
+    "segment_types": {
+      "architecture_overview": 4,
+      "code_explanation": 5,
+      "code_with_discussion": 2,
+      "code_only": 1,
+      "diagram_with_discussion": 1,
+      "spoken_only": 2
+    },
+    "alignment_distribution": {
+      "excellent": 8,
+      "good": 4,
+      "fair": 2,
+      "poor": 1
+    }
+  },
+  "gaps": {
+    "visual_not_explained": [
+      {
+        "timestamp": "07:25",
+        "content": "Code shown on screen",
+        "suggestion": "Consider adding verbal explanation of what is shown",
+        "priority": 0.72
+      }
+    ],
+    "explained_not_shown": [
+      {
+        "timestamp": "12:03",
+        "content": "Code concepts discussed",
+        "suggestion": "Consider adding visual code example",
+        "transcript_excerpt": "Now there's an important consideration when implementing the retrieval function. You need to think ab..."
+      }
+    ],
+    "high_value_content": [
+      {
+        "timestamp": "00:45",
+        "type": "architecture_overview",
+        "reason": "High quality multi-modal segment worth highlighting",
+        "insights": [
+          "✅ Visual diagram with accompanying narration",
+          "🎯 High priority visual content"
+        ]
+      },
+      {
+        "timestamp": "02:03",
+        "type": "code_explanation",
+        "reason": "High quality multi-modal segment worth highlighting",
+        "insights": [
+          "✅ Code shown on screen with spoken explanation",
+          "🐍 Python code segment",
+          "🎯 High priority visual content"
+        ]
+      },
+      {
+        "timestamp": "09:49",
+        "type": "architecture_overview",
+        "reason": "High quality multi-modal segment worth highlighting",
+        "insights": [
+          "✅ Visual diagram with accompanying narration"
+        ]
+      },
+      {
+        "timestamp": "14:51",
+        "type": "code_explanation",
+        "reason": "High quality multi-modal segment worth highlighting",
+        "insights": [
+          "✅ Code shown on screen with spoken explanation",
+          "🐍 Python code segment",
+          "🎯 High priority visual content"
+        ]
+      },
+      {
+        "timestamp": "17:25",
+        "type": "diagram_with_discussion",
+        "reason": "High quality multi-modal segment worth highlighting",
+        "insights": [
+          "✅ Visual diagram with accompanying narration"
+        ]
+      }
+    ],
+    "recommendations": [
+      "Excellent multi-modal alignment found in 5 segments - these are reference quality"
+    ]
+  }
+}

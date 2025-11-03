@@ -5,7 +5,10 @@
 # Research & Development (Private)
 # ============================================================================
 research/
+research_future_dev/
+research_future_dev_claude/
 claude_code_research/
+supabase.md
 
 # ============================================================================
 # Task Management & Planning (Private - may contain client/project info)
@@ -67,6 +70,13 @@ build/
 .pytest_cache/
 .coverage
 htmlcov/
+
+# YouTube Multi-Modal RAG System Caches
+.cache/
+.cache/transcripts/
+.cache/embeddings/
+.cache/vision/
+reports/
 
 # ============================================================================
 # IDE & Editor Files
@@ -228,3 +238,15 @@ ftp_sites.json
 # User-Specific Additions
 # ============================================================================
 # Add any project-specific ignores below this line
+/nul
+
+# Large binary files (exceed GitHub limits)
+*.exe
+*.mp4
+*.m4a
+*.m4a.part
+*.avi
+*.mov
+*.mkv
+*.webm
+*.flv

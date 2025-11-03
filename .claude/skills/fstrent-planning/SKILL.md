@@ -1,6 +1,6 @@
 ---
 name: fstrent-planning
-description: Create and manage project plans, PRDs, and feature documentation in .fstrent_spec_tasks/ folder. Use when planning projects, creating requirements documents, defining features, conducting scope validation, or gathering requirements. Triggers on requests mentioning plan, PRD, requirements, features, scope, or project planning.
+description: Create and manage project plans, PRDs, and feature documentation in .fstrent_spec_tasks/ folder. Use when planning projects, creating requirements documents, defining features, conducting scope validation, or gathering requirements. Triggers on requests mentioning plan, PRD, requirements, features, scope, or project planning. ENFORCES feature file creation for multi-task features (see FEATURE_GUIDELINES.md).
 ---
 
 # fstrent Planning Skill
@@ -115,6 +115,7 @@ Individual user stories with:
 - Tasks reference features via `feature:` field in YAML
 - Feature documents list implementing tasks
 - Feature completion tracked through task completion
+- **CRITICAL**: Feature files MUST be created when 2+ tasks share same feature (see FEATURE_GUIDELINES.md)
 
 ## Scope Validation
 
@@ -328,13 +329,24 @@ When initializing fstrent_spec_tasks in existing projects with code
 ### Create Feature Document
 
 **Process**:
-1. Determine feature name (lowercase-with-hyphens)
-2. Create `.fstrent_spec_tasks/features/{feature-name}.md`
-3. Use feature template
-4. Fill in overview, requirements, user stories
-5. Specify technical considerations
-6. Add acceptance criteria
-7. Reference in PLAN.md section 4.1
+1. **Validation**: Check if feature file needed (see FEATURE_GUIDELINES.md decision tree)
+   - Multiple tasks (2+) for same feature? → REQUIRED
+   - Multi-component feature? → REQUIRED
+   - Has user stories? → REQUIRED
+   - Single isolated task? → SKIP
+2. Determine feature name (lowercase-with-hyphens)
+3. Create `.fstrent_spec_tasks/features/{feature-name}.md`
+4. Use feature template from FEATURE_GUIDELINES.md (complete or minimal)
+5. Fill in overview, requirements, user stories
+6. Specify technical considerations
+7. Add acceptance criteria
+8. List all related tasks
+9. Reference in PLAN.md section 4.1 (if creating from PRD)
+
+**CRITICAL**: When creating tasks:
+- Create feature file BEFORE marking first task as [📋]
+- Update feature file as new tasks are added
+- Keep task files and feature files synchronized
 
 ### View Project Plan
 
@@ -375,6 +387,55 @@ Automatically create missing folders and files:
 - `PLAN.md` with blank template if missing
 - `PROJECT_CONTEXT.md` with template if missing
 
+## Instructions
+
+### Proactive Feature File Validation
+
+When creating tasks, ALWAYS:
+
+1. **Check Feature Field**: Look at task YAML `feature:` field
+2. **Validate Feature File Exists**: Check if `.fstrent_spec_tasks/features/{feature-name}.md` exists
+3. **Apply Decision Rules**:
+   - If 2+ tasks share same feature AND no feature file → **CREATE FEATURE FILE NOW**
+   - If multi-component feature AND no feature file → **CREATE FEATURE FILE NOW**
+   - If task has user stories AND no feature file → **CREATE FEATURE FILE NOW**
+   - If single isolated task → Feature file optional
+4. **Create Before [📋]**: Feature file MUST exist before marking task as [📋]
+5. **Update Synchronously**: When adding new tasks to existing feature, update feature file
+
+### Feature File Creation Triggers
+
+**Automatic triggers** (create feature file without asking):
+- Creating 2+ tasks with same feature name
+- Creating master task with sub-tasks
+- Task references feature that doesn't exist yet
+
+**Prompt user** (ask if feature file needed):
+- Creating single task that might expand later
+- Unclear if task is part of larger feature
+- User mentions "might add more features later"
+
+### Validation Messages
+
+When creating feature file, inform user:
+```
+"Creating feature file: features/user-authentication-system.md
+This feature has multiple related tasks, so a feature file is required
+for coordination and tracking."
+```
+
+When feature file already exists:
+```
+"Feature file exists: features/user-authentication-system.md
+Updating with new task reference."
+```
+
+When feature file NOT needed:
+```
+"Single isolated task - no feature file needed.
+Using category tags only."
+```
+
 ## Best Practices
 
 ### PRD Creation
@@ -390,6 +451,9 @@ Automatically create missing folders and files:
 3. Link to implementing tasks
 4. Track acceptance criteria
 5. Update as requirements evolve
+6. **CRITICAL**: Create feature file BEFORE marking first task as [📋]
+7. Use decision tree in FEATURE_GUIDELINES.md to determine if feature file needed
+8. Keep feature files and task files synchronized
 
 ### Scope Control
 1. Apply over-engineering prevention rules
@@ -406,6 +470,35 @@ Automatically create missing folders and files:
 5. Get stakeholder buy-in
 
 ## Common Workflows
+
+### Workflow: Create Task with Feature Validation
+
+**NEW**: Enforced workflow to ensure feature files are created when needed
+
+1. User requests: "Create tasks for implementing user authentication"
+2. Analyze request to identify if feature file needed:
+   - Will there be multiple tasks? → YES → Feature file REQUIRED
+   - Multi-component (frontend + backend + database)? → YES → Feature file REQUIRED
+   - Has user stories? → Check with user
+3. If feature file needed:
+   a. Create feature file FIRST: `.fstrent_spec_tasks/features/user-authentication-system.md`
+   b. Fill in feature template (use minimal template for simpler features)
+   c. Add overview, user stories, acceptance criteria
+4. Create first task file in `.fstrent_spec_tasks/tasks/`
+5. Add feature reference to task YAML: `feature: User Authentication System`
+6. Update feature file "Related Tasks" section with first task
+7. Mark first task as [📋] in TASKS.md
+8. Create additional task files
+9. Update feature file with each new task
+10. Mark additional tasks as [📋]
+11. Confirm all files created and synchronized
+
+**Validation Prompts**:
+- "This appears to be a multi-task feature. I'll create a feature file first."
+- "Feature file created: features/user-authentication-system.md"
+- "Task file references feature in YAML frontmatter"
+- "Feature file updated with task in Related Tasks section"
+- "Ready to mark as [📋]"
 
 ### Workflow: Create PRD for New Project
 

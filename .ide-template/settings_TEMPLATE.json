@@ -1,0 +1,18 @@
+{
+  "_comment": "Replace {IDE_NAME} with actual IDE name (lowercase)",
+  "{IDE_NAME}.taskSystem": "fstrent_spec_tasks",
+  "{IDE_NAME}.taskDirectory": ".fstrent_spec_tasks",
+  "{IDE_NAME}.rules.autoLoad": true,
+  "{IDE_NAME}.rules.customPath": "{CONFIG_DIR}rules",
+  "{IDE_NAME}.commands.customPath": "{CONFIG_DIR}commands",
+  "{IDE_NAME}.model.default": "claude-sonnet-4",
+  "{IDE_NAME}.model.fallback": "gpt-4-turbo",
+  "{IDE_NAME}.context.maxTokens": 150000,
+  "{IDE_NAME}.context.prioritize": [
+    "agents.md",
+    ".fstrent_spec_tasks/PROJECT_CONTEXT.md",
+    ".fstrent_spec_tasks/TASKS.md"
+  ],
+  "{IDE_NAME}.format.yamlIndent": 2,
+  "{IDE_NAME}.format.markdownLint": true
+}

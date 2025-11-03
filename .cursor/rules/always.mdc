@@ -15,3 +15,4 @@ alwaysApply: true
 3. check your MCP tool lists, you seem to forget you have a lot of tools
 
 
+4. When working with Python Project, please use the UV for virtual environment management

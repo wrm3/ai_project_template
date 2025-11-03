@@ -1,0 +1,26 @@
+{
+  "roo.taskSystem": "fstrent_spec_tasks",
+  "roo.taskDirectory": ".fstrent_spec_tasks",
+  "roo.rules.autoLoad": true,
+  "roo.rules.customPath": ".roo-code/rules",
+  "roo.commands.customPath": ".roo-code/commands",
+  "roo.model.default": "claude-sonnet-4",
+  "roo.model.fallback": "gpt-4-turbo",
+  "roo.context.maxTokens": 150000,
+  "roo.context.prioritize": [
+    "agents.md",
+    ".fstrent_spec_tasks/PROJECT_CONTEXT.md",
+    ".fstrent_spec_tasks/TASKS.md",
+    ".roo-code/rules/always.md"
+  ],
+  "roo.team.assignmentTracking": false,
+  "roo.team.notifyOnTaskChange": false,
+  "roo.git.autoCommit": false,
+  "roo.git.commitMessageTemplate": "{task_id}: {brief_description}",
+  "roo.quality.autoReview": false,
+  "roo.quality.testOnSave": false,
+  "roo.format.yamlIndent": 2,
+  "roo.format.markdownLint": true,
+  "roo.experimental.parallelTasks": true,
+  "roo.experimental.subAgents": true
+}

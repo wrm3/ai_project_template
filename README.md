@@ -8,7 +8,7 @@
 [![Version](https://img.shields.io/badge/version-0.2.0-blue.svg)](https://github.com/wrm3/ai_project_template)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-> A comprehensive project template that works seamlessly across multiple AI-powered IDEs (**Claude Code**, **Cursor**, **Windsurf**, **Roo-Code**, and more), enabling teams to collaborate regardless of IDE preference.
+> A comprehensive project template that works seamlessly across **5 AI-powered IDEs** (**Claude Code**, **Cursor**, **Windsurf**, **Roo-Code**, **Cline**) plus template framework for unlimited future IDE support, enabling teams to collaborate regardless of IDE preference.
 
 ---
 
@@ -30,28 +30,28 @@ You love Claude Code's Skills and Agents. Your teammate prefers Cursor's rules-b
 ### How It Works
 
 ```
-┌─────────────────────────────────────────────┐
-│     .fstrent_spec_tasks/ (Shared Data)     │
-│  ├── PLAN.md        (Product Requirements) │
-│  ├── TASKS.md       (Master task list)     │
-│  ├── BUGS.md        (Bug tracking)         │
-│  └── tasks/         (Individual tasks)     │
-└─────────────────────────────────────────────┘
-                      ▲
-                      │
-          ┌───────────┴───────────┐
-          │                       │
-    ┌─────▼─────┐          ┌─────▼─────┐
-    │  Cursor   │          │Claude Code│
-    │           │          │           │
-    │ .cursor/  │          │ .claude/  │
-    │  rules/   │          │  skills/  │
-    │           │          │  agents/  │
-    │           │          │ commands/ │
-    └───────────┘          └───────────┘
+┌──────────────────────────────────────────────────────┐
+│        .fstrent_spec_tasks/ (Shared Data)           │
+│  ├── PLAN.md        (Product Requirements)          │
+│  ├── TASKS.md       (Master task list)              │
+│  ├── BUGS.md        (Bug tracking)                  │
+│  └── tasks/         (Individual tasks)              │
+└──────────────────────────────────────────────────────┘
+                           ▲
+         ┌─────────────────┼──────────────────────────┐
+         │      │      │         │       │       │    │
+    ┌────▼───┐ ▼──┐ ┌─▼──┐ ┌────▼────┐ ▼────┐ ┌▼──┐ │
+    │ Claude │Cur-│ │Wind│ │Roo-Code│Cline│ │.ide│ │
+    │  Code  │sor│ │surf│ │        │     │ │temp│ │
+    │.claude/│.cu-│ │.wi-│ │.roo-   │.cli-│ │late│ │
+    │ skills/│rso-│ │nds-│ │code/   │ ne/ │ │    │ │
+    └────────┘r/  │ │urf/│ └────────┘     │ └────┘ │
+              └───┘ └────┘                 └────────┘
+
+         5 Fully Supported IDEs + Template for More
 ```
 
-**Both IDEs read and write the same files. No conflicts. No translation. Just works.**
+**All IDEs read and write the same files. No conflicts. No translation. Just works.**
 
 ### 🆕 agents.md Standard Support
 
@@ -110,17 +110,77 @@ Try it:
 Ask Cursor's AI: "What's the current project status?"
 ```
 
-#### For Both IDEs (Recommended for Teams)
+#### For Windsurf Users
 
 ```bash
-# Copy both interfaces + agents.md standard
+# Clone the repository
+git clone https://github.com/wrm3/ai_project_template.git
+cd ai_project_template
+
+# Copy Windsurf interface to your project
+cp -r .windsurf your-project/
+
+# Open your project in Windsurf
+# Rules are automatically loaded!
+```
+
+Try it:
+```
+/windsurf:status
+```
+
+#### For Roo-Code Users
+
+```bash
+# Clone the repository
+git clone https://github.com/wrm3/ai_project_template.git
+cd ai_project_template
+
+# Copy Roo-Code interface to your project
+cp -r .roo-code your-project/
+
+# Open your project in Roo-Code
+# Rules are automatically loaded!
+```
+
+Try it:
+```
+/status
+```
+
+#### For Cline Users (VS Code Extension)
+
+```bash
+# Clone the repository
+git clone https://github.com/wrm3/ai_project_template.git
+cd ai_project_template
+
+# Copy Cline interface to your project
+cp -r .cline your-project/
+
+# Open your project in VS Code with Cline extension
+# Start chatting!
+```
+
+Try it:
+```
+Show me the project status
+```
+
+#### For All IDEs (Recommended for Teams)
+
+```bash
+# Copy all interfaces + agents.md standard
 cp -r .claude your-project/
 cp -r .claude-plugin your-project/
 cp -r .cursor your-project/
+cp -r .windsurf your-project/
+cp -r .roo-code your-project/
+cp -r .cline your-project/
 cp agents.md your-project/
 cp CLAUDE.md your-project/  # References agents.md for compatibility
 
-# Now anyone can use either IDE!
+# Now anyone can use any of the 5 supported IDEs!
 ```
 
 #### agents.md Standard (Works with All Tools)
@@ -143,13 +203,30 @@ cp agents.md your-project/
 
 **In Claude Code**:
 ```
-/project:new-task
+/new-task Implement user authentication
 ```
 
 **In Cursor**:
-Ask the AI: "Create a new task for implementing user authentication"
+```
+@Cursor create a new task for implementing user authentication
+```
 
-**Result**: Task file created in `.fstrent_spec_tasks/tasks/`, visible in both IDEs!
+**In Windsurf**:
+```
+/new-task Implement user authentication
+```
+
+**In Roo-Code**:
+```
+/new-task Implement user authentication
+```
+
+**In Cline**:
+```
+Create a new task for implementing user authentication
+```
+
+**Result**: Task file created in `.fstrent_spec_tasks/tasks/`, visible in ALL 5 IDEs!
 
 ---
 
@@ -177,7 +254,7 @@ Ask the AI: "Create a new task for implementing user authentication"
 - ✅ Quality metrics
 
 ### Cross-IDE Compatibility
-- ✅ Works in both Claude Code and Cursor
+- ✅ Works in Claude Code, Cursor, Windsurf, and more
 - ✅ Same data, different interfaces
 - ✅ No file conflicts
 - ✅ Git-based collaboration
@@ -253,6 +330,7 @@ Ask the AI: "Create a new task for implementing user authentication"
 ## 📚 Documentation
 
 ### Getting Started
+- **[Prompt Engineering Mastery Guide](docs/PROMPT_ENGINEERING_MASTERY.md)** - **🔴 START HERE!** Foundational guide to AI agent coding (8,500 words)
 - **[Claude Code Setup Guide](docs/CLAUDE_CODE_SETUP_GUIDE.md)** - Complete setup for Claude Code (4,200 words)
 - **[Claude SubAgents Guide](docs/CLAUDE_SUBAGENTS_GUIDE.md)** - **NEW!** 15 specialized AI agents for 10x productivity
 - **[Cursor Compatibility Guide](docs/CURSOR_COMPATIBILITY_GUIDE.md)** - Cross-IDE collaboration (8,200 words)

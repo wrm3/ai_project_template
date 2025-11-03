@@ -416,3 +416,92 @@ This Skill is designed to work with the same file format used by Cursor's fstren
 
 Teams can use both IDEs interchangeably without workflow disruption.
 
+## Template Maintenance and Platform Architecture
+
+### Platform Architecture Reference
+
+When maintaining this template or adding new features, **ALWAYS** consult the [.ai_platform_architecture/](.ai_platform_architecture/) folder for platform-specific requirements and compatibility considerations.
+
+**Key Documentation:**
+- [.ai_platform_architecture/PLATFORM_COMPARISON.md](.ai_platform_architecture/PLATFORM_COMPARISON.md) - Cross-platform comparison table
+- [.ai_platform_architecture/CLAUDE_CODE.md](.ai_platform_architecture/CLAUDE_CODE.md) - Claude Code specific architecture
+- [.ai_platform_architecture/CURSOR.md](.ai_platform_architecture/CURSOR.md) - Cursor specific architecture
+- [.ai_platform_architecture/README.md](.ai_platform_architecture/README.md) - Overview and maintenance schedule
+
+### When to Reference Platform Architecture
+
+**ALWAYS check `.ai_platform_architecture/` before:**
+1. Adding new Skills, SubAgents, or Commands
+2. Modifying task file formats or naming conventions
+3. Creating new rules or instructions
+4. Updating file organization structure
+5. Making changes that affect cross-IDE compatibility
+
+### Critical Platform Differences
+
+**File Formats:**
+- Cursor uses `.mdc` files (UNIQUE - won't work on other platforms)
+- All other platforms use `.md` files
+- Task files must use YAML frontmatter for cross-platform compatibility
+
+**Skills and SubAgents:**
+- Claude Code: ✅ Has Skills & SubAgents
+- All other platforms: ❌ No equivalent (use rules/instructions instead)
+
+**Commands:**
+- Claude Code: `/command` (slash prefix)
+- Cursor: `@command` (@ prefix)
+- Others: See platform-specific docs
+
+### Periodic Verification
+
+**Quarterly Review (Every 3 Months):**
+- [ ] Check all platform official documentation for updates
+- [ ] Test template on each platform
+- [ ] Update `.ai_platform_architecture/` documentation
+- [ ] Update PLATFORM_COMPARISON.md comparison table
+- [ ] Document any breaking changes
+
+### Adding Features Cross-Platform
+
+When adding features, ensure compatibility:
+
+1. **Test on multiple platforms**: Claude Code and Cursor minimum
+2. **Document compatibility**: Update platform-specific files
+3. **Provide fallbacks**: For platform-specific features
+4. **Update comparison**: Add to PLATFORM_COMPARISON.md table
+5. **Migration guides**: Update if file structure changes
+
+### Platform-Specific vs Universal Features
+
+**Universal (work on all platforms):**
+- `.fstrent_spec_tasks/` task management system
+- Markdown documentation
+- Basic file organization
+- Standard project structure
+- YAML frontmatter in task files
+
+**Platform-Specific (limited availability):**
+- **Skills/SubAgents**: Claude Code only
+- **.mdc files**: Cursor only
+- **Command prefixes**: Vary by platform (`/` vs `@`)
+- **MCP UI**: Implementation varies by platform
+
+### Template Maintenance Workflow
+
+When maintaining this template:
+
+1. **Check platform docs** in `.ai_platform_architecture/`
+2. **Identify compatibility requirements** from PLATFORM_COMPARISON.md
+3. **Test on primary platforms** (Claude Code + Cursor)
+4. **Update platform-specific folders** (.claude/, .cursor/)
+5. **Update documentation** in `.ai_platform_architecture/`
+6. **Verify cross-platform** compatibility
+
+### Resources
+
+- **Official Platform Docs**: See `.ai_platform_architecture/README.md` for links
+- **Comparison Table**: `.ai_platform_architecture/PLATFORM_COMPARISON.md`
+- **Migration Guides**: In PLATFORM_COMPARISON.md
+- **Verification Status**: `.ai_platform_architecture/README.md` status table
+

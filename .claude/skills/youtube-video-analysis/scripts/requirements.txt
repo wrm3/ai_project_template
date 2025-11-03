@@ -1,17 +1,25 @@
 # YouTube Video Analysis - Python Dependencies
-# Based on user's proven Hanx tools stack (4 months production use)
-# Last Updated: 2025-10-19
+# Claude Code Native Integration (No external API needed!)
+# Last Updated: 2025-11-01
 
 # Core Dependencies
 pytubefix>=6.0.0              # YouTube video downloading
 openai-whisper>=20231117      # Audio transcription (Whisper AI)
 moviepy>=1.0.3                # Video/audio processing
 imageio-ffmpeg>=0.4.9         # FFmpeg binaries (bundled)
-anthropic>=0.7.0              # Claude API for LLM analysis
+opencv-python>=4.8.0          # Frame extraction and image processing
+opencv-contrib-python>=4.8.0  # Additional OpenCV modules
+Pillow>=10.0.0                # Image manipulation and encoding
+numpy>=1.24.0                 # Numerical operations for vision processing
+pytesseract>=0.3.10           # OCR for smart frame code detection (Task 044-2)
 
+# Batch Processing & Progress (Task 044-8)
+tqdm>=4.66.0                  # Progress bars for batch processing
+
+# NOTE: anthropic package NOT needed - Claude Code analyzes natively!
 # Standard Library Enhancements
-python-dotenv>=1.0.0          # Environment variable management
-requests>=2.31.0              # HTTP requests (for API calls)
+python-dotenv>=1.0.0          # Environment variable management (optional)
+requests>=2.31.0              # HTTP requests (optional)
 
 # Optional: Faster Processing
 # faster-whisper>=0.10.0      # 4x faster than openai-whisper (uncomment if needed)

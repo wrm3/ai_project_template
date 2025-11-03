@@ -263,6 +263,14 @@ DROP INDEX IF EXISTS idx_users_verification_token;
 - Plan capacity
 - Coordinate maintenance windows
 
+### With Oracle APEX Specialist
+- Design schemas for APEX applications
+- Optimize SQL queries for Interactive Grids/Reports
+- Create PL/SQL packages for APEX business logic
+- Design views for complex APEX queries
+- Plan indexes for APEX filter/sort operations
+- Review APEX application database performance
+
 ### With Security Auditor
 - Review access controls
 - Implement encryption

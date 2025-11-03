@@ -1,16 +1,27 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python ../.claude/skills/youtube-video-analysis/scripts/analyze_video.py \"https://www.youtube.com/watch?v=FOqbS_llAms\" . base)"
+      "Bash(python:*)",
+      "Bash(echo:*)",
+      "Bash(chmod +x /mnt/c/git/ai_project_template/.claude/hooks/*.sh)",
+      "Bash(python3 -c \"\nimport sys\nsys.path.insert(0, ''.'')\n\ntry:\n    from base_agent import BaseAgent\n    from context import AgentContext\n    from workflow import AgentWorkflow\n    print(''✓ All core modules import successfully'')\n    print(f''✓ BaseAgent: {BaseAgent.__name__}'')\n    print(f''✓ AgentContext: {AgentContext.__name__}'')\n    print(f''✓ AgentWorkflow: {AgentWorkflow.__name__}'')\nexcept Exception as e:\n    print(f''✗ Import failed: {e}'')\n    sys.exit(1)\n\")",
+      "Bash(python3 -m py_compile base_agent.py context.py workflow.py __init__.py)",
+      "Bash(wc -l .claude/agents/sdk/{base_agent,context,workflow,fallback,health}.py)",
+      "Bash(tree -L 3 /mnt/c/git/ai_project_template/.claude/skills/hanx-youtube-researcher --filesfirst)",
+      "Bash(bash generate_remaining_files.sh)",
+      "Bash(find .claude/skills/startup-resource-access/reference -name \"*.md\" -exec wc -l {})",
+      "Bash(find .claude/skills/startup-resource-access/resources -name \"*.md\" -exec wc -l {})",
+      "Bash(find .claude/skills/startup-resource-access/templates -name \"*.md\" -exec wc -l {})",
+      "Bash(find .claude/skills/startup-resource-access/scripts -name \"*.py\" -exec wc -l {})"
     ],
     "deny": [],
     "ask": []
   },
+  "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "fstrent_mcp_tasks",
     "fstrent_mcp_mysql",
     "fstrent_mcp_browser_use",
     "fstrent_mcp_computer_use"
-  ],
-  "enableAllProjectMcpServers": true
+  ]
 }

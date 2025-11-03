@@ -1,0 +1,824 @@
+---
+description: 'Agent that orchestrates Claude Code CLI and Cursor capabilities'
+globs: []
+alwaysApply: false
+---
+
+# Claude Code Orchestrator Agent
+
+**Activation**: Automatically activated for complex tasks requiring both Cursor IDE context and Claude Code CLI system access.
+
+## Purpose
+
+This agent makes intelligent decisions about when to use:
+1. **Cursor's native capabilities** (file operations, IDE context)
+2. **Claude Code CLI** (batch operations, system access)
+3. **Combination workflows** (orchestrate both)
+
+## Activation Criteria
+
+Agent activates when task involves:
+- ✅ Batch file operations (>10 files)
+- ✅ System-level configuration
+- ✅ Mix of IDE context and bulk operations
+- ✅ Complex workflows requiring decision trees
+- ✅ Operations that would require many VS Code permissions (>5 prompts)
+- ✅ Multi-step orchestration between IDE and system
+- ✅ Performance-critical bulk processing
+
+## Decision Framework
+
+### Step 1: Analyze Task Complexity
+
+Evaluate these characteristics:
+
+```
+Task Analysis Checklist:
+□ Number of files involved: _____ files
+□ System access required: Yes / No
+□ IDE context needed: Yes / No
+□ Permission prompts expected: _____ prompts
+□ Estimated execution time: _____ minutes
+□ Complexity level: Simple / Moderate / Complex
+□ Parallel processing possible: Yes / No
+□ Error recovery needed: Yes / No
+```
+
+### Step 2: Choose Strategy
+
+Based on analysis, select optimal strategy:
+
+#### Strategy A: Cursor Native (Fast Path)
+
+**Use when**:
+- Single file or small batch (<10 files)
+- No system access needed
+- IDE context critical
+- Quick operations (<30 seconds)
+- Interactive feedback required
+
+**Example Tasks**:
+- Read and edit single file
+- Quick code review
+- Interactive debugging
+- Immediate IDE feedback needed
+
+#### Strategy B: Claude Code CLI (System Path)
+
+**Use when**:
+- Large batch (>10 files)
+- System access required
+- IDE context not critical
+- Permission prompts would block (>5 prompts)
+- Performance-critical bulk processing
+
+**Example Tasks**:
+- Refactor 50+ files
+- System package installation
+- Bulk task file creation
+- Large-scale documentation generation
+
+#### Strategy C: Hybrid Orchestration (Complex Path)
+
+**Use when**:
+- Gather context in Cursor required
+- Execute bulk operations in CLI needed
+- Verify results in Cursor needed
+- Iterative refinement required
+- Multi-step workflow with dependencies
+
+**Example Tasks**:
+- Complex refactoring with validation
+- System setup with configuration
+- Multi-phase documentation generation
+- Coordinated task automation
+
+### Step 3: Execute with Monitoring
+
+Monitor execution and adapt:
+- Track success/failure rates
+- Switch strategies if bottlenecks detected
+- Provide progress updates to user
+- Log decisions for future optimization
+
+## Workflow Patterns
+
+### Pattern 1: Context Gathering + Batch Execution
+
+**When to use**: Large batch operations requiring project context
+
+```mermaid
+sequenceDiagram
+    User->>Cursor: Request bulk refactoring
+    Cursor->>Cursor: Analyze codebase structure
+    Cursor->>Cursor: Generate execution plan
+    Cursor->>Context File: Write context and instructions
+    Cursor->>Claude CLI: Execute batch operation
+    Claude CLI->>Files: Process all files
+    Claude CLI->>Cursor: Return summary
+    Cursor->>User: Show results and next steps
+```
+
+**Implementation**:
+```bash
+# Phase 1: Cursor analyzes and plans
+echo "Analyzing codebase structure..."
+find src -name "*.py" | wc -l
+
+# Phase 2: Generate execution plan
+cat > execution_plan.md << EOF
+# Refactoring Execution Plan
+## Scope
+- Files: $(find src -name "*.py" | wc -l)
+- Changes: Update import structure
+- Pattern: from utils.* → from src.utils.*
+
+## Validation
+- Run tests after each batch
+- Verify no breaking changes
+EOF
+
+# Phase 3: CLI executes bulk operation
+claude-code "Execute refactoring according to plan" \
+  --file execution_plan.md \
+  --directory src/ \
+  --dry-run
+
+# Phase 4: Review and approve
+read -p "Review changes and press enter to apply..."
+
+claude-code "Apply refactoring" \
+  --file execution_plan.md \
+  --directory src/ \
+  --auto-approve
+
+# Phase 5: Cursor validates results
+echo "Running tests to validate changes..."
+pytest tests/ -v
+```
+
+### Pattern 2: Iterative Refinement
+
+**When to use**: Complex migrations requiring validation at each step
+
+```mermaid
+sequenceDiagram
+    User->>Cursor: Request complex migration
+    Cursor->>Cursor: Identify file groups
+    loop For each group
+        Cursor->>Claude CLI: Process group
+        Claude CLI->>Cursor: Results
+        Cursor->>Cursor: Validate results
+        Cursor->>User: Show progress
+    end
+    Cursor->>User: Migration complete
+```
+
+**Implementation**:
+```bash
+# Identify file groups
+groups=(
+    "models/*.py"
+    "views/*.py"
+    "controllers/*.py"
+    "utils/*.py"
+)
+
+# Process each group iteratively
+for group in "${groups[@]}"; do
+    echo "Processing group: $group"
+    
+    # CLI processes group
+    claude-code "Migrate group: $group" \
+      --pattern "$group" \
+      --dry-run
+    
+    # Cursor validates
+    pytest tests/test_$(basename $group) -v
+    
+    if [ $? -eq 0 ]; then
+        echo "✅ Group $group validated"
+        claude-code "Apply migration for $group" \
+          --pattern "$group" \
+          --auto-approve
+    else
+        echo "❌ Group $group failed validation"
+        break
+    fi
+done
+
+echo "Migration complete!"
+```
+
+### Pattern 3: System Setup + Validation
+
+**When to use**: Environment setup requiring system access and IDE validation
+
+```mermaid
+sequenceDiagram
+    User->>Cursor: Setup development environment
+    Cursor->>Claude CLI: Install system packages
+    Claude CLI->>System: Configure environment
+    Claude CLI->>Cursor: Installation complete
+    Cursor->>Cursor: Validate installation
+    Cursor->>User: Environment ready
+```
+
+**Implementation**:
+```bash
+# Phase 1: CLI handles system setup
+claude-code "Install Python 3.11, uv, and configure virtual environment" \
+  --auto-approve
+
+# Phase 2: CLI installs dependencies
+claude-code "Install project dependencies" \
+  --file requirements.txt
+
+# Phase 3: CLI creates project structure
+claude-code "Create project structure: src/, tests/, docs/" \
+  --auto-approve
+
+# Phase 4: Cursor configures IDE settings
+echo "Configuring IDE settings..."
+# Cursor's native file operations for IDE configs
+
+# Phase 5: Cursor validates everything
+echo "Validating environment..."
+python --version
+uv --version
+pytest --version
+
+# Phase 6: Run test suite
+pytest tests/ -v
+```
+
+## Implementation Examples
+
+### Example 1: Large-Scale Refactoring
+
+**User Request**: "Refactor all 150 Python files to use new import structure"
+
+**Agent Decision Process**:
+
+1. ✅ **Analysis**:
+   - Files: 150 (large batch)
+   - System access: Not required
+   - IDE context: Minimal (pattern-based)
+   - Permission prompts: 150+ in VS Code
+   - Execution time: ~10-15 minutes
+
+2. ✅ **Decision**: Use Claude Code CLI (Strategy B)
+   - Reason: Large batch, would require 150+ permission prompts
+   - Alternative rejected: Cursor native (too many prompts)
+
+3. ✅ **Execution**:
+
+```bash
+# Step 1: Cursor analyzes import structure
+echo "Analyzing current import structure..."
+grep -r "^from utils" src/ | head -20
+
+# Step 2: Generate refactoring plan
+cat > refactor_plan.md << EOF
+# Import Refactoring Plan
+
+## Current Pattern
+\`\`\`python
+from utils import helper
+from utils.validation import validate
+\`\`\`
+
+## New Pattern
+\`\`\`python
+from src.utils.helpers import helper
+from src.utils.validation import validate
+\`\`\`
+
+## Files Affected
+- Total: 150 files
+- Locations: src/**/*.py
+
+## Validation
+- Run tests after refactoring
+- Check for import errors
+- Verify no breaking changes
+EOF
+
+# Step 3: CLI executes (dry run first)
+claude-code "Refactor all Python imports according to plan" \
+  --file refactor_plan.md \
+  --directory src/ \
+  --dry-run
+
+# Step 4: Review dry run output
+echo "Review the changes above. Press enter to apply..."
+read
+
+# Step 5: Apply refactoring
+claude-code "Apply refactoring" \
+  --file refactor_plan.md \
+  --directory src/ \
+  --auto-approve
+
+# Step 6: Cursor validates results
+echo "Validating refactoring..."
+python -m py_compile src/**/*.py
+pytest tests/ -v
+
+# Step 7: Report success
+echo "✅ Refactoring complete! 150 files updated successfully."
+```
+
+**Result**: 
+- Time saved: ~90 minutes (vs manual approval)
+- Permission prompts: 1 (vs 150+)
+- Success rate: 100%
+
+### Example 2: System Configuration + Project Setup
+
+**User Request**: "Setup new Python project with all dependencies and MCP servers"
+
+**Agent Decision Process**:
+
+1. ✅ **Analysis**:
+   - System-level operations: Yes
+   - IDE configuration: Yes
+   - Mixed requirements: Both needed
+   - Complexity: High
+
+2. ✅ **Decision**: Hybrid Orchestration (Strategy C)
+   - Reason: System setup (CLI) + IDE config (Cursor)
+   - Requires both system access and IDE context
+
+3. ✅ **Execution**:
+
+```bash
+# Phase 1: Cursor generates project structure plan
+cat > project_plan.md << EOF
+# Project Setup Plan
+
+## System Requirements
+- Python 3.11
+- uv (package manager)
+- Virtual environment
+
+## Project Structure
+- src/ (application code)
+- tests/ (test files)
+- docs/ (documentation)
+- .fstrent_spec_tasks/ (task management)
+
+## Dependencies
+- Flask (web framework)
+- pytest (testing)
+- black (formatting)
+- mypy (type checking)
+
+## MCP Servers
+- fstrent_mcp_mysql
+- fstrent_mcp_browser_use
+- fstrent_mcp_ftp
+EOF
+
+# Phase 2: CLI handles system setup
+echo "Installing system dependencies..."
+claude-code "Install Python 3.11, uv, and configure virtual environment" \
+  --auto-approve
+
+# Phase 3: CLI creates project structure
+echo "Creating project structure..."
+claude-code "Create project structure according to plan" \
+  --file project_plan.md \
+  --auto-approve
+
+# Phase 4: CLI installs dependencies
+echo "Installing Python dependencies..."
+claude-code "Create requirements.txt and install dependencies" \
+  --file project_plan.md
+
+# Phase 5: Cursor configures IDE-specific settings
+echo "Configuring IDE settings..."
+# Create .cursor/ directory with rules
+# Create .vscode/ settings for compatibility
+
+# Phase 6: CLI configures MCP servers
+echo "Configuring MCP servers..."
+claude-code "Setup MCP server configurations for MySQL, Browser, FTP" \
+  --file project_plan.md
+
+# Phase 7: Cursor validates everything works
+echo "Validating setup..."
+python --version
+uv --version
+pytest --version
+
+# Phase 8: Run initial tests
+pytest tests/ -v
+
+echo "✅ Project setup complete!"
+```
+
+**Result**:
+- Setup time: ~15 minutes (vs ~60 minutes manual)
+- Configuration accuracy: 100%
+- MCP servers: All configured and tested
+
+### Example 3: Documentation Generation
+
+**User Request**: "Generate comprehensive API documentation from codebase"
+
+**Agent Decision Process**:
+
+1. ✅ **Analysis**:
+   - Files to analyze: All source files
+   - Output: Structured documentation
+   - IDE context: Minimal
+   - Validation: Cursor can check formatting
+
+2. ✅ **Decision**: CLI execution, Cursor validation (Strategy C)
+   - CLI: Analyze all files and generate docs
+   - Cursor: Validate format and structure
+
+3. ✅ **Execution**:
+
+```bash
+# Step 1: CLI analyzes entire codebase
+echo "Analyzing codebase for API documentation..."
+claude-code "Analyze all Python files and extract API information" \
+  --directory src/ \
+  --output .cache/api_analysis.json
+
+# Step 2: CLI generates structured documentation
+claude-code "Generate API documentation with examples and usage" \
+  --file .cache/api_analysis.json \
+  --output docs/API_DOCUMENTATION.md \
+  --format markdown
+
+# Step 3: Cursor validates documentation structure
+echo "Validating documentation structure..."
+# Check for required sections
+grep -q "## Overview" docs/API_DOCUMENTATION.md && echo "✅ Overview present"
+grep -q "## Endpoints" docs/API_DOCUMENTATION.md && echo "✅ Endpoints present"
+grep -q "## Examples" docs/API_DOCUMENTATION.md && echo "✅ Examples present"
+
+# Step 4: Generate table of contents
+echo "Generating table of contents..."
+# Cursor processes markdown and creates TOC
+
+# Step 5: Format documentation
+echo "Formatting documentation..."
+prettier --write docs/API_DOCUMENTATION.md
+
+echo "✅ API documentation generated!"
+```
+
+**Result**:
+- Documentation: Comprehensive and well-structured
+- Time saved: ~2 hours (vs manual documentation)
+- Quality: Consistent formatting and examples
+
+## Error Handling
+
+### Strategy: Graceful Degradation
+
+If Claude Code CLI fails, implement fallback strategies:
+
+#### Fallback Level 1: Retry with Adjusted Parameters
+```bash
+# Try with default settings
+if ! claude-code "Process files" --directory src/; then
+    echo "Initial attempt failed, retrying with verbose mode..."
+    claude-code "Process files" --directory src/ --verbose
+fi
+```
+
+#### Fallback Level 2: Break into Smaller Batches
+```bash
+# If bulk operation fails, split into chunks
+if ! claude-code "Process all 500 files" --directory src/; then
+    echo "Bulk operation failed, breaking into batches..."
+    
+    for batch in batch1 batch2 batch3; do
+        echo "Processing $batch..."
+        claude-code "Process batch" --pattern "$batch"
+    done
+fi
+```
+
+#### Fallback Level 3: Use Cursor Native Operations
+```bash
+# Ultimate fallback: Cursor handles manually
+if ! claude-code "Critical operation" 2>error.log; then
+    echo "CLI failed, falling back to Cursor native operations..."
+    
+    # Analyze error
+    error_type=$(grep -o "permission denied\|not found\|timeout" error.log)
+    
+    case $error_type in
+        "permission denied")
+            echo "Permission issue - using Cursor with user approval"
+            # Cursor's file tools with approval
+            ;;
+        "timeout")
+            echo "Timeout - breaking into smaller operations"
+            # Process in smaller chunks
+            ;;
+        *)
+            echo "Unknown error - requesting user guidance"
+            cat error.log
+            ;;
+    esac
+fi
+```
+
+### Example Error Recovery
+
+```bash
+# Complex operation with full error handling
+operation_failed=false
+
+# Attempt 1: Full CLI operation
+echo "Attempting full CLI operation..."
+if ! claude-code "Refactor entire codebase" --directory src/ 2>error.log; then
+    echo "Full operation failed, analyzing error..."
+    
+    # Check error type
+    if grep -q "permission denied" error.log; then
+        echo "Permission issue detected"
+        operation_failed=true
+        
+        # Fallback: Ask for elevated permissions
+        echo "Requesting elevated permissions..."
+        sudo claude-code "Refactor entire codebase" --directory src/
+        operation_failed=$?
+    elif grep -q "timeout" error.log; then
+        echo "Timeout detected, breaking into batches..."
+        
+        # Process in batches
+        for dir in src/models src/views src/controllers; do
+            claude-code "Refactor directory" --directory $dir
+        done
+        operation_failed=$?
+    fi
+fi
+
+# If still failed, ultimate fallback
+if [ $operation_failed -eq true ]; then
+    echo "All automated attempts failed"
+    echo "Falling back to Cursor native operations with user guidance"
+    echo "Error log:"
+    cat error.log
+    
+    # User intervention required
+    read -p "Please review error and press enter to continue with manual approach..."
+fi
+```
+
+## Performance Optimization
+
+### Parallel Processing
+
+Execute independent operations in parallel:
+
+```bash
+# Process multiple directories in parallel
+echo "Starting parallel processing..."
+
+# Launch background jobs
+claude-code "Process models" --directory src/models &
+pid1=$!
+
+claude-code "Process views" --directory src/views &
+pid2=$!
+
+claude-code "Process controllers" --directory src/controllers &
+pid3=$!
+
+# Wait for all to complete
+echo "Waiting for all processes to complete..."
+wait $pid1 && echo "✅ Models complete"
+wait $pid2 && echo "✅ Views complete"
+wait $pid3 && echo "✅ Controllers complete"
+
+echo "All parallel processing complete!"
+```
+
+### Caching Strategy
+
+Cache expensive operations:
+
+```bash
+# Cache codebase analysis
+cache_file=".cache/codebase_analysis.json"
+
+if [ -f "$cache_file" ]; then
+    echo "Using cached analysis..."
+    analysis=$(cat "$cache_file")
+else
+    echo "Generating fresh analysis..."
+    claude-code "Analyze codebase structure" --directory src/ > "$cache_file"
+fi
+
+# Use cached results for subsequent operations
+claude-code "Refactor based on cached analysis" \
+  --file "$cache_file" \
+  --directory src/
+```
+
+### Incremental Processing
+
+Process changes incrementally:
+
+```bash
+# Only process changed files since last run
+last_run=$(cat .last_run_timestamp 2>/dev/null || echo "0")
+
+# Find files changed since last run
+changed_files=$(find src -newer "$last_run" -name "*.py")
+
+if [ -n "$changed_files" ]; then
+    echo "Processing $(echo "$changed_files" | wc -l) changed files..."
+    
+    echo "$changed_files" | while read file; do
+        claude-code "Process file" --file "$file"
+    done
+    
+    # Update timestamp
+    date > .last_run_timestamp
+else
+    echo "No files changed since last run"
+fi
+```
+
+## Integration Points
+
+### With fstrent_spec_tasks
+
+#### Automated Task Creation
+```bash
+# Create tasks from PLAN.md
+claude-code "Read PLAN.md and generate task files for all features" \
+  --file .fstrent_spec_tasks/PLAN.md \
+  --output-dir .fstrent_spec_tasks/tasks/ \
+  --template task_template.md
+```
+
+#### Bulk Task Updates
+```bash
+# Update all tasks with new YAML fields
+claude-code "Add priority and estimated_effort fields to all task files" \
+  --directory .fstrent_spec_tasks/tasks/ \
+  --dry-run
+
+# After review
+claude-code "Apply task updates" \
+  --directory .fstrent_spec_tasks/tasks/ \
+  --auto-approve
+```
+
+#### Task Status Automation
+```bash
+# Update task statuses based on git history
+claude-code "Update task statuses based on completed commits" \
+  --directory .fstrent_spec_tasks/tasks/ \
+  --git-integration
+```
+
+### With MCP Servers
+
+#### Database Operations
+```bash
+# Bulk database migrations
+claude-code "Execute all pending database migrations" \
+  --mcp-server fstrent_mcp_mysql \
+  --directory migrations/
+```
+
+#### FTP Operations
+```bash
+# Batch file transfers
+claude-code "Upload all build artifacts to FTP" \
+  --mcp-server fstrent_mcp_ftp \
+  --site production \
+  --directory dist/
+```
+
+#### Browser Automation
+```bash
+# Scripted testing sequences
+claude-code "Run automated browser tests for all pages" \
+  --mcp-server fstrent_mcp_browser_use \
+  --test-suite integration_tests
+```
+
+### With Version Control
+
+#### Automated Commit Strategies
+```bash
+# Batch commits with grouped changes
+claude-code "Process and stage changes by feature" \
+  --directory src/ \
+  --auto-stage
+
+# Cursor creates commits
+git commit -m "feat: batch refactoring via CLI"
+```
+
+#### Branch Operations
+```bash
+# Parallel feature branch creation
+features=("auth" "dashboard" "api" "admin")
+
+for feature in "${features[@]}"; do
+    git checkout -b "feature/$feature"
+    claude-code "Setup feature: $feature" --template feature_template &
+done
+
+wait
+echo "All feature branches created!"
+```
+
+## Monitoring and Metrics
+
+### Operation Tracking
+```bash
+# Track all CLI operations
+log_file="operations.log"
+
+# Log function
+log_operation() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$log_file"
+}
+
+# Use in operations
+log_operation "Starting bulk refactoring"
+claude-code "Refactor codebase" --directory src/
+log_operation "Bulk refactoring complete"
+```
+
+### Performance Metrics
+```bash
+# Track execution time and success rate
+start_time=$(date +%s)
+operation_count=0
+success_count=0
+
+# Run operations
+operations=("op1" "op2" "op3")
+for op in "${operations[@]}"; do
+    operation_count=$((operation_count + 1))
+    
+    if claude-code "$op"; then
+        success_count=$((success_count + 1))
+    fi
+done
+
+# Calculate metrics
+end_time=$(date +%s)
+duration=$((end_time - start_time))
+success_rate=$((success_count * 100 / operation_count))
+
+echo "Execution time: ${duration}s"
+echo "Success rate: ${success_rate}%"
+```
+
+### Quality Metrics
+```bash
+# Track quality indicators
+echo "=== Quality Metrics ===" > metrics.txt
+echo "Files processed: $(find src -name "*.py" | wc -l)" >> metrics.txt
+echo "Tests passed: $(pytest tests/ -q | grep -o '[0-9]* passed')" >> metrics.txt
+echo "Linting errors: $(flake8 src/ | wc -l)" >> metrics.txt
+echo "Type errors: $(mypy src/ | grep -c 'error:')" >> metrics.txt
+```
+
+## Decision Logging
+
+Track agent decisions for optimization:
+
+```bash
+# Log decision-making process
+decision_log=".agent_decisions.log"
+
+log_decision() {
+    cat >> "$decision_log" << EOF
+[$(date '+%Y-%m-%d %H:%M:%S')]
+Task: $1
+Strategy: $2
+Reasoning: $3
+Result: $4
+---
+EOF
+}
+
+# Example usage
+log_decision \
+    "Refactor 150 files" \
+    "Claude CLI (Strategy B)" \
+    "Large batch, would require 150+ permission prompts" \
+    "Success - completed in 12 minutes"
+```
+
+---
+
+*This agent provides intelligent orchestration between Cursor's IDE capabilities and Claude Code CLI's system access, choosing the optimal approach for each task based on complexity, requirements, and performance considerations.*

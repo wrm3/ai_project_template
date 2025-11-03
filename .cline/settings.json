@@ -1,0 +1,9 @@
+{
+  "cline.taskSystem": "fstrent_spec_tasks",
+  "cline.taskDirectory": ".fstrent_spec_tasks",
+  "cline.rulesFile": ".cline/rules/fstrent_spec_tasks.md",
+  "cline.model": "claude-sonnet-4",
+  "cline.contextWindow": 200000,
+  "cline.autoSave": true,
+  "cline.chatHistory": 50
+}

@@ -1,0 +1,32 @@
+# YouTube RAG Storage Skill - Python Dependencies
+
+# Core OpenAI SDK
+openai>=1.0.0
+
+# Database
+psycopg2-binary>=2.9.9    # PostgreSQL adapter
+pgvector>=0.2.4            # PostgreSQL vector extension
+supabase>=2.0.0            # Supabase Python client (optional, for higher-level API)
+
+# Numerical processing
+numpy>=1.24.0
+
+# Environment management
+python-dotenv>=1.0.0
+
+# Progress indicators (optional, for Task 044-9)
+tqdm>=4.66.0
+
+# Video processing (from youtube-video-analysis skill)
+# These are typically installed in the parent youtube-video-analysis skill
+# yt-dlp>=2023.10.13
+# ffmpeg-python>=0.2.0
+# openai-whisper>=20231117
+
+# Chunking (from Task 044-5 - Dockling)
+# dockling>=0.1.0  # If using Dockling chunker
+# Note: Dockling may require additional setup, see DOCKLING_CHUNKING_GUIDE.md
+
+# Testing (optional)
+pytest>=7.4.0
+pytest-asyncio>=0.21.0

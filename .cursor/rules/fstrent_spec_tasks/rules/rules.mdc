@@ -9,10 +9,20 @@ This rule consolidates the essential fstrent_spec_tasks functionality into a sin
 
 ## Task Management
 
-### Task Creation
-- Create task files in `.fstrent_spec_tasks/tasks/` with format: `task{id}_descriptive_name.md`
-- Update `TASKS.md` with task entry
-- Use Windows-safe emojis: `[ ]` pending, `[🔄]` in-progress, `[✅]` completed, `[❌]` failed
+### Task Creation (MANDATORY PROCESS)
+
+**🔴 CRITICAL: Create task file BEFORE changing to [📋]**
+
+**Process** (follow in order):
+1. Add to TASKS.md with `[ ]` status
+2. **Immediately** create task file in `.fstrent_spec_tasks/tasks/` with format: `taskXXX_descriptive_name.md`
+   - NO underscore after "task" (e.g., `task052_` NOT `task_052_`)
+   - Use hyphens for subtasks (e.g., `task039-1_` NOT `task039.1_`)
+3. Include complete YAML frontmatter and all required sections
+4. Update TASKS.md to `[📋]` status (file created, ready to start)
+5. **Then** you can start work and change to `[🔄]`
+
+**Never skip step 2-3**: "Strike while the metal is hot" - create file in same context
 
 ### Task File Format
 ```yaml
@@ -28,10 +38,32 @@ dependencies: [task_ids]
 ---
 ```
 
-### Task Status Management
-- **Start**: Update status to `in-progress`, update TASKS.md with `[🔄]`
-- **Complete**: Update status to `completed`, update TASKS.md with `[✅]`
-- **Fail**: Update status to `failed`, update TASKS.md with `[❌]`
+### Task Status Management (ENFORCED PROGRESSION)
+
+**Status Indicators**:
+- `[ ]` = Task listed but **NO detailed file created yet** ⚠️ **BLOCKED - DO NOT START**
+- `[📋]` = Task file created and ready to start ✅ **UNBLOCKED - CAN PROCEED**
+- `[🔄]` = In Progress (actively working) - **Requires [📋] first**
+- `[✅]` = Completed
+- `[❌]` = Failed or blocked
+
+**🔴 CRITICAL RULE: Cannot Skip [📋]**
+```
+CORRECT: [ ] → [📋] → [🔄] → [✅]
+WRONG:   [ ] → [🔄] (VIOLATION - no file created!)
+```
+
+**Before changing `[ ]` to `[📋]`**:
+- [ ] Detailed task file created in `.fstrent_spec_tasks/tasks/`
+- [ ] YAML frontmatter included
+- [ ] All required sections complete
+- [ ] File follows naming: `taskXXX_description.md` (NO underscore after "task")
+
+**Status Transitions**:
+- **Ready**: Create file with YAML, update TASKS.md to `[📋]`
+- **Start**: Update status to `in-progress`, update TASKS.md to `[🔄]` (requires `[📋]` first)
+- **Complete**: Update status to `completed`, update TASKS.md to `[✅]`
+- **Fail**: Update status to `failed`, update TASKS.md to `[❌]`
 
 ## File Organization
 
@@ -186,6 +218,99 @@ When starting tasks, display:
 - Use tool combinations for comprehensive workflows
 - Validate tool selection against task requirements
 
+## Template Maintenance and Platform Architecture
+
+### Platform Architecture Reference
+
+When maintaining this template or adding new features, **ALWAYS** consult the `.ai_platform_architecture/` folder for platform-specific requirements and compatibility considerations.
+
+**Key Documentation:**
+- `.ai_platform_architecture/PLATFORM_COMPARISON.md` - Cross-platform comparison table
+- `.ai_platform_architecture/CURSOR.md` - Cursor specific architecture
+- `.ai_platform_architecture/CLAUDE_CODE.md` - Claude Code specific architecture
+- `.ai_platform_architecture/README.md` - Overview and maintenance schedule
+
+### When to Reference Platform Architecture
+
+**ALWAYS check `.ai_platform_architecture/` before:**
+1. Adding new rules or commands
+2. Modifying task file formats or naming conventions
+3. Creating new instructions or documentation
+4. Updating file organization structure
+5. Making changes that affect cross-IDE compatibility
+
+### Critical Platform Differences
+
+**File Formats (IMPORTANT):**
+- Cursor: Uses `.mdc` files (Markdown Cursor) - UNIQUE to Cursor
+- Claude Code: Uses `.md` files
+- Other platforms: Use `.md` files
+- Task files: Use `.md` with YAML frontmatter (cross-platform compatible)
+
+**Platform-Specific Features:**
+- Claude Code: Has Skills and SubAgents (no equivalent in Cursor)
+- Cursor: Uses `.mdc` rule format (other platforms can't read these)
+- Commands: Cursor uses `@command`, Claude Code uses `/command`
+
+**Universal Features (work everywhere):**
+- `.fstrent_spec_tasks/` task management system
+- YAML frontmatter in task files
+- Markdown documentation
+- Standard file organization
+- Task status indicators ([ ], [📋], [🔄], [✅])
+
+### Periodic Verification
+
+**Quarterly Review (Every 3 Months):**
+- [ ] Check Cursor official documentation for updates
+- [ ] Check other platform documentation for new features
+- [ ] Test template on multiple platforms
+- [ ] Update `.ai_platform_architecture/` documentation
+- [ ] Update PLATFORM_COMPARISON.md if differences found
+- [ ] Document any breaking changes
+
+### Adding Features Cross-Platform
+
+When adding features to this template, ensure compatibility:
+
+1. **Test on multiple platforms**: Test in both Cursor and Claude Code minimum
+2. **Document compatibility**: Update `.ai_platform_architecture/CURSOR.md` and other platform docs
+3. **Provide fallbacks**: For features that don't work on all platforms
+4. **Update comparison table**: Add new features to PLATFORM_COMPARISON.md
+5. **Migration guides**: Update if file structure or format changes
+
+### Template Maintenance Workflow
+
+When maintaining this template:
+
+1. **Check platform docs** in `.ai_platform_architecture/`
+2. **Identify compatibility requirements** from PLATFORM_COMPARISON.md
+3. **Make Cursor-specific changes** in `.cursor/rules/*.mdc` files
+4. **Update platform documentation** in `.ai_platform_architecture/CURSOR.md`
+5. **Verify cross-platform** by checking Claude Code still works
+6. **Update comparison table** if new differences emerge
+
+### File Format Rules for Cursor
+
+**Cursor Rules (.mdc files):**
+- MUST use `.mdc` extension (not `.md`)
+- Located in `.cursor/rules/` directory
+- Can be in subdirectories (e.g., `.cursor/rules/fstrent_spec_tasks/`)
+- Include YAML frontmatter with `description`, `globs`, `alwaysApply`
+
+**Cursor Commands:**
+- Located in `.cursor/rules/*/commands/` directories
+- Use `@command` prefix (not `/command` like Claude Code)
+- Can reference rules and other commands
+
+### Resources
+
+- **Platform Comparison**: `.ai_platform_architecture/PLATFORM_COMPARISON.md`
+- **Cursor Architecture**: `.ai_platform_architecture/CURSOR.md`
+- **Claude Code Architecture**: `.ai_platform_architecture/CLAUDE_CODE.md`
+- **Official Cursor Docs**: https://docs.cursor.com
+- **Verification Status**: `.ai_platform_architecture/README.md` status table
+
 ---
 
-*This consolidated rule provides all essential fstrent_tasks_v2 functionality in a single, efficient rule optimized for daily coding work.*
+*This consolidated rule provides all essential fstrent_spec_tasks functionality in a single, efficient rule optimized for daily coding work.*
