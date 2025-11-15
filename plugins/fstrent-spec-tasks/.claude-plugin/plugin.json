@@ -1,0 +1,48 @@
+{
+  "name": "fstrent-spec-tasks",
+  "version": "1.0.0",
+  "description": "Comprehensive task management, project planning, and QA system with 100% cross-IDE compatibility",
+  "author": {
+    "name": "wrm3",
+    "email": "contact@fstrent.com"
+  },
+  "keywords": [
+    "task-management",
+    "project-planning",
+    "qa",
+    "bug-tracking",
+    "cursor-compatible",
+    "cross-ide",
+    "productivity"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wrm3/ai_project_template"
+  },
+  "homepage": "https://github.com/wrm3/ai_project_template#fstrent-spec-tasks",
+  "bugs": {
+    "url": "https://github.com/wrm3/ai_project_template/issues"
+  },
+  "main": {
+    "skills": [
+      "skills/fstrent-task-management",
+      "skills/fstrent-planning",
+      "skills/fstrent-qa",
+      "skills/fstrent-code-reviewer"
+    ],
+    "agents": [
+      "agents/task-expander.md"
+    ],
+    "commands": [
+      "commands/new-task.md",
+      "commands/update-task.md",
+      "commands/status.md",
+      "commands/report-bug.md",
+      "commands/quality-report.md",
+      "commands/add-feature.md",
+      "commands/start-planning.md"
+    ]
+  }
+}
+

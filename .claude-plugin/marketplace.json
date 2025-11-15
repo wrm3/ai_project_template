@@ -1,43 +1,88 @@
 {
-  "name": "anthropic-agent-skills",
+  "name": "fstrent-ai-marketplace",
+  "description": "Professional AI development toolkit with task management, startup tools, Oracle APEX, integrations, research, and specialized agents",
   "owner": {
-    "name": "Keith Lazuka",
-    "email": "klazuka@anthropic.com"
+    "name": "wrm3",
+    "email": "contact@fstrent.com"
   },
   "metadata": {
-    "description": "Anthropic example skills",
-    "version": "1.0.0"
+    "version": "2.0.0",
+    "homepage": "https://github.com/wrm3/ai_project_template",
+    "repository": "https://github.com/wrm3/ai_project_template",
+    "license": "MIT"
   },
   "plugins": [
     {
-      "name": "document-skills",
-      "description": "Collection of document processing suite including Excel, Word, PowerPoint, and PDF capabilities",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./document-skills/xlsx",
-        "./document-skills/docx",
-        "./document-skills/pptx",
-        "./document-skills/pdf"
-      ]
+      "name": "fstrent-spec-tasks",
+      "description": "Comprehensive task management, project planning, and QA system with 100% cross-IDE compatibility (Cursor + Claude Code)",
+      "source": "./plugins/fstrent-spec-tasks",
+      "version": "1.0.0",
+      "keywords": ["task-management", "planning", "qa", "cursor", "cross-ide", "productivity"],
+      "author": "wrm3",
+      "license": "MIT"
     },
     {
-      "name": "example-skills",
-      "description": "Collection of example skills demonstrating various capabilities including skill creation, MCP building, visual design, algorithmic art, internal communications, web testing, artifact building, Slack GIFs, and theme styling",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skill-creator",
-        "./mcp-builder",
-        "./canvas-design",
-        "./algorithmic-art",
-        "./internal-comms",
-        "./webapp-testing",
-        "./artifacts-builder",
-        "./slack-gif-creator",
-        "./theme-factory",
-        "./brand-guidelines"
-      ]
+      "name": "fstrent-startup-toolkit",
+      "description": "Complete startup toolkit: VC fundraising, business formation, product development, resource access, and patent filing",
+      "source": "./plugins/fstrent-startup-toolkit",
+      "version": "1.0.0",
+      "keywords": ["startup", "vc", "fundraising", "business", "patent", "entrepreneurship"],
+      "author": "wrm3",
+      "license": "MIT"
+    },
+    {
+      "name": "fstrent-oracle-toolkit",
+      "description": "Oracle APEX development and database management tools with comprehensive PL/SQL support",
+      "source": "./plugins/fstrent-oracle-toolkit",
+      "version": "1.0.0",
+      "keywords": ["oracle", "apex", "database", "sql", "plsql", "dba"],
+      "author": "wrm3",
+      "license": "MIT"
+    },
+    {
+      "name": "fstrent-integration-toolkit",
+      "description": "GitHub, Atlassian (Jira/Confluence), and MediaWiki integration tools for seamless workflow",
+      "source": "./plugins/fstrent-integration-toolkit",
+      "version": "1.0.0",
+      "keywords": ["github", "jira", "confluence", "atlassian", "mediawiki", "integration"],
+      "author": "wrm3",
+      "license": "MIT"
+    },
+    {
+      "name": "fstrent-research-toolkit",
+      "description": "Deep research, YouTube analysis, RAG storage, and knowledge base management tools",
+      "source": "./plugins/fstrent-research-toolkit",
+      "version": "1.0.0",
+      "keywords": ["research", "youtube", "rag", "knowledge-base", "analysis"],
+      "author": "wrm3",
+      "license": "MIT"
+    },
+    {
+      "name": "fstrent-document-toolkit",
+      "description": "Excel (XLSX), Word (DOCX), PowerPoint (PPTX), and PDF document processing and automation",
+      "source": "./plugins/fstrent-document-toolkit",
+      "version": "1.0.0",
+      "keywords": ["excel", "word", "powerpoint", "pdf", "documents", "office"],
+      "author": "wrm3",
+      "license": "MIT"
+    },
+    {
+      "name": "fstrent-web-toolkit",
+      "description": "Web automation, browser control, and computer use capabilities for testing and automation",
+      "source": "./plugins/fstrent-web-toolkit",
+      "version": "1.0.0",
+      "keywords": ["web", "browser", "automation", "computer-use", "testing"],
+      "author": "wrm3",
+      "license": "MIT"
+    },
+    {
+      "name": "fstrent-developer-agents",
+      "description": "15 specialized development agents covering full SDLC: backend, frontend, database, testing, security, DevOps, and documentation",
+      "source": "./plugins/fstrent-developer-agents",
+      "version": "1.0.0",
+      "keywords": ["agents", "development", "testing", "security", "devops", "architecture"],
+      "author": "wrm3",
+      "license": "MIT"
     }
   ]
 }

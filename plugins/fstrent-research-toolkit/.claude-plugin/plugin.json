@@ -1,0 +1,39 @@
+{
+  "name": "fstrent-research-toolkit",
+  "version": "1.0.0",
+  "description": "Deep research, YouTube analysis, RAG storage, and knowledge base management tools",
+  "author": {
+    "name": "wrm3",
+    "email": "contact@fstrent.com"
+  },
+  "keywords": [
+    "research",
+    "youtube",
+    "rag",
+    "knowledge-base",
+    "analysis",
+    "deep-research"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wrm3/ai_project_template"
+  },
+  "homepage": "https://github.com/wrm3/ai_project_template#fstrent-research-toolkit",
+  "bugs": {
+    "url": "https://github.com/wrm3/ai_project_template/issues"
+  },
+  "main": {
+    "skills": [
+      "skills/deep-research",
+      "skills/research-methodology",
+      "skills/hanx-youtube-researcher",
+      "skills/youtube-rag-storage",
+      "skills/hanx-knowledge-base"
+    ],
+    "agents": [
+      "agents/youtube-researcher.md"
+    ]
+  }
+}
+

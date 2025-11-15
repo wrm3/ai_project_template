@@ -1,0 +1,41 @@
+{
+  "name": "fstrent-startup-toolkit",
+  "version": "1.0.0",
+  "description": "Complete startup toolkit: VC fundraising, business formation, product development, resource access, and patent filing",
+  "author": {
+    "name": "wrm3",
+    "email": "contact@fstrent.com"
+  },
+  "keywords": [
+    "startup",
+    "vc",
+    "fundraising",
+    "business-formation",
+    "patent",
+    "entrepreneurship",
+    "product-development"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wrm3/ai_project_template"
+  },
+  "homepage": "https://github.com/wrm3/ai_project_template#fstrent-startup-toolkit",
+  "bugs": {
+    "url": "https://github.com/wrm3/ai_project_template/issues"
+  },
+  "main": {
+    "skills": [
+      "skills/startup-vc-fundraising",
+      "skills/startup-business-formation",
+      "skills/startup-product-development",
+      "skills/startup-resource-access",
+      "skills/patent-filing-ai"
+    ],
+    "agents": [
+      "agents/fundraising-specialist.md",
+      "agents/patent-specialist.md"
+    ]
+  }
+}
+

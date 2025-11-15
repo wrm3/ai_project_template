@@ -1,0 +1,33 @@
+{
+  "name": "fstrent-web-toolkit",
+  "version": "1.0.0",
+  "description": "Web automation, browser control, and computer use capabilities for testing and automation",
+  "author": {
+    "name": "wrm3",
+    "email": "contact@fstrent.com"
+  },
+  "keywords": [
+    "web",
+    "browser",
+    "automation",
+    "computer-use",
+    "testing",
+    "qa"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wrm3/ai_project_template"
+  },
+  "homepage": "https://github.com/wrm3/ai_project_template#fstrent-web-toolkit",
+  "bugs": {
+    "url": "https://github.com/wrm3/ai_project_template/issues"
+  },
+  "main": {
+    "skills": [
+      "skills/web-tools",
+      "skills/computer-use-agent"
+    ]
+  }
+}
+

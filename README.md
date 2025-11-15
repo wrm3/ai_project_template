@@ -69,18 +69,94 @@ This project now supports the **industry-standard agents.md format** (August 202
 
 ## ⚡ Quick Start
 
-### 5-Minute Setup
+### 🎯 Choose Your Installation Method
 
-#### For Claude Code Users
+**NEW!** This is now a **Claude Code Marketplace** with 8 plugin bundles. Choose what you need!
+
+---
+
+## 📦 Method 1: Claude Code Marketplace (Recommended)
+
+Install only the bundles you need as Claude Code plugins:
+
+### Step 1: Add Marketplace
+
+```bash
+# In Claude Code
+/plugin marketplace add wrm3/ai_project_template
+```
+
+### Step 2: Install Plugin Bundles
+
+**Choose what you need:**
+
+```bash
+# Core (everyone needs this)
+/plugin install fstrent-spec-tasks@wrm3
+
+# Startup founders
+/plugin install fstrent-startup-toolkit@wrm3
+
+# Oracle developers
+/plugin install fstrent-oracle-toolkit@wrm3
+
+# Teams using GitHub/Jira/Confluence
+/plugin install fstrent-integration-toolkit@wrm3
+
+# Researchers
+/plugin install fstrent-research-toolkit@wrm3
+
+# Document automation
+/plugin install fstrent-document-toolkit@wrm3
+
+# Web/browser automation
+/plugin install fstrent-web-toolkit@wrm3
+
+# Development agents (HIGHLY RECOMMENDED!)
+/plugin install fstrent-developer-agents@wrm3
+```
+
+### Step 3: Start Using
+
+```bash
+# Check what's available
+/skills
+
+# Create a task
+/project:new-task Implement user authentication
+
+# Check project status
+/project:status
+```
+
+**Pros:**
+- ✅ Install only what you need
+- ✅ Works across all projects
+- ✅ Easy updates (reinstall to update)
+- ✅ Lighter memory footprint
+
+**Cons:**
+- ❌ Requires internet
+- ❌ Global installation (not project-specific)
+
+---
+
+## 📁 Method 2: Project Template (For Teams & Customization)
+
+Copy configuration to specific project for full customization:
+
+### For Claude Code Users
 
 ```bash
 # Clone the repository
 git clone https://github.com/wrm3/ai_project_template.git
 cd ai_project_template
 
-# Copy Claude Code interface to your project
+# Copy everything to your project
 cp -r .claude your-project/
-cp -r .claude-plugin your-project/
+cp -r .cursor your-project/
+cp -r .fstrent_spec_tasks your-project/
+cp agents.md your-project/
 
 # Open your project in Claude Code
 # Skills are automatically available!
@@ -227,6 +303,66 @@ Create a new task for implementing user authentication
 ```
 
 **Result**: Task file created in `.fstrent_spec_tasks/tasks/`, visible in ALL 5 IDEs!
+
+---
+
+## 🎁 Plugin Bundles
+
+### 1. **fstrent-spec-tasks** (Core - Start Here!)
+**Task management, project planning, and QA**
+- 4 skills: task management, planning, QA, code review
+- 1 agent: task-expander
+- 7 commands: /new-task, /status, /report-bug, etc.
+
+**Best for**: All developers
+
+### 2. **fstrent-startup-toolkit** 
+**Complete toolkit for startup founders**
+- 5 skills: VC fundraising, business formation, product development, resource access, patent filing
+- 2 agents: fundraising specialist, patent specialist
+
+**Best for**: Startup founders, entrepreneurs
+
+### 3. **fstrent-oracle-toolkit**
+**Oracle APEX and database development**
+- 2 skills: Oracle APEX, database tools
+- 1 agent: Oracle APEX specialist
+
+**Best for**: Oracle developers, DBAs
+
+### 4. **fstrent-integration-toolkit**
+**External system integrations**
+- 3 skills: GitHub, Atlassian (Jira/Confluence), MediaWiki
+
+**Best for**: Teams using these platforms
+
+### 5. **fstrent-research-toolkit**
+**Research and knowledge management**
+- 5 skills: deep research, research methodology, YouTube analysis, RAG storage, knowledge base
+- 1 agent: YouTube researcher
+
+**Best for**: Researchers, content creators
+
+### 6. **fstrent-document-toolkit**
+**Office document automation**
+- 4 skills: Excel (XLSX), Word (DOCX), PowerPoint (PPTX), PDF
+
+**Best for**: Business analysts, report automation
+
+### 7. **fstrent-web-toolkit**
+**Web and desktop automation**
+- 2 skills: web tools, computer use agent
+
+**Best for**: QA engineers, automation specialists
+
+### 8. **fstrent-developer-agents** ⭐ (Highly Recommended!)
+**15 specialized development agents**
+- Development: backend, frontend, full-stack, database
+- Quality: test-runner, code-reviewer, debugger, QA engineer
+- Security/DevOps: security auditor, DevOps engineer, Docker specialist
+- Docs/Architecture: technical writer, solution architect, API designer
+
+**Best for**: All developers (60-80% context reduction, 10x productivity!)
 
 ---
 

@@ -1,0 +1,36 @@
+{
+  "name": "fstrent-document-toolkit",
+  "version": "1.0.0",
+  "description": "Excel (XLSX), Word (DOCX), PowerPoint (PPTX), and PDF document processing and automation",
+  "author": {
+    "name": "wrm3",
+    "email": "contact@fstrent.com"
+  },
+  "keywords": [
+    "excel",
+    "word",
+    "powerpoint",
+    "pdf",
+    "documents",
+    "office",
+    "automation"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wrm3/ai_project_template"
+  },
+  "homepage": "https://github.com/wrm3/ai_project_template#fstrent-document-toolkit",
+  "bugs": {
+    "url": "https://github.com/wrm3/ai_project_template/issues"
+  },
+  "main": {
+    "skills": [
+      "skills/document-skills/xlsx",
+      "skills/document-skills/docx",
+      "skills/document-skills/pptx",
+      "skills/document-skills/pdf"
+    ]
+  }
+}
+

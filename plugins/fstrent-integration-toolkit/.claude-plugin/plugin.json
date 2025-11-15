@@ -1,0 +1,35 @@
+{
+  "name": "fstrent-integration-toolkit",
+  "version": "1.0.0",
+  "description": "GitHub, Atlassian (Jira/Confluence), and MediaWiki integration tools for seamless workflow",
+  "author": {
+    "name": "wrm3",
+    "email": "contact@fstrent.com"
+  },
+  "keywords": [
+    "github",
+    "jira",
+    "confluence",
+    "atlassian",
+    "mediawiki",
+    "integration",
+    "workflow"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wrm3/ai_project_template"
+  },
+  "homepage": "https://github.com/wrm3/ai_project_template#fstrent-integration-toolkit",
+  "bugs": {
+    "url": "https://github.com/wrm3/ai_project_template/issues"
+  },
+  "main": {
+    "skills": [
+      "skills/github-integration",
+      "skills/atlassian-integration",
+      "skills/hanx-mediawiki"
+    ]
+  }
+}
+

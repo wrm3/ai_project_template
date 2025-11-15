@@ -1,0 +1,28 @@
+# Hanx YouTube Researcher - Python Dependencies
+# Extends youtube-video-analysis with specialized analysis capabilities
+# Last Updated: 2025-11-01
+
+# Core Dependencies - Inherited from youtube-video-analysis
+# (These are already installed if youtube-video-analysis is set up)
+# pytubefix>=6.0.0              # YouTube downloading
+# openai-whisper>=20231117      # Transcription
+# moviepy>=1.0.3                # Audio extraction
+
+# Additional Dependencies for Specialized Analysis
+requests>=2.31.0              # HTTP requests for LLM APIs
+python-dotenv>=1.0.0          # Environment variable management for API keys
+
+# Optional: Direct LLM API Integration
+# openai>=1.0.0                # OpenAI API (if not using hanx_tools)
+# anthropic>=0.3.0             # Anthropic Claude API (if not using hanx_tools)
+
+# Optional: Advanced Output Formats
+# pyyaml>=6.0                  # YAML output format support
+
+# Development Dependencies (optional)
+# pytest>=7.4.0                # Testing framework
+# black>=23.0.0                # Code formatter
+# flake8>=6.0.0                # Linter
+
+# Note: This skill delegates video processing to youtube-video-analysis
+# Make sure youtube-video-analysis skill is installed and working first

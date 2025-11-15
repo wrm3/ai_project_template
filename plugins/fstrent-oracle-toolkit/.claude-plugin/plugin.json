@@ -1,0 +1,37 @@
+{
+  "name": "fstrent-oracle-toolkit",
+  "version": "1.0.0",
+  "description": "Oracle APEX development and database management tools with comprehensive PL/SQL support",
+  "author": {
+    "name": "wrm3",
+    "email": "contact@fstrent.com"
+  },
+  "keywords": [
+    "oracle",
+    "apex",
+    "database",
+    "sql",
+    "plsql",
+    "dba",
+    "oracle-development"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wrm3/ai_project_template"
+  },
+  "homepage": "https://github.com/wrm3/ai_project_template#fstrent-oracle-toolkit",
+  "bugs": {
+    "url": "https://github.com/wrm3/ai_project_template/issues"
+  },
+  "main": {
+    "skills": [
+      "skills/oracle-apex-development",
+      "skills/hanx-database-tools"
+    ],
+    "agents": [
+      "agents/oracle-apex-specialist.md"
+    ]
+  }
+}
+

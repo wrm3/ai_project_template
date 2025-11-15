@@ -11,6 +11,12 @@ claude_code_research/
 supabase.md
 
 # ============================================================================
+# Plugin Bundles (Keep in repo for marketplace)
+# ============================================================================
+# Note: plugins/ folder should be committed
+# Individual plugin bundles are the distributed packages
+
+# ============================================================================
 # Task Management & Planning (Private - may contain client/project info)
 # ============================================================================
 .fstrent_spec_tasks/

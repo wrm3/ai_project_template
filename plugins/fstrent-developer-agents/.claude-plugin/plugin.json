@@ -1,0 +1,46 @@
+{
+  "name": "fstrent-developer-agents",
+  "version": "1.0.0",
+  "description": "15 specialized development agents covering full SDLC: backend, frontend, database, testing, security, DevOps, and documentation",
+  "author": {
+    "name": "wrm3",
+    "email": "contact@fstrent.com"
+  },
+  "keywords": [
+    "agents",
+    "development",
+    "testing",
+    "security",
+    "devops",
+    "architecture",
+    "sdlc"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wrm3/ai_project_template"
+  },
+  "homepage": "https://github.com/wrm3/ai_project_template#fstrent-developer-agents",
+  "bugs": {
+    "url": "https://github.com/wrm3/ai_project_template/issues"
+  },
+  "main": {
+    "agents": [
+      "agents/backend-developer.md",
+      "agents/frontend-developer.md",
+      "agents/full-stack-developer.md",
+      "agents/database-expert.md",
+      "agents/test-runner.md",
+      "agents/code-reviewer.md",
+      "agents/debugger.md",
+      "agents/qa-engineer.md",
+      "agents/security-auditor.md",
+      "agents/devops-engineer.md",
+      "agents/docker-specialist.md",
+      "agents/technical-writer.md",
+      "agents/solution-architect.md",
+      "agents/api-designer.md"
+    ]
+  }
+}
+
